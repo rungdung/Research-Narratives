@@ -1,9 +1,9 @@
 <script>
   import { map } from "./Map.svelte";
-  import { selectedFeatures } from "./stores.js";
+  import { selectedFeatures } from "../stores.js";
   import { onMount } from "svelte";
 
-  import { highlightAllFeatures, zoomToFeature } from "./libs/mapMovements.mjs";
+  import { highlightAllFeatures, zoomToFeature } from "../libs/mapMovements.mjs";
 
   import {
     Node,
@@ -16,7 +16,7 @@
     Drawer,
   } from "svelvet";
   import Dropzone from "svelte-file-dropzone/Dropzone.svelte";
-  
+
   export let width;
   export let height;
   let nodes = [];

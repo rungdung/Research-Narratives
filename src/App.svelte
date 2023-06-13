@@ -1,9 +1,9 @@
 <script>
-  import Map from "./Map.svelte";
-  import SelectedFeatures from "./SelectedFeatures.svelte";
-  import Search from "./Search.svelte";
+  import Map from "./components/Map.svelte";
+  import SelectedFeatures from "./components/SelectedFeatures.svelte";
+  import Search from "./components/Search.svelte";
   import { CollapsibleCard} from 'svelte-collapsible/dist/index.mjs'
-  import UploadData from "./UploadData.svelte";
+  import UploadData from "./components/UploadData.svelte";
   
   let innerWidth
   let innerHeight

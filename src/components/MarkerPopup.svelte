@@ -5,25 +5,23 @@
   export let excerpt;
   export let feature;
 
-  import { selectedFeatures } from "./stores.js";
+  import { selectedFeatures } from "../stores.js";
   async function addToList() {
     const newFeature = {
       title: title,
       date: date,
       link: link,
       excerpt: excerpt,
-      feature: feature
+      feature: feature,
     };
-    
+
     selectedFeatures.update((features) => {
       features.push(newFeature);
 
       console.log("pushing to selected features");
-      console.log(features)
+      console.log(features);
       return features;
     });
-
-
   }
 </script>
 

@@ -1,5 +1,4 @@
 <script>
-  import "leaflet";
   import { map } from "./Map.svelte";
   import { selectedFeatures } from "./stores.js";
   import { onMount } from "svelte";
@@ -17,11 +16,7 @@
     Drawer,
   } from "svelvet";
   import Dropzone from "svelte-file-dropzone/Dropzone.svelte";
-
-  let highlightLayer = new L.FeatureGroup();
-
-  let edges = [];
-
+  
   export let width;
   export let height;
   let nodes = [];

@@ -3,7 +3,8 @@
   import SelectedFeatures from "./SelectedFeatures.svelte";
   import Search from "./Search.svelte";
   import { CollapsibleCard} from 'svelte-collapsible/dist/index.mjs'
-
+  import UploadData from "./UploadData.svelte";
+  
   let innerWidth
   let innerHeight
 
@@ -28,6 +29,10 @@
 
     <div id="search" class="m-2">
       <Search />
+    </div>
+
+    <div id="search" class="m-2">
+      <UploadData />
     </div>
   </div>
 <div id="right-bar" class="p-4">

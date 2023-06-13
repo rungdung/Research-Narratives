@@ -37,3 +37,35 @@
     Add to list
   </button>
 </div>
+
+<style>
+  .popup {
+    padding: 10px;
+    border-radius: 5px;
+    background-color: #fff;
+    width: 300px;
+    color: black;
+    text-align: left;
+  }
+
+  .popup h3 {
+    margin: 0;
+    font-size: 1.2rem;
+  }
+
+  .popup p {
+    margin: 0;
+    font-size: 0.8rem;
+  }
+
+  .popup a {
+    font-size: 0.8rem;
+  }
+
+  .popup button {
+    margin-top: 10px;
+    padding: 5px;
+    border-radius: 5px;
+    color: #fff;
+  }
+</style>

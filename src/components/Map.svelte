@@ -21,7 +21,7 @@
       pitch: 60, // pitch in degrees
       bearing: 30, // bearing in degrees
       zoom: 7,
-      maxZoom: 10,
+      maxZoom: 14,
       minZoom: 3,
     }).addControl(
       new maplibre.AttributionControl({

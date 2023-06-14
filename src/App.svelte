@@ -21,6 +21,7 @@
 </svelte:head>
 <main>
   <Map />
+  <UploadData/>
   <div id="left-bar" class="p-4">
     <div id="meta-info" class="m-3">
       <h1 class="font-bold text-3xl ">Narrative Maker</h1>

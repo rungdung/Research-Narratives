@@ -92,7 +92,8 @@
                   nodes = nodes;
                 }}
                 accept="image/*"
-                containerClasses="dropzone"
+                containerClasses="dropzoneChart"
+                
               />
 
               {#each node.files.accepted as item}

@@ -19,11 +19,11 @@
   type="text"
   id="search-input"
   bind:value={searchQuery}
-  class="rounded-md text-white p-1 w-40 bg-slate-700"
+  class="rounded-md text-white p-1 w-40 bg-slate-600"
   placeholder="Search for an event"
 />
 <button
   on:click={() => searchLayer()}
-  class="rounded-md p-1 mt-2 bg-slate-700"
+  class="rounded-md p-1 mt-2 bg-slate-800"
   id="search-button">Search</button
 >

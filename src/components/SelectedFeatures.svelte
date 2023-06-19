@@ -3,7 +3,10 @@
   import { selectedFeatures } from "../stores.js";
   import { onMount } from "svelte";
 
-  import { highlightAllFeatures, zoomToFeature } from "../libs/mapMovements.mjs";
+  import {
+    highlightAllFeatures,
+    zoomToFeature,
+  } from "../libs/mapMovements.mjs";
 
   import {
     Node,
@@ -32,6 +35,8 @@
   // if reloading, load all from store
   // else load from local storage
   onMount(() => {
+    console.log("clearing");
+    $selectedFeatures = [];
     nodes = [];
     nodes = nodes;
   });
@@ -41,7 +46,6 @@
 
     nodes.push({
       label: lastValue.title,
-      width: 220,
       notes: "",
       feature: lastValue.feature,
       files: {
@@ -61,30 +65,33 @@
 </script>
 
 <div id="events-in-focus">
-  <Svelvet id={"mindmap-canvas"} {height} editable={true} >
+  {#if nodes.length < 1}
+    <p>No events selected. Please open an event and click, "Add to list"</p>
+  {:else}
+    <Svelvet id={"mindmap-canvas"} {height} editable={true}>
       <Background bgColor="#faebd7" slot="background" />
+      <div>
+        test
+      </div>
       {#each nodes as node}
-        <Node {...node} let:grabHandle drop={true}  editable={true}>
+        <Node
+          {...node}
+          editable={true}
+          useDefaults={true}
+        >
           <div class="node">
-            <section class="container mx-3 my-3">
-              <h2>{node.label}</h2>
-              <input
-                class="text-white my-1"
+            <section class="node-contents container mx-3 my-3">
+
+              <textarea 
+                class="text-white title bg-slate my-1 py-1 w-100"
+                value={node.label}
+                placeholder='{ node.label}'
+              />
+              <textarea
+                class="text-white body my-1 py-1"
                 value={node.notes}
                 placeholder="Enter notes"
               />
-
-              <select
-                class="text-white my-1"
-                value={node.category}
-                placeholder="Select a category"
-              >
-                {#each categories as category}
-                  <option value={category}>
-                    {category.text}
-                  </option>
-                {/each}
-              </select>
 
               <Dropzone
                 on:drop={(e) => {
@@ -93,7 +100,6 @@
                 }}
                 accept="image/*"
                 containerClasses="dropzoneChart"
-                
               />
 
               {#each node.files.accepted as item}
@@ -101,9 +107,21 @@
               {/each}
 
               <select
-                class="text-white my-1"
+                class="text-white my-1 py-1"
                 value={node.category}
                 placeholder="Geospatial morphing"
+              >
+                {#each categories as category}
+                  <option value={category}>
+                    {category.text}
+                  </option>
+                {/each}
+              </select>
+
+              <select
+                class="text-white my-1 py-1"
+                value={node.category}
+                placeholder="Select a category"
               >
                 {#each categories as category}
                   <option value={category}>
@@ -116,52 +134,85 @@
                 on:click={() => {
                   zoomToFeature(node.feature, map);
                 }}
-                class="bg-slate-700"
+                class="bg-slate-800"
               >
-              Open Source document / event
+                Open Source document / event
               </button>
-
-              <Resizer width height rotation />
             </section>
 
             <Anchor direction="west" dynamic />
-            <Anchor direction="west" dynamic />
+            <Anchor direction="east" dynamic />
+
           </div>
+         
         </Node>
       {/each}
-  </Svelvet>
+      </Svelvet>
 
-  {#if nodes.length < 1}
-    <p>No events selected. Please open an event and click, "Add to list"</p>
-  {:else}
-    <button
-      on:click={() =>
-        highlightAllFeatures(highlightLayer, map, $selectedFeatures)}
-      class="bg-slate-700"
-    >
-      Highlight all events
-    </button>
+    <section id="research-map-menu">
+      <button class="bg-slate-800"> Highlight all events </button>
 
-    <button
-      on:click={() => {
-        selectedFeatures.set([]);
-        highlightLayer.clearLayers();
-        nodes = [];
-      }}
-      class="bg-slate-700"
-    >
-      Clear all events
-    </button>
+      <button
+        on:click={() => {
+          selectedFeatures.set([]);
+          nodes = [];
+        }}
+        class="bg-slate-800"
+      >
+        Clear all events
+      </button>
+
+      <button
+        on:click={() => {
+          console.log("Testing rendering");
+        }}
+        class="bg-slate-800"
+      >
+        Render data as a story
+      </button>
+
+      <button
+        on:click={() => {
+          console.log("Testing rendering");
+        }}
+        class="bg-slate-800"
+      >
+        Share research map
+      </button>
+    </section>
   {/if}
 </div>
 
 <style>
+  textarea, select{
+    background-color: #475569;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    max-width: 80%;
+    padding: 0.2em !important;
+    margin-right: 0.5em !important;
+  }
+  .title, .body{
+    width: 90%;
+    height: fit-content
+  }
+  .title{
+    height: 3em;
+    font-size: larger;
+  }
+  .node-contents{
+    margin: 1em;
+  }
   :global(.dropzone) {
     border: 1px solid #ccc;
     border-radius: 5px;
     max-width: 80%;
     padding: 0.2em !important;
     margin-right: 0.5em !important;
+  }
+
+  :global(.dropzoneChart) {
+    max-width: 90%;
   }
   button {
     margin-top: 0.2em;
@@ -176,10 +227,11 @@
   .node {
     width: 100%;
     height: 100%;
-    background-color: #faebd7;
+    min-width: 3em;
+    max-width: 25em;
+    background-color: #ebcfab;
     border-radius: 8px;
-    border: 2px solid black;
-    padding: 0.6em;
+    border: 3px solid black;
   }
   .selected {
     border: 2px solid white;

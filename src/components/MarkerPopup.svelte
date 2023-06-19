@@ -32,18 +32,19 @@
   <p>{@html excerpt}</p>
   <br />
   <button class="bg-slate-700" id="addToList" on:click={() => addToList()}>
-    Add to list
+    Add to research map
   </button>
 </div>
 
 <style>
   .popup {
-    padding: 10px;
+    padding: 2em;
     border-radius: 5px;
-    background-color: #fff;
+    background-color: rgb(247, 240, 230);
     width: 300px;
     color: black;
     text-align: left;
+    box-shadow: 0 1px 3px rgba(0,0,0,.3);
   }
 
   .popup h3 {

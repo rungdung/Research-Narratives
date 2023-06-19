@@ -15,6 +15,7 @@
   },
   "dependencies": {
     "maplibre-gl": "^3.0.1",
+    "split.js": "^1.6.5",
     "svelte-collapsible": "^0.2.1",
     "svelte-file-dropzone": "^2.0.1",
     "svelvet": "^8.0.2"

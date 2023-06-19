@@ -1,3 +1,8 @@
+<script context="module">
+    export let properties = [];
+    export let propertyValues = new Set();
+</script>
+
 <script>
     import Dropzone from "svelte-file-dropzone/Dropzone.svelte";
     import { map } from "./Map.svelte";
@@ -21,64 +26,84 @@
     function loadData() {
         console.log(baseDB.accepted[0]);
         let file = URL.createObjectURL(baseDB.accepted[0]);
-        map.addSource("baseDB", {
-            type: "geojson",
-            data: file,
-        });
-
-        map.addLayer({
-            id: "baseDB-line",
-            type: "line",
-            source: "baseDB",
-            filter: ["==", "$type", "LineString"],
-        });
-
-        map.addLayer({
-            id: "baseDB-point",
-            type: "circle",
-            source: "baseDB",
-            filter: ["==", "$type", "Point"],
-        });
-
-        map.addLayer({
-            id: "baseDB-fill",
-            type: "fill",
-            source: "baseDB",
-            filter: ["==", "$type", "Polygon"],
-        });
-
-        map.on("click", "baseDB-point", function (e) {
-            console.log(e.features[0].properties.title);
-            let popupContainer = document.createElement("div");
-
-            new Popup({
-                target: popupContainer,
-                props: {
-                    title: e.features[0].properties.title ?? "No title",
-                    date: e.features[0].properties.date,
-                    link: e.features[0].properties.link,
-                    excerpt: e.features[0].properties.excerpt,
-                    feature: e.features[0],
-                },
+        try {
+            map.addSource("baseDB", {
+                type: "geojson",
+                data: file,
             });
-            var popup = new maplibre.Popup({ closeOnClick: true })
-                .setLngLat(e.lngLat)
-                // append div to popup of maplibre
-                .setDOMContent(popupContainer)
-                .addTo(map);
-        });
 
-        map.on("mouseenter", "baseDB-point", function () {
-            map.getCanvas().style.cursor = "pointer";
-        });
+            map.addLayer({
+                id: "baseDB-line",
+                type: "line",
+                source: "baseDB",
+                filter: ["==", "$type", "LineString"],
+            });
 
-        map.on("mouseleave", "baseDB-point", function () {
-            //revert to normal cursor style
-            map.getCanvas().style.cursor = "grab";
-        });
+            map.addLayer({
+                id: "baseDB-point",
+                type: "circle",
+                source: "baseDB",
+                filter: ["==", "$type", "Point"],
+            });
 
+            map.addLayer({
+                id: "baseDB-fill",
+                type: "fill",
+                source: "baseDB",
+                filter: ["==", "$type", "Polygon"],
+            });
+
+            map.on("click", "baseDB-point", function (e) {
+                console.log(e.features[0].properties.title);
+                let popupContainer = document.createElement("div");
+
+                new Popup({
+                    target: popupContainer,
+                    props: {
+                        gen: e.features[0].properties[0] ?? "No title",
+                    },
+                });
+                var popup = new maplibre.Popup({ closeOnClick: true })
+                    .setLngLat(e.lngLat)
+                    // append div to popup of maplibre
+                    .setDOMContent(popupContainer)
+                    .addTo(map)
+                    .removeClassName("maplibregl-popup-content");
+            });
+
+            map.on("mouseenter", "baseDB-point", function () {
+                map.getCanvas().style.cursor = "pointer";
+            });
+
+            map.on("mouseleave", "baseDB-point", function () {
+                //revert to normal cursor style
+                map.getCanvas().style.cursor = "grab";
+            });
+
+            loadProperties(file);
+        } catch (error) {
+            alert(error);
+        }
     }
 
+    function loadProperties(file) {
+        fetch(file)
+            .then((response) => response.json())
+            .then((data) => {
+                // Extract properties from GeoJSON features
+                data.features.forEach((feature) => {
+                    Object.keys(feature.properties).forEach((key) => {
+                        if (!properties.includes(key)) {
+                            properties.push(key);
+                        }
+                        propertyValues.add(feature.properties[key]);
+                    });
+                });
+            })
+            .catch((error) => {
+                console.error("Error fetching GeoJSON data:", error);
+            });
+    }
 
     onMount(() => {
         dialog.showModal();
@@ -86,7 +111,7 @@
 </script>
 
 <dialog id="intro-file-drop" class="" bind:this={dialog}>
-    <h1>Test</h1>
+    <h1>Eli5'ing research sharing</h1>
     <h3>Please upload a base geojson dataset to begin exploring.</h3>
     <Dropzone
         on:drop={(e) => {
@@ -94,7 +119,7 @@
             baseDB = baseDB;
         }}
         multiple={false}
-        containerClasses="dropzone3"
+        containerClasses="dropzoneMain"
         containerStyles="rounded-md text-black p-1 w-40 bg-slate-700"
     >
         {#if baseDB.accepted.length > 0}
@@ -123,11 +148,17 @@
         text-align: left;
         color: black;
     }
+
+    :global(.maplibregl-popup-content){
+        background-color: transparent;
+        box-shadow: none;
+    }
+
     #intro-file-drop::backdrop {
         background: linear-gradient(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.3));
         animation: fade-in 1s;
     }
-    :global(.dropzone3) {
+    :global(.dropzoneMain) {
         height: 10em !important;
         width: 100%;
         margin: 1em 0em;

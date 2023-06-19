@@ -45,7 +45,7 @@
     lastValue = $selectedFeatures[$selectedFeatures.length - 1];
 
     nodes.push({
-      label: lastValue.title,
+      label: lastValue.title || lastValue.name || "No title field available",
       notes: "",
       feature: lastValue.feature,
       files: {
@@ -85,7 +85,7 @@
               <textarea 
                 class="text-white title bg-slate my-1 py-1 w-100"
                 value={node.label}
-                placeholder='{ node.label}'
+                placeholder='{node.label}'
               />
               <textarea
                 class="text-white body my-1 py-1"

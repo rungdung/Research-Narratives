@@ -1,6 +1,8 @@
 <script context="module">
+    // Exported to allow filtering in Filter.svelte
     export let properties = [];
     export let propertyValues = new Set();
+    export let dialog;
 </script>
 
 <script>
@@ -10,80 +12,116 @@
     import maplibre from "maplibre-gl";
     import Popup from "./MarkerPopup.svelte";
 
-    let dialog;
-
+    // file upload array
     let baseDB = {
         accepted: [],
         rejected: [],
     };
 
+    // assign accepted files to baseDB
     function handleFilesSelect(e, files) {
         const { acceptedFiles, fileRejections } = e.detail;
         files.accepted = [...files.accepted, ...acceptedFiles];
         files.rejected = [...files.rejected, ...fileRejections];
     }
 
-    function loadData() {
-        console.log(baseDB.accepted[0]);
-        let file = URL.createObjectURL(baseDB.accepted[0]);
+    async function loadData() {
+        let fileType, layerType;
+        let file = URL.createObjectURL(baseDB.accepted[baseDB.accepted.length - 1]);
+        let fileName = baseDB.accepted[0].name.split(".")[0];
+        // Get file type
+        // to style map layers
+        // and attach event listeners
+
         try {
-            map.addSource("baseDB", {
+            map.addSource(fileName, {
                 type: "geojson",
                 data: file,
             });
-
-            map.addLayer({
-                id: "baseDB-line",
-                type: "line",
-                source: "baseDB",
-                filter: ["==", "$type", "LineString"],
-            });
-
-            map.addLayer({
-                id: "baseDB-point",
-                type: "circle",
-                source: "baseDB",
-                filter: ["==", "$type", "Point"],
-            });
-
-            map.addLayer({
-                id: "baseDB-fill",
-                type: "fill",
-                source: "baseDB",
-                filter: ["==", "$type", "Polygon"],
-            });
-
-            map.on("click", "baseDB-point", function (e) {
-                console.log(e.features[0].properties.title);
-                let popupContainer = document.createElement("div");
-
-                new Popup({
-                    target: popupContainer,
-                    props: {
-                        gen: e.features[0].properties[0] ?? "No title",
-                    },
-                });
-                var popup = new maplibre.Popup({ closeOnClick: true })
-                    .setLngLat(e.lngLat)
-                    // append div to popup of maplibre
-                    .setDOMContent(popupContainer)
-                    .addTo(map)
-                    .removeClassName("maplibregl-popup-content");
-            });
-
-            map.on("mouseenter", "baseDB-point", function () {
-                map.getCanvas().style.cursor = "pointer";
-            });
-
-            map.on("mouseleave", "baseDB-point", function () {
-                //revert to normal cursor style
-                map.getCanvas().style.cursor = "grab";
-            });
-
-            loadProperties(file);
         } catch (error) {
             alert(error);
         }
+
+        try {
+            let responseData = await fetch(file).then((response) =>
+                response.json()
+            );
+            fileType = responseData.features[0].geometry.type;
+        } catch (error) {
+            alert(error);
+        }
+
+        if (fileType == "Point") {
+            map.addLayer({
+                id: fileName + "-point",
+                type: "circle",
+                source: fileName,
+                filter: ["==", "$type", "Point"],
+                paint: {
+                    "circle-radius": 6,
+                    "circle-color": "#007cbf",
+                },
+            });
+            layerType = "point";
+        } else if (fileType == "LineString") {
+            map.addLayer({
+                id: fileName + "-line",
+                type: "line",
+                source: fileName,
+                filter: ["==", "$type", "LineString"],
+                paint: {
+                    "line-color": "#007cbf",
+                    "line-width": 2,
+                },
+            });
+            layerType = "line";
+        } else if (fileType == "Polygon") {
+            map.addLayer({
+                id: fileName + "-fill",
+                type: "fill",
+                source: fileName,
+                filter: ["==", "$type", "Polygon"],
+                paint: {
+                    "fill-color": "#088",
+                    "fill-opacity": 0.1,
+                    "fill-outline-color": "green",
+                },
+            });
+            layerType = "fill";
+        }
+
+        map.on("click", fileName + "-" + layerType, function (e) {
+            let popupContainer = document.createElement("div");
+
+            // create a new popup component instance
+            // and save to object
+            new Popup({
+                target: popupContainer,
+                props: {
+                    feature: e.features[0],
+                },
+            });
+
+            // set popup content to html object
+            var popup = new maplibre.Popup({ closeOnClick: true })
+                .setLngLat(e.lngLat)
+                // append div to popup of maplibre
+                .setDOMContent(popupContainer)
+                .addTo(map)
+        });
+
+        // Change cursor style
+        map.on("mouseenter", fileName + "-" + layerType, function () {
+            map.getCanvas().style.cursor = "pointer";
+        });
+
+        map.on("mouseleave", fileName + "-" + layerType, function () {
+            map.getCanvas().style.cursor = "grab";
+        });
+
+        // Extract properties from GeoJSON features
+        // for filtering in Filter.svelte
+        loadProperties(file);
     }
 
     function loadProperties(file) {
@@ -123,7 +161,7 @@
         containerStyles="rounded-md text-black p-1 w-40 bg-slate-700"
     >
         {#if baseDB.accepted.length > 0}
-            <p>{baseDB.accepted[0].name}</p>
+            <p>{baseDB.accepted[baseDB.accepted.length - 1].name}</p>
         {:else}
             Drag and drop or click to open a GeoJSON file.
         {/if}
@@ -149,7 +187,7 @@
         color: black;
     }
 
-    :global(.maplibregl-popup-content){
+    :global(.maplibregl-popup-content) {
         background-color: transparent;
         box-shadow: none;
     }

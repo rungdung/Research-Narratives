@@ -1,4 +1,5 @@
 <script>
+    import { dialog } from "./UploadData.svelte"
     //import Poppler from "node-poppler";
     import Dropzone from "svelte-file-dropzone/Dropzone.svelte";
 
@@ -40,6 +41,10 @@
     containerClasses="dropzone dropzoneAddSource text-black"
     containerStyles=""
 />
+
+<button class="bg-slate-700 my-3" on:click={() => dialog.showModal()}>
+    Add a spatial source
+</button>
 
 <style>
     :global(.dropzoneAddSource){

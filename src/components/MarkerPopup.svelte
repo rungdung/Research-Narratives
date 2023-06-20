@@ -26,6 +26,7 @@
           val,
         ])
       );
+      props["feature"] = feature;
       features.push(props);
       return features;
     });
@@ -68,6 +69,9 @@
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
   }
 
+  :global(.maplibregl-popup-tip) {
+    border-top-color: rgb(172, 142, 104) !important;
+  }
   .popup h3 {
     margin: 0;
     font-size: 1.2rem;

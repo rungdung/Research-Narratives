@@ -1,22 +1,28 @@
 // convert to maplibre
 import maplibre from 'maplibre-gl';
+import * as Turf from '@turf/turf';
+
 
 export function zoomToFeature(e, map) {
-  // Create a popup, but don't add it to the map yet.
-  const popup = new maplibre.Popup({
-    closeButton: false
-  });
-
+  let point
   // highlightLayer.clearLayers();
-  console.log("Zooming to feature");
-
+  if (e._geometry.type == 'Polygon' ){
+    point = Turf.centerOfMass(Turf.geometry('Polygon', e._geometry.coordinates));
+  } else if(e._geometry.type == 'MultiPolygon'){
+    // get a array of polygons
+    point = Turf.centerOfMass(Turf.geometry('MultiPolygon', e._geometry.coordinates));
+  } else if(e._geometry.type == 'LineString'){
+    point = Turf.centerOfMass(Turf.geometry('LineString', e._geometry.coordinates));
+  } else if(e._geometry.type == 'MultiLineString'){
+    point = Turf.centerOfMass(Turf.geometry('MultiLineString', e._geometry.coordinates));
+  } else if(e._geometry.type == 'Point'){
+    point = Turf.geometry('Point', e._geometry.coordinates);
+  }
   map.flyTo({
-    center: e.lngLat,
-    zoom: 12,
+    center: point.geometry.coordinates,
+    zoom: 10,
     essential: true, // this animation is considered essential with respect to prefers-reduced-motion
   });
-  popup.setLngLat(e.lngLat).addTo(map);
-
 }
 
 export function highlightAllFeatures(highlightLayer, map, selectedFeatures) {

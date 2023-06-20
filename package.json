@@ -10,10 +10,12 @@
   },
   "devDependencies": {
     "@sveltejs/vite-plugin-svelte": "^2.0.3",
+    "@vincjo/datatables": "^1.10.3",
     "svelte": "^3.55.1",
     "vite": "^4.2.0"
   },
   "dependencies": {
+    "@turf/turf": "^6.5.0",
     "maplibre-gl": "^3.0.1",
     "split.js": "^1.6.5",
     "svelte-collapsible": "^0.2.1",

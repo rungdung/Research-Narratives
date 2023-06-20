@@ -27,12 +27,15 @@
 
     async function loadData() {
         let fileType, layerType;
-        let file = URL.createObjectURL(baseDB.accepted[baseDB.accepted.length - 1]);
-        let fileName = baseDB.accepted[0].name.split(".")[0];
+        let currentIndex = baseDB.accepted.length - 1;
+        let file = URL.createObjectURL(baseDB.accepted[currentIndex]);
+
+        // use filename as source name for Maplibre
+        let fileName = baseDB.accepted[currentIndex].name.split(".")[0];
+
         // Get file type
         // to style map layers
         // and attach event listeners
-
         try {
             map.addSource(fileName, {
                 type: "geojson",
@@ -107,7 +110,7 @@
                 .setLngLat(e.lngLat)
                 // append div to popup of maplibre
                 .setDOMContent(popupContainer)
-                .addTo(map)
+                .addTo(map);
         });
 
         // Change cursor style

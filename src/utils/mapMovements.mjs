@@ -6,20 +6,25 @@ import * as Turf from '@turf/turf';
 export function zoomToFeature(e, map) {
   let point
   // highlightLayer.clearLayers();
-  if (e._geometry.type == 'Polygon' ){
-    point = Turf.centerOfMass(Turf.geometry('Polygon', e._geometry.coordinates));
-  } else if(e._geometry.type == 'MultiPolygon'){
+  if (e._geometry.type == 'Polygon') {
+    point = Turf.centerOfMass(Turf.geometry('Polygon', e._geometry.coordinates))
+      .geometry;
+  } else if (e._geometry.type == 'MultiPolygon') {
     // get a array of polygons
-    point = Turf.centerOfMass(Turf.geometry('MultiPolygon', e._geometry.coordinates));
-  } else if(e._geometry.type == 'LineString'){
-    point = Turf.centerOfMass(Turf.geometry('LineString', e._geometry.coordinates));
-  } else if(e._geometry.type == 'MultiLineString'){
-    point = Turf.centerOfMass(Turf.geometry('MultiLineString', e._geometry.coordinates));
-  } else if(e._geometry.type == 'Point'){
+    point = Turf.centerOfMass(Turf.geometry('MultiPolygon', e._geometry.coordinates))
+      .geometry;
+  } else if (e._geometry.type == 'LineString') {
+    point = Turf.centerOfMass(Turf.geometry('LineString', e._geometry.coordinates))
+      .geometry;
+  } else if (e._geometry.type == 'MultiLineString') {
+    point = Turf.centerOfMass(Turf.geometry('MultiLineString', e._geometry.coordinates))
+      .geometry;
+  } else if (e._geometry.type == 'Point') {
     point = Turf.geometry('Point', e._geometry.coordinates);
+    console.log(point)
   }
   map.flyTo({
-    center: point.geometry.coordinates,
+    center: point.coordinates,
     zoom: 10,
     essential: true, // this animation is considered essential with respect to prefers-reduced-motion
   });

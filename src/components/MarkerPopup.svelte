@@ -2,11 +2,10 @@
   import { DataHandler, Datatable, Th, ThFilter } from "@vincjo/datatables"; //https://vincjo.fr/datatables/
   import { selectedFeatures } from "../stores.js";
 
-  export let feature;
-  let properties = feature.properties;
+  export let feature; //import from UploadData.svelte
 
   // map the data to key value pairs for the table
-  let data = Object.entries(properties).map(([key, value]) => {
+  let data = Object.entries(feature.properties).map(([key, value]) => {
     return {
       key: key,
       value: value,
@@ -19,8 +18,15 @@
 
   async function addToList() {
     // add to selected features store
-    selectedFeatures.update((features) => {    
-      features.push(properties);
+    selectedFeatures.update((features) => {
+      // Convert all the keys to lower case before passing to MarkerPopup.svelte
+      let props = Object.fromEntries(
+        Object.entries(feature.properties).map(([key, val]) => [
+          key.toLowerCase(),
+          val,
+        ])
+      );
+      features.push(props);
       return features;
     });
   }
@@ -66,7 +72,7 @@
     margin: 0;
     font-size: 1.2rem;
   }
-  
+
   .popup button {
     margin-top: 10px;
     padding: 5px;

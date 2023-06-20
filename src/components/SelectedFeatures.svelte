@@ -45,7 +45,7 @@
     lastValue = $selectedFeatures[$selectedFeatures.length - 1];
 
     nodes.push({
-      label: lastValue.title || lastValue.name || "No title field available",
+      label: lastValue.title || lastValue.name || lastValue.id || "No title field available",
       notes: "",
       feature: lastValue.feature,
       files: {

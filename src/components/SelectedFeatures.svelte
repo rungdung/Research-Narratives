@@ -43,11 +43,15 @@
 
   $: if ($selectedFeatures.length > 0) {
     lastValue = $selectedFeatures[$selectedFeatures.length - 1];
-
     nodes.push({
-      label: lastValue.title || lastValue.name || lastValue.id || "No title field available",
+      label:
+        lastValue.title ||
+        lastValue.name ||
+        lastValue.id ||
+        "No title field available",
       notes: "",
       feature: lastValue.feature,
+      source: lastValue.feature.layer.source,
       files: {
         accepted: [],
         rejected: [],
@@ -70,22 +74,15 @@
   {:else}
     <Svelvet id={"mindmap-canvas"} {height} editable={true}>
       <Background bgColor="#faebd7" slot="background" />
-      <div>
-        test
-      </div>
       {#each nodes as node}
-        <Node
-          {...node}
-          editable={true}
-          useDefaults={true}
-        >
+        <Node {...node} editable={true} useDefaults={true}>
           <div class="node">
             <section class="node-contents container mx-3 my-3">
-
-              <textarea 
+              <p>Source: {node.source}</p>
+              <textarea
                 class="text-white title bg-slate my-1 py-1 w-100"
                 value={node.label}
-                placeholder='{node.label}'
+                placeholder={node.label}
               />
               <textarea
                 class="text-white body my-1 py-1"
@@ -142,12 +139,10 @@
 
             <Anchor direction="west" dynamic />
             <Anchor direction="east" dynamic />
-
           </div>
-         
         </Node>
       {/each}
-      </Svelvet>
+    </Svelvet>
 
     <section id="research-map-menu">
       <button class="bg-slate-800"> Highlight all events </button>
@@ -184,23 +179,27 @@
 </div>
 
 <style>
-  textarea, select{
+  textarea,
+  :global(select) {
     background-color: #475569;
     border: 1px solid #ccc;
     border-radius: 5px;
     max-width: 80%;
+    color: white;
+
     padding: 0.2em !important;
     margin-right: 0.5em !important;
   }
-  .title, .body{
+  .title,
+  .body {
     width: 90%;
-    height: fit-content
+    height: fit-content;
   }
-  .title{
+  .title {
     height: 3em;
     font-size: larger;
   }
-  .node-contents{
+  .node-contents {
     margin: 1em;
   }
   :global(.dropzone) {

@@ -1,10 +1,10 @@
 <script>
   import Map from "./components/Map.svelte";
-  import SelectedFeatures from "./components/SelectedFeatures.svelte";
+  import SelectedFeatures from "./components/ResearchMap.svelte";
   import Search from "./components/Search.svelte";
-  import UploadData from "./components/UploadData.svelte";
+  import UploadData from "./components/FileRenderer.svelte";
   import Filter from "./components/Filter.svelte";
-  import ParseFile from "./components/ParseFile.svelte";
+  import ParseFile from "./components/FileHandler.svelte";
 
   import SearchSemanticScholar from "./components/SearchSemanticScholar.svelte";
   import Split from "split.js/dist/split.es.js";

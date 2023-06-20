@@ -12,6 +12,8 @@
     import maplibre from "maplibre-gl";
     import Popup from "./MarkerPopup.svelte";
 
+    import { uploadedLayers } from "../stores";
+
     // file upload array
     let baseDB = {
         accepted: [],
@@ -25,13 +27,24 @@
         files.rejected = [...files.rejected, ...fileRejections];
     }
 
+    function updateLayerList(layerName) {
+        uploadedLayers.update((layers) => {
+            layers.push({
+                name: layerName,
+                visible: true,
+            });
+            return layers;
+        });
+    }
     async function loadData() {
         let fileType, layerType;
         let currentIndex = baseDB.accepted.length - 1;
         let file = URL.createObjectURL(baseDB.accepted[currentIndex]);
 
         // use filename as source name for Maplibre
+        // and push to store
         let fileName = baseDB.accepted[currentIndex].name.split(".")[0];
+        let layerName;
 
         // Get file type
         // to style map layers
@@ -55,8 +68,10 @@
         }
 
         if (fileType == "Point") {
+            layerName = fileName + "-point";
+            updateLayerList(layerName);
             map.addLayer({
-                id: fileName + "-point",
+                id: layerName,
                 type: "circle",
                 source: fileName,
                 filter: ["==", "$type", "Point"],
@@ -65,10 +80,11 @@
                     "circle-color": "#007cbf",
                 },
             });
-            layerType = "point";
         } else if (fileType == "LineString") {
+            layerName = fileName + "-line";
+            updateLayerList(layerName);
             map.addLayer({
-                id: fileName + "-line",
+                id: layerName,
                 type: "line",
                 source: fileName,
                 filter: ["==", "$type", "LineString"],
@@ -77,10 +93,11 @@
                     "line-width": 2,
                 },
             });
-            layerType = "line";
-        } else if (fileType == "Polygon") {
+        } else if (fileType == "Polygon" || fileType == "MultiPolygon") {
+            layerName = fileName + "-fill";
+            updateLayerList(layerName);
             map.addLayer({
-                id: fileName + "-fill",
+                id: layerName,
                 type: "fill",
                 source: fileName,
                 filter: ["==", "$type", "Polygon"],
@@ -90,10 +107,9 @@
                     "fill-outline-color": "green",
                 },
             });
-            layerType = "fill";
         }
 
-        map.on("click", fileName + "-" + layerType, function (e) {
+        map.on("click", layerName, function (e) {
             let popupContainer = document.createElement("div");
 
             // create a new popup component instance
@@ -114,11 +130,11 @@
         });
 
         // Change cursor style
-        map.on("mouseenter", fileName + "-" + layerType, function () {
+        map.on("mouseenter", layerName, function () {
             map.getCanvas().style.cursor = "pointer";
         });
 
-        map.on("mouseleave", fileName + "-" + layerType, function () {
+        map.on("mouseleave", layerName, function () {
             map.getCanvas().style.cursor = "grab";
         });
 

@@ -6,7 +6,7 @@
   import {
     highlightAllFeatures,
     zoomToFeature,
-  } from "../libs/mapMovements.mjs";
+  } from "../utils/mapMovements.mjs";
 
   import {
     Node,
@@ -20,8 +20,8 @@
   } from "svelvet";
   import Dropzone from "svelte-file-dropzone/Dropzone.svelte";
 
-  export let width;
   export let height;
+  
   let nodes = [];
   let lastValue;
 

@@ -17,43 +17,30 @@
     map = new maplibre.Map({
       container: mapContainer,
       style: "https://basemaps.cartocdn.com/gl/positron-gl-style/style.json",
-      center: [78.486328, 10.297698],
-      pitch: 60, // pitch in degrees
-      bearing: 30, // bearing in degrees
-      zoom: 7,
+      center: [78.398438,21.616579],
+      pitch: 0, // pitch in degrees
+      bearing: 0, // bearing in degrees
+      zoom: 1,
       maxZoom: 14,
       minZoom: 3,
     }).addControl(
       new maplibre.AttributionControl({
-        customAttribution: "Hindutva Watch Database",
+        customAttribution: "",
       })
     );
+    map.resize();
 
   });
 
 </script>
 
-<main>
-  <div id="map" bind:this={mapContainer} />
-</main>
+<div id="map" bind:this={mapContainer} />
 
 <style>
   #map {
     height: 100vh;
-    width: 100vw;
     padding: 0 !important;
     margin: 0 !important;
   }
 
-  .btn {
-    margin: 0.04em;
-  }
-
-  .popup {
-    width: 800px;
-  }
-
-  .btn-sm {
-    padding: 0.1em 0.3em !important;
-  }
 </style>

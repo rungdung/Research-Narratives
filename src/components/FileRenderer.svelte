@@ -14,11 +14,18 @@
 
     import { uploadedLayers } from "../stores";
 
+    import PDFobject from "pdfobject";
+
     // file upload array
     let baseDB = {
-        accepted: [],
-        rejected: [],
-    };
+            accepted: [],
+            rejected: [],
+        },
+        link;
+
+    let fileType, fileName;
+
+    let fileViewPort;
 
     // assign accepted files to baseDB
     function handleFilesSelect(e, files) {
@@ -27,28 +34,96 @@
         files.rejected = [...files.rejected, ...fileRejections];
     }
 
-    function updateLayerList(layerName) {
+    function updateLayerList(properties) {
         uploadedLayers.update((layers) => {
             layers.push({
-                name: layerName,
-                visible: true,
+                name: properties.name,
+                type: properties.type,
+                geometry: properties.geometry || "NA",
+                blob: properties.blob || null,
+                visible: properties.visible || true,
+                container: properties.container || null,
             });
             return layers;
         });
     }
+
     async function loadData() {
-        let fileType, layerType;
         let currentIndex = baseDB.accepted.length - 1;
         let file = URL.createObjectURL(baseDB.accepted[currentIndex]);
 
         // use filename as source name for Maplibre
         // and push to store
-        let fileName = baseDB.accepted[currentIndex].name.split(".")[0];
-        let layerName;
+        fileName = baseDB.accepted[currentIndex].name.split(".")[0];
+        fileType = baseDB.accepted[currentIndex].name.split(".")[1];
 
         // Get file type
         // to style map layers
         // and attach event listeners
+        if (fileType.toLowerCase() == "geojson") {
+            loadSpatialData(file, fileName);
+        } else if (fileType.toLowerCase() == "csv") {
+        } else if (fileType.toLowerCase() == "pdf") {
+            loadPDFData(file, fileName);
+        } else {
+            alert("File type not supported");
+        }
+    }
+
+    async function loadPDFData(file, fileName) {
+        try {
+            console.log(fileViewPort);
+            console.log(fileName);
+            await PDFobject.embed(file, fileViewPort);
+            updateLayerList({
+                name: fileName,
+                type: "PDF",
+                geometry: "NA",
+                blob: file,
+                visible: true,
+                container: fileViewPort,
+            });
+        } catch (error) {
+            alert(error);
+        }
+    }
+
+    async function loadLinkData() {
+        let file = link;
+        fileName = link.split("/").pop().split(".")[0];
+        fileType = link.split("/").pop().split(".")[1];
+        if (fileType) {
+            if (fileType.toLowerCase() == "geojson") {
+                loadSpatialData(file, fileName);
+            } else if (fileType.toLowerCase() == "csv") {
+            } else if (fileType.toLowerCase() == "pdf") {
+                loadPDFData(file, fileName);
+            }
+        } else {
+            // insert as iframe if not supported;
+            fileViewPort.innerHTML = `<iframe src="${file}" width="100%" height="100%"></iframe>`;
+            updateLayerList({
+                name: fileName,
+                type: "Link",
+                geometry: "NA",
+                blob: file,
+                visible: true,
+                container: fileViewPort,
+            });
+        }
+    }
+    
+    async function loadSpatialData(file, fileName) {
+        let layerType, layerName;
+        try {
+            let responseData = await fetch(file).then((response) =>
+                response.json()
+            );
+            layerType = responseData.features[0].geometry.type;
+        } catch (error) {
+            alert(error);
+        }
+
         try {
             map.addSource(fileName, {
                 type: "geojson",
@@ -58,18 +133,17 @@
             alert(error);
         }
 
-        try {
-            let responseData = await fetch(file).then((response) =>
-                response.json()
-            );
-            fileType = responseData.features[0].geometry.type;
-        } catch (error) {
-            alert(error);
-        }
-
-        if (fileType == "Point") {
+        if (layerType == "Point") {
             layerName = fileName + "-point";
-            updateLayerList(layerName);
+            updateLayerList({
+                name: layerName,
+                type: "Spatial",
+                geometry: "Point",
+                blob: file,
+                visible: true,
+                container: fileViewPort,
+            });
+
             map.addLayer({
                 id: layerName,
                 type: "circle",
@@ -80,9 +154,16 @@
                     "circle-color": "#007cbf",
                 },
             });
-        } else if (fileType == "LineString") {
+        } else if (layerType == "LineString") {
             layerName = fileName + "-line";
-            updateLayerList(layerName);
+            updateLayerList({
+                name: layerName,
+                type: "Spatial",
+                geometry: "LineString",
+                blob: file,
+                visible: true,
+                container: fileViewPort,
+            });
             map.addLayer({
                 id: layerName,
                 type: "line",
@@ -93,9 +174,16 @@
                     "line-width": 2,
                 },
             });
-        } else if (fileType == "Polygon" || fileType == "MultiPolygon") {
+        } else if (layerType == "Polygon" || layerType == "MultiPolygon") {
             layerName = fileName + "-fill";
-            updateLayerList(layerName);
+            updateLayerList({
+                name: layerName,
+                type: "Spatial",
+                geometry: "Polygon",
+                blob: file,
+                visible: true,
+                container: fileViewPort,
+            });
             map.addLayer({
                 id: layerName,
                 type: "fill",
@@ -167,9 +255,13 @@
     });
 </script>
 
+<section id="fileViewPort" bind:this={fileViewPort} />
+
 <dialog id="intro-file-drop" class="" bind:this={dialog}>
     <h1>Eli5'ing research sharing</h1>
-    <h3>Please upload a base geojson dataset to begin exploring.</h3>
+    <h3>
+        Upload a PDF or a geojson file. You can even enter a link as a source
+    </h3>
     <Dropzone
         on:drop={(e) => {
             handleFilesSelect(e, baseDB);
@@ -185,6 +277,22 @@
             Drag and drop or click to open a GeoJSON file.
         {/if}
     </Dropzone>
+    <section id="link-upload">
+        <input
+            class="rounded-md text-white p-1 bg-slate-700"
+            placeholder="Paste a link to access"
+            bind:value={link}
+        />
+
+        <button
+            class="rounded-md"
+            on:click={() => {
+                loadLinkData();
+                dialog.close();
+            }}>Load from link</button
+        >
+    </section>
+
     <button class="rounded-md" on:click={() => dialog.close()}>Close</button>
     <button
         class="rounded-md"
@@ -196,6 +304,22 @@
 </dialog>
 
 <style>
+    #link-upload {
+        display: flex;
+        width: 100%;
+        margin: 1em 0em;
+    }
+    #link-upload input {
+        min-width: 80%;
+    }
+    #fileViewPort {
+        position: absolute;
+        top: 3em;
+        left: 25em;
+        z-index: 5;
+        width: 30em !important;
+        height: 40em !important;
+    }
     :global(#intro-file-drop) {
         border: 2px dashed #007cbf;
         background-color: antiquewhite;

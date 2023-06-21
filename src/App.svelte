@@ -129,7 +129,6 @@
   }
   
   #right-bar {
-    float: right;
     max-width: 80% !important;
     border-radius: 2px !important;
   }

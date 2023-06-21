@@ -21,7 +21,7 @@
   import Dropzone from "svelte-file-dropzone/Dropzone.svelte";
 
   export let height;
-  
+
   let nodes = [];
   let lastValue;
 
@@ -66,16 +66,17 @@
     files.accepted = [...files.accepted, ...acceptedFiles];
     files.rejected = [...files.rejected, ...fileRejections];
   }
+
 </script>
 
-<div id="events-in-focus">
+<section id="research-map">
   {#if nodes.length < 1}
     <p>No events selected. Please open an event and click, "Add to list"</p>
   {:else}
-    <Svelvet id={"mindmap-canvas"} {height} editable={true}>
+    <Svelvet id={"mindmap-canvas"} fitView={'resize'} controls minimap zoom={0.6}>
       <Background bgColor="#faebd7" slot="background" />
       {#each nodes as node}
-        <Node {...node} editable={true} useDefaults={true}>
+        <Node  {...node} useDefaults   >
           <div class="node">
             <section class="node-contents container mx-3 my-3">
               <p>Source: {node.source}</p>
@@ -137,8 +138,8 @@
               </button>
             </section>
 
-            <Anchor direction="west" dynamic />
-            <Anchor direction="east" dynamic />
+            <Anchor direction="west" multiple/>
+            <Anchor direction="east" multiple />
           </div>
         </Node>
       {/each}
@@ -176,9 +177,13 @@
       </button>
     </section>
   {/if}
-</div>
+  </section>
 
 <style>
+  :global(#research-map) {
+height: 80%;
+width: 100vw;
+  }
   textarea,
   :global(select) {
     background-color: #475569;

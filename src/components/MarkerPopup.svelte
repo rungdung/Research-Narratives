@@ -1,63 +1,80 @@
 <script>
-  export let title;
-  export let date;
-  export let link;
-  export let excerpt;
-  export let feature;
-
+  import { DataHandler, Datatable, Th, ThFilter } from "@vincjo/datatables"; //https://vincjo.fr/datatables/
   import { selectedFeatures } from "../stores.js";
-  async function addToList() {
-    const newFeature = {
-      title: title,
-      date: date,
-      link: link,
-      excerpt: excerpt,
-      feature: feature,
+
+  export let feature; //import from UploadData.svelte
+
+  // map the data to key value pairs for the table
+  let data = Object.entries(feature.properties).map(([key, value]) => {
+    return {
+      key: key,
+      value: value,
     };
+  });
 
+  // create a new data handler for the table
+  const handler = new DataHandler(data, { rowsPerPage: 5 });
+  const rows = handler.getRows();
+
+  async function addToList() {
+    // add to selected features store
     selectedFeatures.update((features) => {
-      features.push(newFeature);
-
-      console.log("pushing to selected features");
-      console.log(features);
+      // Convert all the keys to lower case before passing to MarkerPopup.svelte
+      let props = Object.fromEntries(
+        Object.entries(feature.properties).map(([key, val]) => [
+          key.toLowerCase(),
+          val,
+        ])
+      );
+      props["feature"] = feature;
+      features.push(props);
       return features;
     });
   }
 </script>
 
-<div class="popup">
-  <h3>{@html title}</h3>
-  <p>{date}</p>
-  <a href={link}>Link to article</a>
-  <p>{@html excerpt}</p>
-  <br />
-  <button class="bg-slate-700" id="addToList" on:click={() => addToList()}>
-    Add to list
-  </button>
-</div>
+<article class="popup">
+  <Datatable {handler}>
+    <table>
+      <thead>
+        <Th {handler} orderBy="key">Key</Th>
+        <Th {handler} orderBy="value">Value</Th>
+      </thead>
+      <tbody>
+        {#each $rows as row}
+          <tr>
+            <td>{@html row.key}</td>
+            <td>{@html row.value}</td>
+          </tr>
+        {/each}
+      </tbody>
+    </table>
+  </Datatable>
 
-<style>
+  <button class="bg-slate-700" id="addToList" on:click={() => addToList()}>
+    Add to research map
+  </button>
+</article>
+
+<style global>
   .popup {
-    padding: 10px;
+    padding: 2em;
     border-radius: 5px;
-    background-color: #fff;
+    background-color: rgb(247, 240, 230);
     width: 300px;
     color: black;
+    max-height: 40vh;
+    overflow: scroll;
     text-align: left;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
   }
 
+  :global(.maplibregl-popup-tip) {
+    border-top-color: rgb(172, 142, 104) !important;
+  }
   .popup h3 {
     margin: 0;
     font-size: 1.2rem;
-  }
-
-  .popup p {
-    margin: 0;
-    font-size: 0.8rem;
-  }
-
-  .popup a {
-    font-size: 0.8rem;
   }
 
   .popup button {

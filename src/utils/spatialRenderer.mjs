@@ -27,6 +27,7 @@ export async function loadSpatialData(file, fileName) {
         layerName = fileName + "-point";
         uploadedSources.update((sources) => {
             sources.push({
+        fileName: fileName,
                 name: layerName,
                 type: "Spatial",
                 geometry: "Point",
@@ -51,6 +52,7 @@ export async function loadSpatialData(file, fileName) {
         layerName = fileName + "-line";
         uploadedSources.update((sources) => {
             sources.push({
+        fileName: fileName,
                 name: layerName,
                 type: "Spatial",
                 geometry: "LineString",
@@ -74,6 +76,7 @@ export async function loadSpatialData(file, fileName) {
         layerName = fileName + "-fill";
         uploadedSources.update((sources) => {
             sources.push({
+        fileName: fileName,
                 name: layerName,
                 type: "Spatial",
                 geometry: "Polygon",

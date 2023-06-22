@@ -10,3 +10,4 @@ selectedFeatures.subscribe(value => {
 });
 
 export const uploadedSources = writable([]);
+export const narrativeNodes = writable([]);

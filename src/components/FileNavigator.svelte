@@ -1,10 +1,7 @@
 <script>
-    import { dialog } from "./FileRenderer.svelte";
-    import Dropzone from "svelte-file-dropzone/Dropzone.svelte";
+    import { dialog } from "./FileUploadModal.svelte";
     import { map } from "./Map.svelte";
-
-    import { uploadedLayers } from "../stores";
-
+    import { uploadedSources } from "../stores";
     import PDFobject from "pdfobject";
 
     let fileToParse = {
@@ -21,12 +18,12 @@
     async function toggleLayer(layer) {
         if (layer["visible"]) {
             if (layer['type'] == "Spatial") {
-                console.log(layer["name"])
                 map.setLayoutProperty(layer["name"], "visibility", "visible");
             } else if (layer['type'] == "PDF") {
-                console.log('adding')
+                layer.container.style.display = "block";
                 await PDFobject.embed(layer.blob, layer.container);
             } else if (layer['type'] == "Link") {
+                layer.container.style.display = "block";
                 layer.container.innerHTML = `<iframe src="${layer.blob}" width="100%" height="100%"></iframe>`;
             }
         } else {
@@ -36,9 +33,8 @@
             } else if (layer['type'] == "PDF" || layer['type'] == "Link") {
                 // destroy the iframe
                 layer.container.innerHTML = "" ;
-                // set click events to null
-                layer.container.onclick = null;
-                console.log(layer.container.innerHTML)
+                // set display css property to none
+                layer.container.style.display = "none";
             }
             
         }
@@ -47,9 +43,9 @@
 
 <section id="layerControl">
     <section id="layerList">
-        {#if $uploadedLayers.length > 0}
+        {#if $uploadedSources.length > 0}
             <ul>
-                {#each $uploadedLayers as layer}
+                {#each $uploadedSources as layer}
                     <li>
                         <label>
                             <input

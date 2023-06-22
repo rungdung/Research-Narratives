@@ -2,9 +2,9 @@
   import Map from "./components/Map.svelte";
   import SelectedFeatures from "./components/ResearchMap.svelte";
   import Search from "./components/Search.svelte";
-  import UploadData from "./components/FileRenderer.svelte";
+  import UploadData from "./components/FileUploadModal.svelte";
   import Filter from "./components/Filter.svelte";
-  import ParseFile from "./components/FileHandler.svelte";
+  import ParseFile from "./components/FileNavigator.svelte";
 
   import SearchSemanticScholar from "./components/SearchSemanticScholar.svelte";
   import Split from "split.js/dist/split.es.js";

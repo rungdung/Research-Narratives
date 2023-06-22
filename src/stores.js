@@ -9,4 +9,4 @@ selectedFeatures.subscribe(value => {
     localStorage.setItem("storedFeatures", JSON.stringify(value))
 });
 
-export const uploadedLayers = writable([]);
+export const uploadedSources = writable([]);

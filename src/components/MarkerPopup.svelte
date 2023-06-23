@@ -26,6 +26,9 @@
           val,
         ])
       );
+      //assign unique sequential id
+      props["id"] = features.length + 1;
+
       props["feature"] = feature;
       features.push(props);
       return features;

@@ -9,9 +9,29 @@
     files.accepted = [...files.accepted, ...acceptedFiles];
     files.rejected = [...files.rejected, ...fileRejections];
   }
+
+  function addNewBelow() {
+    // add a new narrative node
+    previousNode = $narrativeNodes[$narrativeNodes.length - 1];
+    $narrativeNodes.push({
+      id: previousNode.id.split("-")[0] + "-" + ($narrativeNodes.length + 1),
+      label: "Narrative",
+      notes: "Enter narrative text",
+      position: {
+        x: previousNode.position.x,
+        y: previousNode.position.y + 300,
+      },
+      files: {
+        accepted: [],
+        rejected: [],
+      },
+      connections: [previousNode.id],
+    });
+    $narrativeNodes = $narrativeNodes;
+  }
 </script>
 
-<Node id={node.id} {...node} useDefaults>
+<Node id={node.id} {...node}>
   <div class="node" let:grabHandle>
     <div class="node-wrapper">
       <textarea
@@ -40,28 +60,13 @@
       <button
         class="rounded-md text-2xl mx-auto"
         on:click={() => {
-          // add a new narrative node
-          previousNode = $narrativeNodes[$narrativeNodes.length - 1];
-          $narrativeNodes.push({
-            id: "NarrativeNode-" + ($narrativeNodes.length + 1),
-            label: "Narrative",
-            notes: "Enter narrative text",
-            position: {
-              x: previousNode.position.x,
-              y: previousNode.position.y + 300,
-            },
-            files: {
-              accepted: [],
-              rejected: [],
-            },
-          });
-          $narrativeNodes = $narrativeNodes;
+          addNewBelow();
         }}
       >
         +
       </button>
     </span>
-    <Anchor direction="west" />
+    <Anchor multiple={false} direction="east" />
   </div>
 </Node>
 
@@ -117,12 +122,5 @@
     background-color: #ebcfab;
     border-radius: 8px;
     border: 3px solid black;
-  }
-  .selected {
-    border: 2px solid white;
-  }
-  ul {
-    list-style-type: none;
-    padding: 1em;
   }
 </style>

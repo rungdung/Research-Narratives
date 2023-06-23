@@ -1,7 +1,7 @@
 <script>
   import { Node, Anchor } from "svelvet";
   import Dropzone from "svelte-file-dropzone/Dropzone.svelte";
-
+  import CustomAnchor from "./customAnchor.svelte";
   export let node;
 </script>
 
@@ -15,11 +15,23 @@
       {/if}
       <li>Source: {node.source}</li>
     </div>
-    <Anchor direction="west" />
   </div>
+  <span class="anchor">
+    <Anchor let:linked let:connecting let:hovering>
+      <CustomAnchor {hovering} {connecting} {linked} />
+    </Anchor>
+  </span>
 </Node>
 
 <style>
+  .anchor {
+    position: absolute;
+    right: -24px;
+    top: 45%;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+  }
   .node {
     width: 100%;
     height: 100%;

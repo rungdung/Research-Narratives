@@ -11,6 +11,8 @@
     zoomToFeature,
   } from "../../utils/mapMovements.mjs";
 
+  import CustomAnchor from "./customAnchor.svelte";
+  import AnimatedEdge from "./customAnimatedEdge.svelte";
   let categories = [
     { text: "Category 1", value: "1" },
     { text: "Category 2", value: "2" },
@@ -85,13 +87,44 @@
         Open Source document / event
       </button>
     </section>
-    <Anchor multiple={false} direction="east" connections={[node.source]} />
-    <Anchor direction="west" multiple />
-    <Anchor direction="east" multiple />
+    <span class="anchor-top">
+      <Anchor
+        edge={AnimatedEdge}
+        let:linked
+        let:connecting
+        let:hovering
+        multiple={false}
+        connections={[node.source]}
+      >
+        <CustomAnchor {hovering} {connecting} {linked} />
+      </Anchor>
+    </span>
+    <span class="anchor">
+      <Anchor let:linked let:connecting let:hovering>
+        <CustomAnchor {hovering} {connecting} {linked} />
+      </Anchor>
+    </span>
   </div>
 </Node>
 
 <style>
+  .anchor,
+  .anchor-top {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .anchor {
+    bottom: -10%;
+    left: 50%;
+  }
+
+  .anchor-top {
+    top: -10%;
+    left: 50%;
+  }
   textarea,
   :global(select) {
     background-color: #475569;

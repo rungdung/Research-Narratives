@@ -2,8 +2,10 @@
   import { Node, Anchor } from "svelvet";
   import Dropzone from "svelte-file-dropzone/Dropzone.svelte";
   import { narrativeNodes } from "../../stores";
+  import CustomAnchor from "./customAnchor.svelte";
+
   export let node;
-  let previousNode;
+  let previousNode, addNewButton;
   function handleFilesSelect(e, files) {
     const { acceptedFiles, fileRejections } = e.detail;
     files.accepted = [...files.accepted, ...acceptedFiles];
@@ -12,6 +14,7 @@
 
   function addNewBelow() {
     // add a new narrative node
+    addNewButton.style.display = "none";
     previousNode = $narrativeNodes[$narrativeNodes.length - 1];
     $narrativeNodes.push({
       id: previousNode.id.split("-")[0] + "-" + ($narrativeNodes.length + 1),
@@ -34,6 +37,11 @@
 <Node id={node.id} {...node}>
   <div class="node" let:grabHandle>
     <div class="node-wrapper">
+      <span class="anchor-top">
+        <Anchor let:linked let:connecting let:hovering multiple={false}>
+          <CustomAnchor {hovering} {connecting} {linked} />
+        </Anchor>
+      </span>
       <textarea
         class="text-white title bg-slate my-1 py-1 w-100"
         value={node.label}
@@ -59,6 +67,7 @@
     <span class="add-node-below">
       <button
         class="rounded-md text-2xl mx-auto"
+        bind:this={addNewButton}
         on:click={() => {
           addNewBelow();
         }}
@@ -66,11 +75,32 @@
         +
       </button>
     </span>
-    <Anchor multiple={false} direction="east" />
+    <span class="anchor">
+      <Anchor let:linked let:connecting let:hovering multiple={false}>
+        <CustomAnchor {hovering} {connecting} {linked} />
+      </Anchor>
+    </span>
   </div>
 </Node>
 
 <style>
+  .anchor,
+  .anchor-top {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .anchor {
+    bottom: -10%;
+    left: 50%;
+  }
+
+  .anchor-top {
+    top: -10%;
+    left: 50%;
+  }
   .add-node-below {
     margin: auto;
   }

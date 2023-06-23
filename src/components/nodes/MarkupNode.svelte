@@ -24,7 +24,7 @@
   }
 </script>
 
-<Node {...node} useDefaults>
+<Node {...node} id={node.id}>
   <div class="node" let:grabHandle>
     <section class="node-wrapper container mx-3 my-3">
       <p>Source: {node.source}</p>
@@ -140,12 +140,5 @@
     background-color: #ebcfab;
     border-radius: 8px;
     border: 3px solid black;
-  }
-  .selected {
-    border: 2px solid white;
-  }
-  ul {
-    list-style-type: none;
-    padding: 1em;
   }
 </style>

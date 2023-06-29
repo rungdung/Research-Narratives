@@ -2,21 +2,48 @@
   import Map from "./components/Map.svelte";
   import ResearchMap from "./components/ResearchMap.svelte";
   import Search from "./components/Search.svelte";
-  import UploadData from "./components/FileUploadModal.svelte";
+  import FileUploadModal from "./components/FileUploadModal.svelte";
   import Filter from "./components/Filter.svelte";
   import ParseFile from "./components/FileNavigator.svelte";
-
+  import { loadDataFromDB } from "./utils/loadFromDB.mjs";
+  import { uploadedSources, markupNodes, narrativeNodes } from "./stores";
   import SearchSemanticScholar from "./components/SearchSemanticScholar.svelte";
-  import Split from "split.js/dist/split.es.js";
-  import { map } from "./components/Map.svelte";
-  import maplibre from "maplibre-gl";
 
   import { CollapsibleCard } from "svelte-collapsible";
 
   import { onMount } from "svelte";
+  import {
+    Drawer,
+    Button,
+    CloseButton,
+    Label,
+    Input,
+    Textarea,
+  } from "flowbite-svelte";
+  import { sineIn } from "svelte/easing";
 
-  let innerWidth;
-  let innerHeight;
+  let hidden4 = true;
+  let transitionParams = {
+    x: -320,
+    duration: 700,
+    easing: sineIn,
+  };
+
+  export let supabase;
+
+  let researchMapWidth;
+  let researchMapHeight;
+
+  //set stores
+  let returnFromDB = loadDataFromDB(supabase);
+
+  onMount(() => {
+    returnFromDB.then((data) => {
+      uploadedSources.set(data.sourceNodes);
+      markupNodes.set(data.markupNodes);
+      narrativeNodes.set(data.narrativeNodes);
+    });
+  });
 </script>
 
 <main>
@@ -62,8 +89,28 @@
     </div>
   </div>
 
-  <div id="right-bar" class="p-5">
-    <section id="markup" class="font-semibold">
+  <span id="right-bar-trigger" class="text-center">
+    <Button class="bg-slate-800 z-10 " on:click={() => (hidden4 = false)}
+      >Open research map</Button
+    >
+  </span>
+  <Drawer
+    transitionType="fly"
+    {transitionParams}
+    bind:hidden={hidden4}
+    id="right-bar"
+    width={"w-5/6"}
+    placement="right"
+    bind:clientWidth={researchMapHeight}
+    bind:clientHeight={researchMapHeight}
+    divClass="bg-slate-700 z-50"
+    position="absolute"
+  >
+    <section id="markup" class="">
+      <CloseButton
+        on:click={() => (hidden4 = true)}
+        class="absolute right-10 mb-4 bg-slate-700 dark:text-white"
+      />
       <h2 class="">Research map</h2>
       <h2 class="">
         Imagine this to be a mindmap. Draw connections between documents as you
@@ -71,12 +118,16 @@
       </h2>
     </section>
 
-    <ResearchMap />
-  </div>
-  <UploadData />
+    <ResearchMap
+      {supabase}
+      height={researchMapHeight}
+      width={researchMapWidth}
+    />
+  </Drawer>
+  <FileUploadModal {supabase} />
 </main>
 
-<svelte:window bind:innerWidth bind:innerHeight />
+<svelte:window />
 <svelte:head>
   <title>Research narrative building</title>
 </svelte:head>
@@ -84,7 +135,7 @@
 <style>
   #markup {
     margin-bottom: 2em;
-    padding: 1em;
+    padding: 0em;
     font-size: larger;
   }
   main {
@@ -92,7 +143,7 @@
     grid-template-columns: 2fr 1fr;
   }
   #mapContainer {
-    width: 50vw;
+    width: 100vw;
     height: 100vh;
   }
   #left-bar {
@@ -123,10 +174,18 @@
     color: black !important;
   }
 
-  #right-bar {
-    max-width: 50% !important;
-    padding: 0em !important;
+  #right-bar-trigger {
+    position: absolute;
+    top: 2%;
+    right: 2%;
     z-index: 2;
+  }
+  :global(#right-bar) {
+    min-width: 50% !important;
+    max-width: 80% !important;
+
+    margin: 2em;
+    padding: 0em;
     text-align: left;
     color: black;
     background-color: antiquewhite;

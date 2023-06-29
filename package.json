@@ -16,6 +16,7 @@
   "dependencies": {
     "@supabase/supabase-js": "^2.26.0",
     "@turf/turf": "^6.5.0",
+    "flowbite-svelte": "^0.38.5",
     "maplibre-gl": "^3.0.1",
     "pdfobject": "^2.2.12",
     "split.js": "^1.6.5",

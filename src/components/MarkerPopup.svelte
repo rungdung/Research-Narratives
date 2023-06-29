@@ -1,6 +1,6 @@
 <script>
   import { DataHandler, Datatable, Th, ThFilter } from "@vincjo/datatables"; //https://vincjo.fr/datatables/
-  import { selectedFeatures } from "../stores.js";
+  import { markupNodes } from "../stores.js";
 
   export let feature; //import from UploadData.svelte
 
@@ -12,13 +12,13 @@
     };
   });
 
-  // create a new data handler for the table
+  // Create a new data handler for the table
   const handler = new DataHandler(data, { rowsPerPage: 5 });
   const rows = handler.getRows();
 
   async function addToList() {
-    // add to selected features store
-    selectedFeatures.update((features) => {
+    // Add to selected features store
+    markupNodes.update((features) => {
       // Convert all the keys to lower case before passing to MarkerPopup.svelte
       let props = Object.fromEntries(
         Object.entries(feature.properties).map(([key, val]) => [
@@ -26,13 +26,27 @@
           val,
         ])
       );
-      //assign unique sequential id
-      props["id"] = features.length + 1;
 
+      // Assign unique sequential id
+      props["id"] = features.length + 1;
+      props["label"] =
+        props["title"] ||
+        props["name"] ||
+        props["id"] ||
+        "No title field available";
       props["feature"] = feature;
+      props["notes"] = "";
+      props["source"] = feature.layer.source;
+      props["files"] = {
+        accepted: [],
+        rejected: [],
+      };
+
       features.push(props);
       return features;
     });
+
+    $markupNodes = $markupNodes;
   }
 </script>
 

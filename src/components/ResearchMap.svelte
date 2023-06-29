@@ -12,7 +12,11 @@
   import DataSourceNode from "./nodes/DataSourceNode.svelte";
   import NarrativeNode from "./nodes/NarrativeNode.svelte";
 
+  import ShareModal from "./ShareModal.svelte";
+
   export let nodes = [];
+  export let supabase;
+
   let lastValue;
 
   // read from subscribed store
@@ -94,23 +98,11 @@
     >
       Clear all events
     </button>
-
-    <button
-      on:click={() => {
-        console.log("Testing rendering");
-      }}
-      class="bg-slate-800"
-    >
-      Render data as a story
-    </button>
-
-    <button
-      on:click={() => {
-        console.log("Testing rendering");
-      }}
-      class="bg-slate-800"
-    >
-      Share research map
-    </button>
+    <ShareModal
+      {supabase}
+      markupNodes={nodes}
+      sourceNodes={$uploadedSources}
+      narrativeNodes={$narrativeNodes}
+    />
   </section>
 </section>

@@ -44,26 +44,32 @@
       </span>
       <textarea
         class="text-white title bg-slate my-1 py-1 w-100"
-        value={node.label}
+        bind:value={node.label}
         placeholder="Enter title markup"
       />
       <textarea
         class="text-white body my-1 py-1"
-        value={node.notes}
+        bind:value={node.notes}
         placeholder="Enter body text"
       />
-      <Dropzone
-        on:drop={(e) => {
-          handleFilesSelect(e, node.files);
-          node = node;
-        }}
-        accept="image/*"
-        containerClasses="dropzoneChart"
-      />
-      {#each node.files.accepted as item}
-        <img src={URL.createObjectURL(item)} alt="preview" />
-      {/each}
     </div>
+    <section id="inputs">
+      <span class="">
+        <Anchor let:linked let:connecting let:hovering multiple={false} input>
+          <CustomAnchor {hovering} {connecting} {linked}>Images</CustomAnchor>
+        </Anchor>
+      </span>
+      <span class="">
+        <Anchor let:linked let:connecting let:hovering multiple={false} input>
+          <CustomAnchor {hovering} {connecting} {linked} />
+        </Anchor>
+      </span>
+      <span class="">
+        <Anchor let:linked let:connecting let:hovering multiple={false} input>
+          <CustomAnchor {hovering} {connecting} {linked} />
+        </Anchor>
+      </span>
+    </section>
     <span class="add-node-below">
       <button
         class="rounded-md text-2xl mx-auto"

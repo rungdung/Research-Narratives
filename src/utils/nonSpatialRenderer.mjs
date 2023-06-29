@@ -4,15 +4,17 @@ import { loadSpatialData } from "./spatialRenderer.mjs";
 
 export async function loadPDFData(file, fileName, fileViewPort) {
   try {
-    fileViewPort.style.display = "block";
-    await PDFobject.embed(file, fileViewPort);
+    // Open in new popup tab
+    //window.open(file.blob, "_blank");
+    // fileViewPort.style.display = "block";
+    // await PDFobject.embed(file, fileViewPort);
     uploadedSources.update((sources) => {
       sources.push({
         name: fileName,
         type: "PDF",
         geometry: "NA",
         blob: file,
-        visible: true,
+        visible: false,
         container: fileViewPort,
       });
       return sources;
@@ -34,16 +36,18 @@ export async function loadLinkData(link, fileViewPort) {
       loadPDFData(file, fileName);
     }
   } else {
-    fileViewPort.style.display = "block";
-    // insert as iframe if not supported;
-    fileViewPort.innerHTML = `<iframe src="${file}" width="100%" height="100%"></iframe>`;
+    // Open in new popup tab
+    //window.open(file.blob, "_blank");
+    // fileViewPort.style.display = "block";
+    // // insert as iframe if not supported;
+    // fileViewPort.innerHTML = `<iframe src="${file}" width="100%" height="100%"></iframe>`;
     uploadedSources.update((sources) => {
       sources.push({
         name: fileName,
         type: "Link",
         geometry: "NA",
         blob: file,
-        visible: true,
+        visible: false,
         container: fileViewPort,
       });
       return sources;

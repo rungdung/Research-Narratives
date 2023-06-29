@@ -16,8 +16,8 @@
   onMount(() => {
     map = new maplibre.Map({
       container: mapContainer,
-      style: "https://basemaps.cartocdn.com/gl/positron-gl-style/style.json",
-      center: [78.398438,21.616579],
+      style: "https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json",
+      center: [78.398438, 21.616579],
       pitch: 0, // pitch in degrees
       bearing: 0, // bearing in degrees
       zoom: 1,
@@ -29,9 +29,7 @@
       })
     );
     map.resize();
-
   });
-
 </script>
 
 <div id="map" bind:this={mapContainer} />
@@ -42,5 +40,4 @@
     padding: 0 !important;
     margin: 0 !important;
   }
-
 </style>

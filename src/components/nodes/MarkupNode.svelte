@@ -2,7 +2,7 @@
   import { Node, Anchor } from "svelvet";
   import Dropzone from "svelte-file-dropzone/Dropzone.svelte";
 
-  export let node;
+  export let markupNode;
 
   import { map } from "../Map.svelte";
 
@@ -10,6 +10,8 @@
     highlightAllFeatures,
     zoomToFeature,
   } from "../../utils/mapMovements.mjs";
+
+  let node;
 
   import CustomAnchor from "./customAnchor.svelte";
   import AnimatedEdge from "./customAnimatedEdge.svelte";
@@ -26,37 +28,37 @@
   }
 </script>
 
-<Node {...node} id={node.id}>
-  <div class="node" let:grabHandle>
+<Node {...markupNode} id={markupNode.id} let:node let:grabHandle>
+  <div class="node" use:grabHandle>
     <section class="node-wrapper container mx-3 my-3">
-      <p>Source: {node.source}</p>
+      <p>Source: {markupNode.source}</p>
       <textarea
         class="text-white title bg-slate my-1 py-1 w-100"
-        value={node.label}
-        placeholder={node.label}
+        value={markupNode.label}
+        placeholder={markupNode.label}
       />
       <textarea
         class="text-white body my-1 py-1"
-        value={node.notes}
+        value={markupNode.notes}
         placeholder="Enter notes"
       />
 
       <Dropzone
         on:drop={(e) => {
-          handleFilesSelect(e, node.files);
-          node = node;
+          handleFilesSelect(e, markupNode.files);
+          markupNode = markupNode;
         }}
         accept="image/*"
         containerClasses="dropzoneChart"
       />
 
-      {#each node.files.accepted as item}
+      {#each markupNode.files.accepted as item}
         <img src={URL.createObjectURL(item)} alt="preview" />
       {/each}
 
       <select
         class="text-white my-1 py-1"
-        value={node.category}
+        value={markupNode.category}
         placeholder="Geospatial morphing"
       >
         {#each categories as category}
@@ -68,7 +70,7 @@
 
       <select
         class="text-white my-1 py-1"
-        value={node.category}
+        value={markupNode.category}
         placeholder="Select a category"
       >
         {#each categories as category}
@@ -80,7 +82,7 @@
 
       <button
         on:click={() => {
-          zoomToFeature(node.feature, map);
+          zoomToFeature(markupNode.feature, map);
         }}
         class="bg-slate-800"
       >
@@ -94,7 +96,7 @@
         let:connecting
         let:hovering
         multiple={false}
-        connections={[node.source]}
+        connections={[markupNode.source]}
       >
         <CustomAnchor {hovering} {connecting} {linked} />
       </Anchor>

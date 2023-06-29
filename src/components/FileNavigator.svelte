@@ -9,21 +9,25 @@
       if (layer["type"] == "Spatial") {
         map.setLayoutProperty(layer["name"], "visibility", "visible");
       } else if (layer["type"] == "PDF") {
-        layer.container.style.display = "block";
-        await PDFobject.embed(layer.blob, layer.container);
+        // Open in new popup tab
+        window.open(layer.blob, "_blank");
+        // layer.container.style.display = "block";
+        // await PDFobject.embed(layer.blob, layer.container);
       } else if (layer["type"] == "Link") {
-        layer.container.style.display = "block";
-        layer.container.innerHTML = `<iframe src="${layer.blob}" width="100%" height="100%"></iframe>`;
+        // Open in new popup tab
+        window.open(layer.blob, "_blank");
+        // layer.container.style.display = "block";
+        // layer.container.innerHTML = `<iframe src="${layer.blob}" width="100%" height="100%"></iframe>`;
       }
     } else {
       console.log(layer["type"]);
       if (layer["type"] == "Spatial") {
         map.setLayoutProperty(layer["name"], "visibility", "none");
       } else if (layer["type"] == "PDF" || layer["type"] == "Link") {
-        // destroy the iframe
-        layer.container.innerHTML = "";
-        // set display css property to none
-        layer.container.style.display = "none";
+        // // destroy the iframe
+        // layer.container.innerHTML = "";
+        // // set display css property to none
+        // layer.container.style.display = "none";
       }
     }
   }

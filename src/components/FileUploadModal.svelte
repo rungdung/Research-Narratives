@@ -13,6 +13,7 @@
   import { loadSpatialData } from "../utils/spatialRenderer.mjs";
   import { loadPDFData, loadLinkData } from "../utils/nonSpatialRenderer.mjs";
 
+  export let supabase;
   // file upload array
   let baseDB = {
       accepted: [],
@@ -33,23 +34,45 @@
 
   async function loadData() {
     let currentIndex = baseDB.accepted.length - 1;
-    let file = URL.createObjectURL(baseDB.accepted[currentIndex]);
+    let file = baseDB.accepted[currentIndex];
+    let fileLocalUrl = URL.createObjectURL(file);
 
-    // use filename as source name for Maplibre
-    // and push to store
-    fileName = baseDB.accepted[currentIndex].name.split(".")[0];
-    fileType = baseDB.accepted[currentIndex].name.split(".")[1];
+    try {
+      const fileName = file.name.split(".")[0];
+      const fileType = file.name.split(".")[1];
 
-    // Get file type
-    // to style map layers
-    // and attach event listeners
-    if (fileType.toLowerCase() == "geojson") {
-      loadSpatialData(file, fileName);
-    } else if (fileType.toLowerCase() == "csv") {
-    } else if (fileType.toLowerCase() == "pdf") {
-      loadPDFData(file, fileName, fileViewPort);
-    } else {
-      alert("File type not supported");
+      // Handle different file types
+      if (fileType.toLowerCase() === "geojson") {
+        loadSpatialData(fileLocalUrl, fileName);
+      } else if (fileType.toLowerCase() === "csv") {
+        // Handle CSV file type
+        // Perform actions specific to CSV files
+        console.log("CSV file detected:", fileName);
+      } else if (fileType.toLowerCase() === "pdf") {
+        loadPDFData(fileLocalUrl, fileName, fileViewPort);
+      } else {
+        alert("File type not supported");
+      }
+    } catch (error) {
+      console.error("Error uploading file:", error.message);
+    }
+
+    // Upload file to Supabase storage
+    try {
+      const { data, error } = await supabase.storage
+        .from("researchNarratives")
+        .upload("public/" + file.name, file);
+
+      const fileUrl = supabase.storage
+        .from("researchNarratives")
+        .getPublicUrl("public/" + file.name);
+      console.log(fileUrl.data.publicUrl);
+      if (error.message != "The resource already exists") {
+        console.error("Error uploading file:", error.message);
+        return;
+      }
+    } catch (error) {
+      console.error("Error uploading file:", error.message);
     }
   }
 

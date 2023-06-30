@@ -11,10 +11,12 @@
     zoomToFeature,
   } from "../../utils/mapMovements.mjs";
 
-  let node;
+  import { onDestroy } from "svelte";
+  import { markupNodes } from "../../stores";
 
   import CustomAnchor from "./customAnchor.svelte";
   import AnimatedEdge from "./customAnimatedEdge.svelte";
+
   let categories = [
     { text: "Category 1", value: "1" },
     { text: "Category 2", value: "2" },
@@ -26,9 +28,25 @@
     files.accepted = [...files.accepted, ...acceptedFiles];
     files.rejected = [...files.rejected, ...fileRejections];
   }
+
+  let position;
+  function updatePosition() {
+    console.log("running");
+    markupNodes.update((nodes) => {
+      let index = nodes.findIndex((node) => node.id == markupNode.id);
+      nodes[index].position = position;
+      return nodes;
+    });
+  }
 </script>
 
-<Node {...markupNode} id={markupNode.id} let:node let:grabHandle>
+<Node
+  {...markupNode}
+  id={markupNode.id}
+  let:grabHandle
+  bind:position
+  on:nodeClicked={updatePosition}
+>
   <div class="node" use:grabHandle>
     <section class="node-wrapper container mx-3 my-3">
       <p>Source: {markupNode.source}</p>

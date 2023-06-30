@@ -155,7 +155,7 @@
     height: 100%;
     min-width: 3em;
     max-width: 25em;
-    background-color: #ebcfab;
+    background-color: #0c706f;
     border-radius: 8px;
     border: 3px solid black;
   }

@@ -12,36 +12,47 @@
 
   export let supabase;
 
-  export let width, height;
-
-  // For narrative nodes
-  // start with blank
-  if ($narrativeNodes.length < 1) {
-    $narrativeNodes.push({
-      id: "narrativeNode-" + 1,
-      label: "Narrative",
-      notes: "Enter narrative text",
-      position: { x: 300, y: -100 },
-      files: {
-        accepted: [],
-        rejected: [],
-      },
-    });
-  }
+  let width, height;
 </script>
 
-<Svelvet edgeStyle="step" TD height={600} {width} zoom={0.6}>
-  <Background bgColor="#faebd7" slot="background" />
-  {#each $markupNodes as markupNode (markupNode.id)}
-    <MarkupNode {markupNode} />
-  {/each}
-  {#each $uploadedSources as source (source.name)}
-    <DataSourceNode node={source} />
-  {/each}
-  {#each $narrativeNodes as narrativeNode (narrativeNode.id)}
-    <NarrativeNode node={narrativeNode} />
-  {/each}
-</Svelvet>
+<section id="research-map" bind:clientHeight={height} bind:clientWidth={width}>
+  <Svelvet edgeStyle="step" TD {height} {width} zoom={0.6}>
+    <Background bgColor="#faebd7" slot="background" />
+    {#each $markupNodes as markupNode (markupNode.id)}
+      <MarkupNode {markupNode} />
+    {/each}
+    {#each $uploadedSources as source (source.name)}
+      <DataSourceNode sourceNode={source} />
+    {/each}
+    {#each $narrativeNodes as narrativeNode (narrativeNode.id)}
+      <NarrativeNode node={narrativeNode} />
+    {/each}
+  </Svelvet>
+
+  {#if $narrativeNodes.length < 1 && $uploadedSources.length >= 1 && $markupNodes.length >= 1}
+    <button
+      id="startNarrativeMaking"
+      on:click={() => {
+        // For narrative nodes
+        // start with blank
+        $narrativeNodes.push({
+          id: "narrativeNode-" + 1,
+          label: "Narrative",
+          notes: "Enter narrative text",
+          position: { x: 300, y: -100 },
+          files: {
+            accepted: [],
+            rejected: [],
+          },
+        });
+
+        $narrativeNodes = $narrativeNodes;
+      }}
+    >
+      Start making a narrative
+    </button>
+  {/if}
+</section>
 
 <section id="research-map-menu">
   <button class="bg-slate-800"> Highlight all events </button>
@@ -56,3 +67,19 @@
   </button>
   <ShareModal {supabase} />
 </section>
+
+<style>
+  #research-map {
+    height: 80%;
+    width: 100%;
+  }
+
+  #startNarrativeMaking {
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin: 1em;
+    background-color: rgb(41, 123, 123);
+    z-index: 100;
+  }
+</style>

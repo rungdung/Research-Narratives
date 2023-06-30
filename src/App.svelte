@@ -100,6 +100,7 @@
     bind:hidden={hidden4}
     id="right-bar"
   >
+    <CloseButton on:click={() => (hidden4 = true)} id="closeButton" />
     <section id="markup" class="">
       <h2 class="">Research map</h2>
       <h2 class="">
@@ -119,6 +120,12 @@
 </svelte:head>
 
 <style>
+  :global(#closeButton) {
+    position: absolute;
+    top: 2%;
+    right: 2%;
+    background-color: #475569;
+  }
   #markup {
     margin-bottom: 2em;
     padding: 0em;

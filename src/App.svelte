@@ -3,7 +3,6 @@
   import ResearchMap from "./components/ResearchMap.svelte";
   import Search from "./components/Search.svelte";
   import FileUploadModal from "./components/FileUploadModal.svelte";
-  import Filter from "./components/Filter.svelte";
   import ParseFile from "./components/FileNavigator.svelte";
   import { loadDataFromDB } from "./utils/loadFromDB.mjs";
   import { uploadedSources, markupNodes, narrativeNodes } from "./stores";
@@ -95,22 +94,13 @@
     >
   </span>
   <Drawer
+    placement="right"
     transitionType="fly"
     {transitionParams}
     bind:hidden={hidden4}
     id="right-bar"
-    width={"w-5/6"}
-    placement="right"
-    bind:clientWidth={researchMapHeight}
-    bind:clientHeight={researchMapHeight}
-    divClass="bg-slate-700 z-50"
-    position="absolute"
   >
     <section id="markup" class="">
-      <CloseButton
-        on:click={() => (hidden4 = true)}
-        class="absolute right-10 mb-4 bg-slate-700 dark:text-white"
-      />
       <h2 class="">Research map</h2>
       <h2 class="">
         Imagine this to be a mindmap. Draw connections between documents as you
@@ -118,11 +108,7 @@
       </h2>
     </section>
 
-    <ResearchMap
-      {supabase}
-      height={researchMapHeight}
-      width={researchMapWidth}
-    />
+    <ResearchMap {supabase} />
   </Drawer>
   <FileUploadModal {supabase} />
 </main>
@@ -181,13 +167,18 @@
     z-index: 2;
   }
   :global(#right-bar) {
+    position: absolute;
+    top: 3%;
+    right: 3%;
     min-width: 50% !important;
     max-width: 80% !important;
+    height: 90vh;
 
-    margin: 2em;
-    padding: 0em;
+    margin: 1em;
+    padding: 2em;
     text-align: left;
     color: black;
+    border-radius: 10px;
     background-color: antiquewhite;
   }
 </style>

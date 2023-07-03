@@ -4,11 +4,10 @@
 
   import Scrolly from "../Scrolly.svelte";
   // import Scatterplot from "./Scatterplot.svelte";
-  import { narrativeNodes } from "../../stores";
 
   // get from local storage and parse
-  let steps = localStorage.getItem("narrativeNodes");
-  steps = JSON.parse(steps);
+  let steps;
+  $: steps = JSON.parse(localStorage.getItem("narrativeNodes"));
   let value;
 </script>
 
@@ -19,14 +18,16 @@
   <div class="section-container">
     <div class="steps-container">
       <Scrolly bind:value>
-        {#each steps as text, i}
-          <div class="step" class:active={value === i}>
-            <div class="step-content">
-              <h2 class="text-3xl">{@html text.label}</h2>
-              <p>{@html text.notes}</p>
+        {#key steps}
+          {#each steps as text, i}
+            <div class="step" class:active={value === i}>
+              <div class="step-content">
+                <h2 class="text-3xl">{@html text.label}</h2>
+                <p>{@html text.notes}</p>
+              </div>
             </div>
-          </div>
-        {/each}
+          {/each}
+        {/key}
         <div class="spacer" />
       </Scrolly>
     </div>

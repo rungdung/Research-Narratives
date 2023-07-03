@@ -43,6 +43,9 @@
             accepted: [],
             rejected: [],
           },
+          mapFeature: null,
+          images: [],
+          charts: [],
         });
 
         $narrativeNodes = $narrativeNodes;
@@ -59,7 +62,6 @@
   <button
     on:click={() => {
       markupNodes.set([]);
-      uploadedSources.set([]);
       narrativeNodes.set([]);
     }}
     class="bg-slate-800"

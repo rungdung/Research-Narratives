@@ -1,6 +1,5 @@
 <script>
   import { markupNodes, uploadedSources, narrativeNodes } from "../stores.js";
-  import { onMount } from "svelte";
 
   import { Background, Svelvet, Node } from "svelvet";
 
@@ -37,9 +36,9 @@
         // start with blank
         $narrativeNodes.push({
           id: "narrativeNode-" + 1,
-          label: "Narrative",
-          notes: "Enter narrative text",
-          position: { x: 300, y: -100 },
+          label: "Provide a title for the data story",
+          notes: "Enter body text",
+          position: { x: 600, y: -100 },
           files: {
             accepted: [],
             rejected: [],
@@ -60,10 +59,12 @@
   <button
     on:click={() => {
       markupNodes.set([]);
+      uploadedSources.set([]);
+      narrativeNodes.set([]);
     }}
     class="bg-slate-800"
   >
-    Clear all events
+    Clear all data
   </button>
   <ShareModal {supabase} />
 </section>

@@ -14,7 +14,10 @@
   import { Drawer, Button, CloseButton } from "flowbite-svelte";
   import { sineIn } from "svelte/easing";
 
-  let hidden4 = true;
+  import { Route, Router } from "svelte-routing";
+  import Template from "./components/routes/Template.svelte";
+
+  let hiddenResearchMap = true;
   let transitionParams = {
     x: -320,
     duration: 700,
@@ -27,83 +30,100 @@
   let returnFromDB = loadDataFromDB(supabase);
 
   onMount(() => {
-    returnFromDB.then((data) => {
-      uploadedSources.set(data.sourceNodes);
-      markupNodes.set(data.markupNodes);
-      narrativeNodes.set(data.narrativeNodes);
-    });
+    try {
+      returnFromDB.then((data) => {
+        uploadedSources.set(data.sourceNodes);
+        markupNodes.set(data.markupNodes);
+        narrativeNodes.set(data.narrativeNodes);
+      });
+    } catch (error) {
+      console.log(error);
+    } finally {
+      return null;
+    }
   });
 </script>
 
-<main>
-  <div id="mapContainer">
-    <Map />
-    <div id="left-bar" class="p-4">
-      <div id="meta-info" class="">
-        <h1 class="font-bold text-4xl">Narrative Maker</h1>
-        <h3>
-          This is a prototype to explore linked stories of geospatial data
-        </h3>
+<Router url="">
+  <Route path="/RenderedStory" let:params>
+    <Template />
+  </Route>
+
+  <Route path="/">
+    <main>
+      <div id="mapContainer">
+        <Map />
+        <div id="left-bar" class="p-4">
+          <div id="meta-info" class="">
+            <h1 class="font-bold text-4xl">Narrative Maker</h1>
+            <h3>
+              This is a prototype to explore linked stories of geospatial data
+            </h3>
+          </div>
+
+          <aside id="data-ops">
+            <CollapsibleCard>
+              <h3 slot="header">Data operations</h3>
+              <section slot="body" id="data-ops-inner">
+                <div id="search" class="m-2">
+                  <Search />
+                </div>
+
+                <div id="filter" class="m-2">
+                  <!--<Filter/>-->
+                </div>
+              </section>
+            </CollapsibleCard>
+          </aside>
+
+          <aside id="sources">
+            <CollapsibleCard>
+              <h3 slot="header">Sources</h3>
+              <section slot="body" id="sources-inner">
+                <div id="parseFile" class="m-2">
+                  <ParseFile />
+                </div>
+
+                <div id="searchSemanticScholar" class="m-2">
+                  <SearchSemanticScholar />
+                </div>
+              </section>
+            </CollapsibleCard>
+          </aside>
+        </div>
       </div>
 
-      <aside id="data-ops">
-        <CollapsibleCard>
-          <h3 slot="header">Data operations</h3>
-          <section slot="body" id="data-ops-inner">
-            <div id="search" class="m-2">
-              <Search />
-            </div>
+      <span id="right-bar-trigger" class="text-center">
+        <Button
+          class="bg-slate-800 z-10 "
+          on:click={() => (hiddenResearchMap = false)}>Open research map</Button
+        >
+      </span>
+      <Drawer
+        placement="right"
+        transitionType="fly"
+        {transitionParams}
+        bind:hidden={hiddenResearchMap}
+        id="right-bar"
+      >
+        <CloseButton
+          on:click={() => (hiddenResearchMap = true)}
+          id="closeButton"
+        />
+        <section id="markup" class="">
+          <h2 class="">Research map</h2>
+          <h2 class="">
+            Imagine this to be a mindmap. Draw connections between documents as
+            you go along
+          </h2>
+        </section>
 
-            <div id="filter" class="m-2">
-              <!--<Filter/>-->
-            </div>
-          </section>
-        </CollapsibleCard>
-      </aside>
-
-      <aside id="sources">
-        <CollapsibleCard>
-          <h3 slot="header">Sources</h3>
-          <section slot="body" id="sources-inner">
-            <div id="parseFile" class="m-2">
-              <ParseFile />
-            </div>
-
-            <div id="searchSemanticScholar" class="m-2">
-              <SearchSemanticScholar />
-            </div>
-          </section>
-        </CollapsibleCard>
-      </aside>
-    </div>
-  </div>
-
-  <span id="right-bar-trigger" class="text-center">
-    <Button class="bg-slate-800 z-10 " on:click={() => (hidden4 = false)}
-      >Open research map</Button
-    >
-  </span>
-  <Drawer
-    placement="right"
-    transitionType="fly"
-    {transitionParams}
-    bind:hidden={hidden4}
-    id="right-bar"
-  >
-    <CloseButton on:click={() => (hidden4 = true)} id="closeButton" />
-    <section id="markup" class="">
-      <h2 class="">Research map</h2>
-      <h2 class="">
-        Imagine this to be a mindmap. Draw connections between documents as you
-        go along
-      </h2>
-    </section>
-
-    <ResearchMap {supabase} />
-  </Drawer>
-  <FileUploadModal {supabase} />
-</main>
-
+        <ResearchMap {supabase} />
+      </Drawer>
+      <FileUploadModal {supabase} />
+    </main>
+  </Route>
+</Router>
 <svelte:window />
 <svelte:head>
   <title>Research narrative building</title>
@@ -168,7 +188,8 @@
     top: 3%;
     right: 3%;
     min-width: 50% !important;
-    max-width: 80% !important;
+    width: 90vw;
+    max-width: 100% !important;
     height: 90vh;
 
     margin: 1em;

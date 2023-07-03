@@ -2,11 +2,24 @@
   export let linked;
   export let connecting;
   export let hovering;
+
+  export let label;
 </script>
 
-<div class:linked class:hovering class:connecting class="my-anchor" />
+<div class:linked class:hovering class:connecting class="my-anchor">
+  {#if label}
+    <span id="label">
+      {label}
+    </span>
+  {/if}
+</div>
 
 <style>
+  #label {
+    display: inline-block;
+    transform: translate(10%, -25%);
+    width: 10em;
+  }
   .my-anchor {
     width: 14px;
     height: 14px;

@@ -35,7 +35,7 @@
     </div>
   </div>
   <span class="anchor">
-    <Anchor let:linked let:connecting let:hovering>
+    <Anchor let:linked let:connecting let:hovering direction="south">
       <CustomAnchor {hovering} {connecting} {linked} />
     </Anchor>
   </span>
@@ -44,8 +44,8 @@
 <style>
   .anchor {
     position: absolute;
-    right: -24px;
-    top: 45%;
+    right: 50%;
+    bottom: -15%;
     display: flex;
     flex-direction: column;
     gap: 5px;

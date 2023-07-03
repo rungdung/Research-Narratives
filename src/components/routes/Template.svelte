@@ -8,12 +8,25 @@
   // get from local storage and parse
   let steps;
   $: steps = JSON.parse(localStorage.getItem("narrativeNodes"));
+  console.log(steps);
+  let imageSteps = [
+    ["An image"],
+    ["An interactive map"],
+    ["Specific features on the map"],
+  ];
   let value;
 </script>
 
 <section>
   <div class="hero">
-    <h1>This is a template story for the Narrative Making project at IIHS</h1>
+    <h1 class="text-10xl">
+      This is a template story for the Narrative Making project at IIHS
+    </h1>
+    <h2 class="text-2xl">
+      Users can create their own stories by uploading datasets, literature and
+      other material which are then transformed into a research map. Almost like
+      a mindmap. The research map can then be used to create a story.
+    </h2>
   </div>
   <div class="section-container">
     <div class="steps-container">
@@ -22,7 +35,7 @@
           {#each steps as text, i}
             <div class="step" class:active={value === i}>
               <div class="step-content">
-                <h2 class="text-3xl">{@html text.label}</h2>
+                <h2 class="text-5xl">{@html text.label}</h2>
                 <p>{@html text.notes}</p>
               </div>
             </div>
@@ -32,13 +45,17 @@
       </Scrolly>
     </div>
     <div class="sticky">
-      <!-- <Scatterplot step={value} /> -->
+      <p class="text-4xl">
+        {steps[value] && steps[value].mapFeature
+          ? steps[value].mapFeature.mapFeature.properties.title
+          : imageSteps[value]}
+      </p>
     </div>
   </div>
   <div class="hero">
     <h1>Thanks!</h1>
     <h2>
-      <a href="" target="_blank">Questions and Tips</a>
+      <a href="" target="_blank">Github</a>
     </h2>
   </div>
 </section>
@@ -49,17 +66,19 @@
   }
 
   .hero {
-    height: 60vh;
+    height: 70vh;
     display: flex;
     place-items: center;
     flex-direction: column;
     justify-content: center;
     text-align: center;
+    padding: 5em;
   }
 
   .hero h2 {
     margin-top: 0;
     font-weight: 200;
+    padding: 2em 5em 0em 5em;
   }
 
   .spacer {

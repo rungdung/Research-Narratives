@@ -1,5 +1,5 @@
 <script>
-  import { Node, Anchor } from "svelvet";
+  import { Node, Anchor, generateOutput, generateInput } from "svelvet";
   import Dropzone from "svelte-file-dropzone/Dropzone.svelte";
 
   export let markupNode;
@@ -29,9 +29,17 @@
     files.rejected = [...files.rejected, ...fileRejections];
   }
 
+  let inputs = generateInput({
+    mapFeature: markupNode.feature,
+  });
+  const processor = ($inputs) => {
+    console.log($inputs.mapFeature);
+    return $inputs;
+  };
+  const output = generateOutput(inputs, processor);
+
   let position;
   function updatePosition() {
-    console.log("running");
     markupNodes.update((nodes) => {
       let index = nodes.findIndex((node) => node.id == markupNode.id);
       nodes[index].position = position;
@@ -49,12 +57,9 @@
 >
   <div class="node" use:grabHandle>
     <section class="node-wrapper container mx-3 my-3">
-      <p>Source: {markupNode.source}</p>
-      <textarea
-        class="text-white title bg-slate my-1 py-1 w-100"
-        value={markupNode.label}
-        placeholder={markupNode.label}
-      />
+      <h2 class="text-2xl text-white whitespace-normal">
+        {markupNode.label}
+      </h2>
       <textarea
         class="text-white body my-1 py-1"
         value={markupNode.notes}
@@ -86,18 +91,6 @@
         {/each}
       </select>
 
-      <select
-        class="text-white my-1 py-1"
-        value={markupNode.category}
-        placeholder="Select a category"
-      >
-        {#each categories as category}
-          <option value={category}>
-            {category.text}
-          </option>
-        {/each}
-      </select>
-
       <button
         on:click={() => {
           zoomToFeature(markupNode.feature, map);
@@ -114,6 +107,7 @@
         let:connecting
         let:hovering
         multiple={false}
+        direction="north"
         connections={[markupNode.source]}
       >
         <CustomAnchor {hovering} {connecting} {linked} />
@@ -124,12 +118,25 @@
         <CustomAnchor {hovering} {connecting} {linked} />
       </Anchor>
     </span>
+    <span class="anchor-right">
+      <Anchor
+        let:linked
+        let:connecting
+        let:hovering
+        outputStore={output}
+        key="mapFeature"
+        output
+      >
+        <CustomAnchor {hovering} {connecting} {linked} label="Data" />
+      </Anchor>
+    </span>
   </div>
 </Node>
 
 <style>
   .anchor,
-  .anchor-top {
+  .anchor-top,
+  .anchor-right {
     position: absolute;
     display: flex;
     flex-direction: column;
@@ -145,12 +152,15 @@
     top: -10%;
     left: 50%;
   }
+  .anchor-right {
+    top: 50%;
+    right: -5%;
+  }
   textarea,
   :global(select) {
     background-color: #475569;
     border: 1px solid #ccc;
     border-radius: 5px;
-    max-width: 80%;
     color: white;
 
     padding: 0.2em !important;
@@ -167,6 +177,7 @@
   }
   .node-wrapper {
     margin: 1em;
+    width: 90%;
   }
   :global(.dropzone) {
     border: 1px solid #ccc;
@@ -190,7 +201,7 @@
     height: 100%;
     min-width: 3em;
     max-width: 25em;
-    background-color: #ebcfab;
+    background-color: #5e6b6a;
     border-radius: 8px;
     border: 3px solid black;
   }

@@ -1,25 +1,22 @@
 <script>
-  import { Node, Anchor } from "svelvet";
+  import { Node, Anchor, generateInput, generateOutput } from "svelvet";
   import Dropzone from "svelte-file-dropzone/Dropzone.svelte";
   import { narrativeNodes } from "../../stores";
   import CustomAnchor from "./customAnchor.svelte";
 
   export let node;
   let previousNode, addNewButton;
-  function handleFilesSelect(e, files) {
-    const { acceptedFiles, fileRejections } = e.detail;
-    files.accepted = [...files.accepted, ...acceptedFiles];
-    files.rejected = [...files.rejected, ...fileRejections];
-  }
 
   function addNewBelow() {
     // add a new narrative node
     addNewButton.style.display = "none";
     previousNode = $narrativeNodes[$narrativeNodes.length - 1];
+    let previousId = previousNode.id;
+    let id = previousNode.id.split("-")[0] + "-" + ($narrativeNodes.length + 1);
     $narrativeNodes.push({
-      id: previousNode.id.split("-")[0] + "-" + ($narrativeNodes.length + 1),
-      label: "Narrative",
-      notes: "Enter narrative text",
+      id: id,
+      label: "Section Heading",
+      notes: "Enter narrative text to accompany the section",
       position: {
         x: previousNode.position.x,
         y: previousNode.position.y + 300,
@@ -28,20 +25,54 @@
         accepted: [],
         rejected: [],
       },
-      connections: [previousNode.id],
+      connections: [
+        [id, id.concat("1")],
+        [previousId, previousId.concat("2")],
+      ],
+      mapFeature: null,
+      images: [],
+      charts: [],
     });
     $narrativeNodes = $narrativeNodes;
+  }
+
+  const inputs = generateInput({
+    mapFeature: "null",
+    images: "null",
+    charts: "null",
+  });
+
+  const processor = ($inputs) => {
+    console.log($inputs);
+    return $inputs;
+  };
+
+  const output = generateOutput(inputs, processor);
+
+  if (output) {
+    node.mapFeature = output["mapFeature"];
+    node.images.push(...output["images"]);
+    node.charts.push(...output["charts"]);
   }
 </script>
 
 <Node id={node.id} {...node}>
   <div class="node" let:grabHandle>
     <div class="node-wrapper">
-      <span class="anchor-top">
-        <Anchor let:linked let:connecting let:hovering multiple={false}>
-          <CustomAnchor {hovering} {connecting} {linked} />
-        </Anchor>
-      </span>
+      {#if node.id != "narrativeNode-1"}
+        <span class="anchor-top">
+          <Anchor
+            let:linked
+            let:connecting
+            let:hovering
+            multiple={false}
+            direction="south"
+            id={node.id.concat("1")}
+          >
+            <CustomAnchor {hovering} {connecting} {linked} />
+          </Anchor>
+        </span>
+      {/if}
       <textarea
         class="text-white title bg-slate my-1 py-1 w-100"
         bind:value={node.label}
@@ -55,18 +86,47 @@
     </div>
     <section id="inputs">
       <span class="">
-        <Anchor let:linked let:connecting let:hovering multiple={false} input>
-          <CustomAnchor {hovering} {connecting} {linked}>Images</CustomAnchor>
+        <Anchor
+          let:linked
+          let:connecting
+          let:hovering
+          multiple={false}
+          inputsStore={inputs}
+          input
+          key="mapFeature"
+        >
+          <CustomAnchor
+            {hovering}
+            {connecting}
+            {linked}
+            label="Spatial Feature"
+          />
         </Anchor>
       </span>
       <span class="">
-        <Anchor let:linked let:connecting let:hovering multiple={false} input>
-          <CustomAnchor {hovering} {connecting} {linked} />
+        <Anchor
+          let:linked
+          let:connecting
+          let:hovering
+          multiple={false}
+          inputsStore={inputs}
+          input
+          key="images"
+        >
+          <CustomAnchor {hovering} {connecting} {linked} label="Images" />
         </Anchor>
       </span>
       <span class="">
-        <Anchor let:linked let:connecting let:hovering multiple={false} input>
-          <CustomAnchor {hovering} {connecting} {linked} />
+        <Anchor
+          let:linked
+          let:connecting
+          let:hovering
+          multiple={false}
+          inputsStore={inputs}
+          input
+          key="charts"
+        >
+          <CustomAnchor {hovering} {connecting} {linked} label="Charts" />
         </Anchor>
       </span>
     </section>
@@ -82,8 +142,15 @@
       </button>
     </span>
     <span class="anchor">
-      <Anchor let:linked let:connecting let:hovering multiple={false}>
-        <CustomAnchor {hovering} {connecting} {linked} />
+      <Anchor
+        let:linked
+        let:connecting
+        let:hovering
+        multiple={false}
+        id={node.id.concat("2")}
+        direction="north"
+      >
+        <CustomAnchor {hovering} {connecting} {linked} label="Next Section" />
       </Anchor>
     </span>
   </div>
@@ -114,8 +181,7 @@
   :global(select) {
     background-color: #475569;
     border: 1px solid #ccc;
-    border-radius: 5px;
-    max-width: 80%;
+    border-radius: 10px;
     color: white;
 
     padding: 0.2em !important;
@@ -123,7 +189,7 @@
   }
   .title,
   .body {
-    width: 90%;
+    width: 100%;
     height: fit-content;
   }
   .title {
@@ -155,7 +221,7 @@
     height: 100%;
     min-width: 3em;
     max-width: 25em;
-    background-color: #0c706f;
+    background-color: #d2e8e3;
     border-radius: 8px;
     border: 3px solid black;
   }

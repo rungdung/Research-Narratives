@@ -49,9 +49,13 @@
   const output = generateOutput(inputs, processor);
 
   if (output) {
-    node.mapFeature = output["mapFeature"];
-    node.images.push(...output["images"]);
-    node.charts.push(...output["charts"]);
+    try {
+      node.mapFeature = output["mapFeature"];
+      node.images.push(...output["images"]);
+      node.charts.push(...output["charts"]);
+    } catch (error) {
+      console.log(error);
+    }
   }
 </script>
 

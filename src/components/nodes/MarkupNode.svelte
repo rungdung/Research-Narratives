@@ -6,12 +6,8 @@
 
   import { map } from "../Map.svelte";
 
-  import {
-    highlightAllFeatures,
-    zoomToFeature,
-  } from "../../utils/mapMovements.mjs";
+  import { zoomToFeature } from "../../utils/mapMovements.mjs";
 
-  import { onDestroy } from "svelte";
   import { markupNodes } from "../../stores";
 
   import CustomAnchor from "./customAnchor.svelte";

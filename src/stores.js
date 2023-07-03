@@ -2,15 +2,18 @@ import { writable } from "svelte/store";
 import { loadDataFromDB } from "./utils/loadFromDB.mjs";
 
 const storedMarkupNodes = localStorage.getItem("markupNodes");
-const storedUploadedSources = localStorage.getItem("uploadedSources");
+let storedUploadedSources = localStorage.getItem("uploadedSources");
 const storedNarrativeNodes = localStorage.getItem("narrativeNodes");
 
 export let markupNodes = writable(
   storedMarkupNodes ? JSON.parse(storedMarkupNodes) : []
 );
+
 export let uploadedSources = writable(
-  storedUploadedSources ? JSON.parse(storedUploadedSources) : []
+  //storedUploadedSources ? JSON.parse(storedUploadedSources) : []
+  []
 );
+
 export let narrativeNodes = writable(
   storedNarrativeNodes ? JSON.parse(storedNarrativeNodes) : []
 );

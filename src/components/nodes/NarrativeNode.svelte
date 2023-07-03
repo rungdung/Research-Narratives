@@ -36,27 +36,32 @@
   }
 
   const inputs = generateInput({
-    mapFeature: "null",
-    images: "null",
-    charts: "null",
+    mapFeature: null,
+    images: [],
+    charts: [],
   });
 
   const processor = ($inputs) => {
-    console.log($inputs);
-    return $inputs;
-  };
-
-  const output = generateOutput(inputs, processor);
-
-  if (output) {
     try {
-      node.mapFeature = output["mapFeature"];
-      node.images.push(...output["images"]);
-      node.charts.push(...output["charts"]);
+      node.mapFeature = $inputs["mapFeature"];
+      console.log(node.mapFeature);
+      node.images.push(...$inputs["images"]);
+      node.charts.push(...$inputs["charts"]);
+
+      // insert into parent store
+      // find index in store
+      narrativeNodes.update((pNodes) => {
+        let index = pNodes.findIndex((parentNode) => parentNode.id == node.id);
+        pNodes[index] = node;
+        return pNodes;
+      });
     } catch (error) {
       console.log(error);
     }
-  }
+    return node;
+  };
+
+  const output = generateOutput(inputs, processor);
 </script>
 
 <Node id={node.id} {...node}>

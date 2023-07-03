@@ -11,14 +11,7 @@
   import { CollapsibleCard } from "svelte-collapsible";
 
   import { onMount } from "svelte";
-  import {
-    Drawer,
-    Button,
-    CloseButton,
-    Label,
-    Input,
-    Textarea,
-  } from "flowbite-svelte";
+  import { Drawer, Button, CloseButton } from "flowbite-svelte";
   import { sineIn } from "svelte/easing";
 
   let hidden4 = true;
@@ -29,9 +22,6 @@
   };
 
   export let supabase;
-
-  let researchMapWidth;
-  let researchMapHeight;
 
   //set stores
   let returnFromDB = loadDataFromDB(supabase);

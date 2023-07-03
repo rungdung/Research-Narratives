@@ -1,7 +1,4 @@
 <script context="module">
-  // Exported to allow filtering in Filter.svelte
-  export let properties = [];
-  export let propertyValues = new Set();
   export let dialog;
 </script>
 
@@ -9,7 +6,6 @@
   import Dropzone from "svelte-file-dropzone/Dropzone.svelte";
   import { onMount } from "svelte";
 
-  import { map } from "./Map.svelte";
   import { loadSpatialData } from "../utils/spatialRenderer.mjs";
   import { loadPDFData, loadLinkData } from "../utils/nonSpatialRenderer.mjs";
 
@@ -20,8 +16,6 @@
       rejected: [],
     },
     link;
-
-  let fileType, fileName;
 
   let fileViewPort;
 
@@ -36,7 +30,10 @@
     let currentIndex = baseDB.accepted.length - 1;
     let file = baseDB.accepted[currentIndex];
     let fileLocalUrl = URL.createObjectURL(file);
+    renderData(file, fileLocalUrl);
+  }
 
+  async function renderData(file, fileLocalUrl) {
     try {
       const fileName = file.name.split(".")[0];
       const fileType = file.name.split(".")[1];
@@ -74,25 +71,6 @@
     } catch (error) {
       console.error("Error uploading file:", error.message);
     }
-  }
-
-  function loadProperties(file) {
-    fetch(file)
-      .then((response) => response.json())
-      .then((data) => {
-        // Extract properties from GeoJSON features
-        data.features.forEach((feature) => {
-          Object.keys(feature.properties).forEach((key) => {
-            if (!properties.includes(key)) {
-              properties.push(key);
-            }
-            propertyValues.add(feature.properties[key]);
-          });
-        });
-      })
-      .catch((error) => {
-        console.error("Error fetching GeoJSON data:", error);
-      });
   }
 
   onMount(() => {

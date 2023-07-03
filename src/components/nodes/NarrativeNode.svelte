@@ -1,6 +1,5 @@
 <script>
   import { Node, Anchor, generateInput, generateOutput } from "svelvet";
-  import Dropzone from "svelte-file-dropzone/Dropzone.svelte";
   import { narrativeNodes } from "../../stores";
   import CustomAnchor from "./customAnchor.svelte";
 

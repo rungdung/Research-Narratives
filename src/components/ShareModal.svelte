@@ -3,7 +3,8 @@
   // with others
 
   import { markupNodes, uploadedSources, narrativeNodes } from "../stores";
-  import { Modal } from "flowbite-svelte";
+  import { Modal, Button } from "flowbite-svelte";
+  import { ShareNodesSolid, ShareAllSolid } from "flowbite-svelte-icons";
   export let supabase;
 
   let shareDialog = false;
@@ -54,11 +55,15 @@
     <input class="w-100" bind:value={link} />
   {/if}
   {#if buttonClicked}
-    <button
-      ><a href="/RenderedStory" target="_blank">Open rendered story</a></button
+    <Button color="dark"
+      ><a href="/RenderedStory" target="_blank">Open rendered story</a></Button
     >
   {/if}
 </Modal>
 
-<button on:click={handleSubmit}> Share Map </button>
-<button on:click={handleRenderClick}> Render Data Story </button>
+<Button outline color="dark" on:click={handleSubmit}>
+  <ShareNodesSolid svgClass="dark mx-1" /> Share Map</Button
+>
+<Button outline color="dark" class="text-black" on:click={handleRenderClick}>
+  <ShareAllSolid svgClass="dark mx-1" /> Render Data Story</Button
+>

@@ -1,31 +1,33 @@
-<script context="module">
-  export let dialog;
-</script>
-
 <script>
   import Dropzone from "svelte-file-dropzone/Dropzone.svelte";
   import { onMount } from "svelte";
 
   import { loadSpatialData } from "../utils/spatialRenderer.mjs";
   import { loadPDFData, loadLinkData } from "../utils/nonSpatialRenderer.mjs";
+  import { Modal, Button } from "flowbite-svelte";
+  import { FilePlusSolid, FileImportSolid } from "flowbite-svelte-icons";
+  import { fileUploadModal } from "../stores";
 
-  export let supabase;
-  // file upload array
   let baseDB = {
+      // file upload array
       accepted: [],
       rejected: [],
     },
     link;
 
-  let fileViewPort;
+  export let supabase;
+  let fileViewPort; // Modal container
 
   // assign accepted files to baseDB
   function handleFilesSelect(e, files) {
     const { acceptedFiles, fileRejections } = e.detail;
     files.accepted = [...files.accepted, ...acceptedFiles];
     files.rejected = [...files.rejected, ...fileRejections];
+    loadData();
+    $fileUploadModal = false;
   }
 
+  // load last uploaded file
   async function loadData() {
     let currentIndex = baseDB.accepted.length - 1;
     let file = baseDB.accepted[currentIndex];
@@ -33,6 +35,7 @@
     renderData(file, fileLocalUrl);
   }
 
+  // render files
   async function renderData(file, fileLocalUrl) {
     try {
       const fileName = file.name.split(".")[0];
@@ -74,64 +77,67 @@
   }
 
   onMount(() => {
-    dialog.showModal();
+    $fileUploadModal = true;
   });
 </script>
 
 <section id="fileViewPort" bind:this={fileViewPort} />
 
-<dialog id="intro-file-drop" class="" bind:this={dialog}>
-  <h1>Eli5'ing research sharing</h1>
-  <h3>Upload a PDF or a geojson file. You can even enter a link as a source</h3>
+<Modal
+  id="intro-file-drop"
+  class="bg-white dark:bg-gray-800"
+  bind:open={$fileUploadModal}
+  size="md"
+  title="Narrative Maker: easing research sharing"
+  backdropClass="bg-gray-600 bg-opacity-70"
+  outsideclose
+  autoclose
+>
   <Dropzone
     on:drop={(e) => {
       handleFilesSelect(e, baseDB);
       baseDB = baseDB;
     }}
     multiple={false}
-    containerClasses="dropzoneMain"
-    containerStyles="rounded-md text-black p-1 w-40 bg-slate-700"
+    containerClasses="dropzoneMain !align-middle !p-10 !text-gray-600 !py-auto"
+    containerStyles="rounded-md "
   >
+    <FilePlusSolid svgClass="dark" class="w-10 h-10" />
     {#if baseDB.accepted.length > 0}
-      <p>{baseDB.accepted[baseDB.accepted.length - 1].name}</p>
+      <p>Last upload: {baseDB.accepted[baseDB.accepted.length - 1].name}</p>
     {:else}
-      Drag and drop or click to open a GeoJSON file.
+      Upload a GeoJSON file or a PDF to start with.
     {/if}
   </Dropzone>
   <section id="link-upload">
     <input
-      class="rounded-md text-white p-1 bg-slate-700"
+      class="rounded-md text-black p-1 bg-white"
       placeholder="Paste a link to access"
       bind:value={link}
     />
 
-    <button
-      class="rounded-md"
+    <Button
+      color="dark"
+      size="sm"
+      class="rounded-md mx-auto"
       on:click={() => {
         loadLinkData(link, fileViewPort);
-        dialog.close();
-      }}>Load from link</button
+        $fileUploadModal = false;
+      }}>Load from link</Button
     >
   </section>
-
-  <button class="rounded-md" on:click={() => dialog.close()}>Close</button>
-  <button
-    class="rounded-md"
-    on:click={() => {
-      loadData();
-      dialog.close();
-    }}>Load on map</button
-  >
-</dialog>
+</Modal>
 
 <style>
   #link-upload {
     display: flex;
     width: 100%;
-    margin: 1em 0em;
+    height: 3em;
+    margin: 0.5em 0em;
   }
   #link-upload input {
-    min-width: 80%;
+    min-width: 70%;
+    border: 2px dashed #bfbfbf;
   }
   #fileViewPort {
     display: none;
@@ -143,11 +149,9 @@
     height: 40em !important;
   }
   :global(#intro-file-drop) {
-    border: 2px dashed #007cbf;
-    background-color: antiquewhite;
-    opacity: 1;
     border-radius: 5px;
-    padding: 3em;
+    background-color: antiquewhite !important;
+
     text-align: left;
     color: black;
   }
@@ -157,24 +161,11 @@
     box-shadow: none;
   }
 
-  #intro-file-drop::backdrop {
-    background: linear-gradient(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.3));
-    animation: fade-in 1s;
-  }
   :global(.dropzoneMain) {
     height: 10em !important;
     width: 100%;
     margin: 1em 0em;
     max-width: 100% !important;
     text-align: center;
-  }
-
-  @keyframes fade-in {
-    from {
-      opacity: 0;
-    }
-    to {
-      opacity: 1;
-    }
   }
 </style>

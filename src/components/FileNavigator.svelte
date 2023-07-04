@@ -1,7 +1,6 @@
 <script>
-  import { dialog } from "./FileUploadModal.svelte";
   import { map } from "./Map.svelte";
-  import { uploadedSources } from "../stores";
+  import { uploadedSources, fileUploadModal } from "../stores";
   import PDFobject from "pdfobject";
 
   async function toggleLayer(layer) {
@@ -55,7 +54,9 @@
 
   <button
     class="dropzoneAddSource bg-slate-800"
-    on:click={() => dialog.showModal()}
+    on:click={() => {
+      $fileUploadModal = true;
+    }}
   >
     Add data sources
   </button>

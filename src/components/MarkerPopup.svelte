@@ -41,6 +41,7 @@
         accepted: [],
         rejected: [],
       };
+      props["properties"] = feature.properties;
 
       features.push(props);
       return features;

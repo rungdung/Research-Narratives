@@ -1,6 +1,8 @@
 <script>
   import { Node, Anchor, generateOutput, generateInput } from "svelvet";
   import Dropzone from "svelte-file-dropzone/Dropzone.svelte";
+  import { DataHandler, Datatable, Th, ThFilter } from "@vincjo/datatables"; //https://vincjo.fr/datatables/
+  import { CollapsibleCard } from "svelte-collapsible";
 
   export let markupNode;
 
@@ -19,12 +21,27 @@
     { text: "Category 3", value: "3" },
   ];
 
+  let position;
+
+  // map the data to key value pairs for the table
+  let data = Object.entries(markupNode.properties).map(([key, value]) => {
+    return {
+      key: key,
+      value: value,
+    };
+  });
+  // Create a new data handler for the table
+  const handler = new DataHandler(data, { rowsPerPage: 5 });
+  const rows = handler.getRows();
+
+  //File uploads
   function handleFilesSelect(e, files) {
     const { acceptedFiles, fileRejections } = e.detail;
     files.accepted = [...files.accepted, ...acceptedFiles];
     files.rejected = [...files.rejected, ...fileRejections];
   }
 
+  // Data transfer
   let inputs = generateInput({
     mapFeature: markupNode.feature,
   });
@@ -34,7 +51,6 @@
   };
   const output = generateOutput(inputs, processor);
 
-  let position;
   function updatePosition() {
     markupNodes.update((nodes) => {
       let index = nodes.findIndex((node) => node.id == markupNode.id);
@@ -74,19 +90,31 @@
       {#each markupNode.files.accepted as item}
         <img src={URL.createObjectURL(item)} alt="preview" />
       {/each}
-
-      <select
-        class="text-white my-1 py-1"
-        value={markupNode.category}
-        placeholder="Geospatial morphing"
-      >
-        {#each categories as category}
-          <option value={category}>
-            {category.text}
-          </option>
-        {/each}
-      </select>
-
+      <CollapsibleCard open={false}>
+        <span
+          slot="header"
+          class="text-gray-50 bg-slate-600 p-2 w-max rounded-md"
+          >Table of properties</span
+        >
+        <section slot="body">
+          <Datatable {handler} class="text-gray-300">
+            <table>
+              <thead>
+                <Th {handler} orderBy="key">Key</Th>
+                <Th {handler} orderBy="value">Value</Th>
+              </thead>
+              <tbody>
+                {#each $rows as row}
+                  <tr>
+                    <td>{@html row.key}</td>
+                    <td>{@html row.value}</td>
+                  </tr>
+                {/each}
+              </tbody>
+            </table>
+          </Datatable>
+        </section>
+      </CollapsibleCard>
       <button
         on:click={() => {
           zoomToFeature(markupNode.feature, map);
@@ -130,6 +158,9 @@
 </Node>
 
 <style>
+  .card-header {
+    width: 100% !important;
+  }
   .anchor,
   .anchor-top,
   .anchor-right {
@@ -174,22 +205,6 @@
   .node-wrapper {
     margin: 1em;
     width: 90%;
-  }
-  :global(.dropzone) {
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    max-width: 80%;
-    padding: 0.2em !important;
-    margin-right: 0.5em !important;
-  }
-
-  :global(.dropzoneChart) {
-    max-width: 90%;
-  }
-  button {
-    margin-top: 0.2em;
-    size: 1em;
-    padding: 0.2em 0.5em;
   }
 
   .node {

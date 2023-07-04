@@ -207,17 +207,7 @@
   .node-wrapper {
     margin: 1em;
   }
-  :global(.dropzone) {
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    max-width: 80%;
-    padding: 0.2em !important;
-    margin-right: 0.5em !important;
-  }
 
-  :global(.dropzoneChart) {
-    max-width: 90%;
-  }
   button {
     margin-top: 0.2em;
     size: 1em;

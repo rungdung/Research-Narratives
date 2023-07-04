@@ -1,14 +1,15 @@
 <script>
   import { markupNodes, uploadedSources, narrativeNodes } from "../stores.js";
 
-  import { Background, Svelvet, Node } from "svelvet";
+  import { Background, Svelvet, Node, Group } from "svelvet";
 
   import MarkupNode from "./nodes/MarkupNode.svelte";
   import DataSourceNode from "./nodes/DataSourceNode.svelte";
   import NarrativeNode from "./nodes/NarrativeNode.svelte";
 
   import ShareModal from "./ShareModal.svelte";
-
+  import { Button } from "flowbite-svelte";
+  import { CloseCircleSolid } from "flowbite-svelte-icons";
   export let supabase;
 
   let width, height;
@@ -56,18 +57,18 @@
   {/if}
 </section>
 
-<section id="research-map-menu">
-  <button class="bg-slate-800"> Highlight all events </button>
-
-  <button
+<section id="research-map-menu" class="text-center">
+  <Button
+    color="dark"
+    outline
     on:click={() => {
       markupNodes.set([]);
       narrativeNodes.set([]);
     }}
-    class="bg-slate-800"
   >
+    <CloseCircleSolid svgClass="dark mx-1" />
     Clear all data
-  </button>
+  </Button>
   <ShareModal {supabase} />
 </section>
 

@@ -3,7 +3,7 @@
   import ResearchMap from "./components/ResearchMap.svelte";
   import Search from "./components/Search.svelte";
   import FileUploadModal from "./components/FileUploadModal.svelte";
-  import ParseFile from "./components/FileNavigator.svelte";
+  import FileNavigator from "./components/FileNavigator.svelte";
   import { loadDataFromDB } from "./utils/loadFromDB.mjs";
   import { uploadedSources, markupNodes, narrativeNodes } from "./stores";
   import SearchSemanticScholar from "./components/SearchSemanticScholar.svelte";
@@ -81,7 +81,7 @@
               <h3 slot="header">Sources</h3>
               <section slot="body" id="sources-inner">
                 <div id="parseFile" class="m-2">
-                  <ParseFile />
+                  <FileNavigator />
                 </div>
 
                 <div id="searchSemanticScholar" class="m-2">
@@ -95,7 +95,8 @@
 
       <span id="right-bar-trigger" class="text-center">
         <Button
-          class="bg-slate-800 z-10 "
+          color="light"
+          class="z-10 "
           on:click={() => (hiddenResearchMap = false)}>Open research map</Button
         >
       </span>
@@ -185,14 +186,12 @@
   }
   :global(#right-bar) {
     position: absolute;
-    top: 3%;
-    right: 3%;
-    min-width: 50% !important;
+    top: 0%;
+    right: 0%;
     width: 90vw;
-    max-width: 100% !important;
     height: 90vh;
 
-    margin: 1em;
+    margin: 2% 5%;
     padding: 2em;
     text-align: left;
     color: black;

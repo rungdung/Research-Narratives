@@ -1,4 +1,5 @@
 import { writable } from "svelte/store";
+import FileUploadModal from "./components/FileUploadModal.svelte";
 
 export let markupNodes = writable([]);
 export let uploadedSources = writable([]);
@@ -17,3 +18,5 @@ uploadedSources.subscribe((value) => {
 narrativeNodes.subscribe((value) => {
   localStorage.setItem("narrativeNodes", JSON.stringify(value));
 });
+
+export let fileUploadModal = writable(true);

@@ -15,7 +15,5 @@ uploadedSources.subscribe((value) => {
   localStorage.setItem("uploadedSources", JSON.stringify(value));
 });
 narrativeNodes.subscribe((value) => {
-  console.log("logging");
   localStorage.setItem("narrativeNodes", JSON.stringify(value));
-  console.log(JSON.parse(localStorage.getItem("narrativeNodes")));
 });

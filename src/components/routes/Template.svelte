@@ -23,7 +23,9 @@
       new Marker()
         .setLngLat(node.mapFeature.geometry.coordinates)
         .setPopup(
-          new Popup().setHTML(
+          new Popup({
+            focusAfterOpen: false,
+          }).setHTML(
             `<h3>${node.mapFeature.properties.title}</h3><p>${node.mapFeature.properties.description}</p>`
           )
         )

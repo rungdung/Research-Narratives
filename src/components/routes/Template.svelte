@@ -3,62 +3,81 @@
 	Scrollytelling component from Russell Goldenberg https://twitter.com/codenberg/status/1432774653139984387 */
 
   import Scrolly from "../Scrolly.svelte";
+  import Map from "../Map.svelte";
+  import { zoomToFeature } from "../../utils/mapMovements.mjs";
+  import { map } from "../Map.svelte";
+  import { Marker, Popup } from "maplibre-gl";
+  import MarkerPopup from "../MarkerPopup.svelte";
   // import Scatterplot from "./Scatterplot.svelte";
 
   // get from local storage and parse
   let steps;
   $: steps = JSON.parse(localStorage.getItem("narrativeNodes"));
   console.log(steps);
-  let imageSteps = [
-    ["An image"],
-    ["An interactive map"],
-    ["Specific features on the map"],
-  ];
   let value;
+  let node;
+
+  function zoomToFocus(node) {
+    if (node.mapFeature && map) {
+      zoomToFeature(node.mapFeature, map);
+      new Marker()
+        .setLngLat(node.mapFeature.geometry.coordinates)
+        .setPopup(
+          new Popup().setHTML(
+            `<h3>${node.mapFeature.properties.title}</h3><p>${node.mapFeature.properties.description}</p>`
+          )
+        )
+        .addTo(map)
+        .togglePopup();
+    }
+  }
 </script>
 
 <section>
   <div class="hero">
     <h1 class="text-10xl">
-      This is a template story for the Narrative Making project at IIHS
+      {steps[0].label ?? "A story about a place"}
     </h1>
     <h2 class="text-2xl">
-      Users can create their own stories by uploading datasets, literature and
-      other material which are then transformed into a research map. Almost like
-      a mindmap. The research map can then be used to create a story.
+      {steps[0].notes ?? "Enter narrative text to accompany the section"}
     </h2>
   </div>
   <div class="section-container">
     <div class="steps-container">
       <Scrolly bind:value>
-        {#key steps}
-          {#each steps as text, i}
-            <div class="step" class:active={value === i}>
+        {#each steps as text, i}
+          {#if i > 0}
+            <div class="step" class:active={value === i - 1}>
               <div class="step-content">
-                <h2 class="text-5xl">{@html text.label}</h2>
+                <h2 class="text-5xl">
+                  {@html text.label ?? steps[value].label}
+                </h2>
                 <p>{@html text.notes}</p>
               </div>
             </div>
-          {/each}
-        {/key}
+          {/if}
+        {/each}
         <div class="spacer" />
       </Scrolly>
     </div>
     <div class="sticky">
-      <p class="text-4xl">
-        {steps[value] && steps[value].mapFeature
-          ? steps[value].mapFeature.mapFeature.properties.title
-          : imageSteps[value]}
-      </p>
+      {#if value < steps.length}
+        <Map />
+        {#key value}
+          {#if steps[value].mapFeature && map}
+            {zoomToFocus(steps[value].mapFeature)}
+          {/if}
+        {/key}
+      {/if}
     </div>
   </div>
-  <div class="hero">
-    <h1>Thanks!</h1>
-    <h2>
-      <a href="" target="_blank">Github</a>
-    </h2>
-  </div>
 </section>
+<footer class="hero">
+  <h1>Thanks!</h1>
+  <h2>
+    <a href="" target="_blank">Github</a>
+  </h2>
+</footer>
 
 <style>
   :global(body) {
@@ -87,7 +106,8 @@
 
   .sticky {
     position: sticky;
-    top: 10%;
+    height: 100vh;
+    top: 0%;
     flex: 1 1 60%;
     width: 60%;
   }

@@ -131,6 +131,10 @@
 </svelte:head>
 
 <style>
+  main {
+    max-height: 100vh;
+    overflow: hidden;
+  }
   :global(#closeButton) {
     position: absolute;
     top: 2%;
@@ -165,10 +169,13 @@
   #meta-info {
     border-radius: 10px;
     width: 100%;
-    padding: 1em;
     margin-top: 1em;
     color: black;
     background-color: antiquewhite;
+  }
+
+  #meta-info {
+    padding: 1em;
   }
   :global(.card) {
     padding: 0.2em;

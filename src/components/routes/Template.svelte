@@ -66,7 +66,17 @@
       {#if value < steps.length}
         <Map />
         {#key value}
-          {#if steps[value].mapFeature && map}
+          {#if steps[value].images}
+            {console.log(steps[value])}
+            {console.log(steps[value].images.images.accepted)}
+            {#each steps[value].images.images.accepted as item}
+              <img
+                src={item}
+                alt="preview"
+                class="fixed top-0 right-2 w-100 block object-fill"
+              />
+            {/each}
+          {:else if steps[value].mapFeature != null && map}
             {zoomToFocus(steps[value].mapFeature)}
           {/if}
         {/key}

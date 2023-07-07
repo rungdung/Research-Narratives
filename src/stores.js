@@ -3,7 +3,7 @@ import FileUploadModal from "./components/FileUploadModal.svelte";
 
 export let markupNodes = writable([]);
 export let uploadedSources = writable([]);
-
+export let annotationNodes = writable([]);
 let localNarrativeNodes = JSON.parse(localStorage.getItem("narrativeNodes"));
 export let narrativeNodes = writable(
   localNarrativeNodes ? localNarrativeNodes : []
@@ -17,6 +17,9 @@ uploadedSources.subscribe((value) => {
 });
 narrativeNodes.subscribe((value) => {
   localStorage.setItem("narrativeNodes", JSON.stringify(value));
+});
+annotationNodes.subscribe((value) => {
+  localStorage.setItem("annotationNodes", JSON.stringify(value));
 });
 
 export let fileUploadModal = writable(true);

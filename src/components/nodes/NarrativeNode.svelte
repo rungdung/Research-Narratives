@@ -37,16 +37,15 @@
 
   const inputs = generateInput({
     mapFeature: null,
-    images: [],
-    charts: [],
+    images: null,
+    charts: null,
   });
 
   const processor = ($inputs) => {
     try {
       node.mapFeature = $inputs["mapFeature"];
-      console.log(node.mapFeature);
-      node.images.push(...$inputs["images"]);
-      node.charts.push(...$inputs["charts"]);
+      node.images = $inputs["images"];
+      node.charts = $inputs["charts"];
 
       // insert into parent store
       // find index in store

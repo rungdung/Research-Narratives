@@ -2,25 +2,14 @@
   import { Node, Anchor, generateOutput, generateInput } from "svelvet";
   import Dropzone from "svelte-file-dropzone/Dropzone.svelte";
   import { DataHandler, Datatable, Th, ThFilter } from "@vincjo/datatables"; //https://vincjo.fr/datatables/
-  import { CollapsibleCard } from "svelte-collapsible";
-
-  export let markupNode;
-
+  import { AccordionItem, Accordion } from "flowbite-svelte";
   import { map } from "../Map.svelte";
-
   import { zoomToFeature } from "../../utils/mapMovements.mjs";
-
   import { markupNodes } from "../../stores";
-
   import CustomAnchor from "./customAnchor.svelte";
   import AnimatedEdge from "./customAnimatedEdge.svelte";
 
-  let categories = [
-    { text: "Category 1", value: "1" },
-    { text: "Category 2", value: "2" },
-    { text: "Category 3", value: "3" },
-  ];
-
+  export let markupNode;
   let position;
 
   // map the data to key value pairs for the table
@@ -33,13 +22,6 @@
   // Create a new data handler for the table
   const handler = new DataHandler(data, { rowsPerPage: 5 });
   const rows = handler.getRows();
-
-  //File uploads
-  function handleFilesSelect(e, files) {
-    const { acceptedFiles, fileRejections } = e.detail;
-    files.accepted = [...files.accepted, ...acceptedFiles];
-    files.rejected = [...files.rejected, ...fileRejections];
-  }
 
   // Data transfer
   let inputs = generateInput({
@@ -77,44 +59,29 @@
         value={markupNode.notes}
         placeholder="Enter notes"
       />
-
-      <Dropzone
-        on:drop={(e) => {
-          handleFilesSelect(e, markupNode.files);
-          markupNode = markupNode;
-        }}
-        accept="image/*"
-        containerClasses="dropzoneChart"
-      />
-
-      {#each markupNode.files.accepted as item}
-        <img src={URL.createObjectURL(item)} alt="preview" />
-      {/each}
-      <CollapsibleCard open={false}>
-        <span
-          slot="header"
-          class="text-gray-50 bg-slate-600 p-2 w-max rounded-md"
-          >Table of properties</span
-        >
-        <section slot="body">
-          <Datatable {handler} class="text-gray-300">
-            <table>
-              <thead>
-                <Th {handler} orderBy="key">Key</Th>
-                <Th {handler} orderBy="value">Value</Th>
-              </thead>
-              <tbody>
-                {#each $rows as row}
-                  <tr>
-                    <td>{@html row.key}</td>
-                    <td>{@html row.value}</td>
-                  </tr>
-                {/each}
-              </tbody>
-            </table>
-          </Datatable>
-        </section>
-      </CollapsibleCard>
+      <Accordion flush>
+        <AccordionItem paddingFlush={"p-2"}>
+          <span slot="header" class="text-white">Table of properties</span>
+          <section>
+            <Datatable {handler} class="text-gray-300">
+              <table>
+                <thead>
+                  <Th {handler} orderBy="key">Key</Th>
+                  <Th {handler} orderBy="value">Value</Th>
+                </thead>
+                <tbody>
+                  {#each $rows as row}
+                    <tr>
+                      <td>{@html row.key}</td>
+                      <td>{@html row.value}</td>
+                    </tr>
+                  {/each}
+                </tbody>
+              </table>
+            </Datatable>
+          </section>
+        </AccordionItem>
+      </Accordion>
       <button
         on:click={() => {
           zoomToFeature(markupNode.feature, map);

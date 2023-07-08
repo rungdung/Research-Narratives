@@ -1,15 +1,17 @@
 <script>
   import { Node, Anchor } from "svelvet";
-  import Dropzone from "svelte-file-dropzone/Dropzone.svelte";
   import CustomAnchor from "./customAnchor.svelte";
-  export let sourceNode;
   import { uploadedSources } from "../../stores";
+  import { Input, Textarea, Label } from "flowbite-svelte";
 
+  export let sourceNode;
   let position;
   function updatePosition() {
     if (position != null) {
       uploadedSources.update((nodes) => {
-        let index = nodes.findIndex((node) => node.id == sourceNode.id);
+        let index = nodes.findIndex(
+          (node) => node.fileName == sourceNode.fileName
+        );
         nodes[index].position = position;
         return nodes;
       });
@@ -26,12 +28,28 @@
 >
   <div class="node" let:grabHandle>
     <div class="node-wrapper">
-      <h3 class="text-3xl">{sourceNode.fileName}</h3>
-      <li>Type: {sourceNode.type}</li>
-      {#if sourceNode.type === "Spatial"}
-        <li>Geometry: {sourceNode.geometry}</li>
-      {/if}
-      <li>Source: {sourceNode.source}</li>
+      <h3 class="text-3xl my-3">{sourceNode.fileName}</h3>
+      <ul class="text-lg">
+        <li>Type: {sourceNode.type}</li>
+        {#if sourceNode.type === "Spatial"}
+          <li>Geometry: {sourceNode.geometry}</li>
+        {/if}
+        <li>
+          {#if sourceNode.source}
+            Source: {sourceNode.source}
+          {:else}
+            <Label for="Source" class="!text-black text-lg">Source</Label>
+            <Input placeholder="please provide a source link" name="citation" />
+          {/if}
+        </li>
+        <li>
+          <Label for="citation" class="!text-black text-lg">Citation</Label>
+          <Textarea
+            placeholder="please provide a citation before sharing"
+            name="citation"
+          />
+        </li>
+      </ul>
     </div>
   </div>
   <span class="anchor">

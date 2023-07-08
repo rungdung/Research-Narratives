@@ -16,6 +16,10 @@
   import ShareModal from "./ShareModal.svelte";
   import { Button, SpeedDial, Listgroup, ListgroupItem } from "flowbite-svelte";
   import { CloseCircleSolid, PlusSolid } from "flowbite-svelte-icons";
+  import {
+    addNewNarrativeNode,
+    addNewAnnotationNode,
+  } from "../utils/addNewNodes.mjs";
   export let supabase;
 
   let width, height;
@@ -46,7 +50,7 @@
         class="w-40"
         ><PlusSolid class="mr-2 w-5 h-5" size="20" />Add new section for the
         data story</ListgroupItem
-  >
+      >
       <ListgroupItem
         name="Add new annotation node"
         on:click={addNewAnnotationNode}

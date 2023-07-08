@@ -1,7 +1,6 @@
 <script>
   import { DataHandler, Datatable, Th, ThFilter } from "@vincjo/datatables"; //https://vincjo.fr/datatables/
-  import { markupNodes } from "../stores.js";
-
+  import { addNewMarkupNode } from "../utils/addNewNodes.mjs";
   export let feature; //import from UploadData.svelte
 
   // map the data to key value pairs for the table
@@ -11,44 +10,9 @@
       value: value,
     };
   });
-
   // Create a new data handler for the table
   const handler = new DataHandler(data, { rowsPerPage: 5 });
   const rows = handler.getRows();
-
-  async function addToList() {
-    // Add to selected features store
-    markupNodes.update((features) => {
-      // Convert all the keys to lower case before passing to MarkerPopup.svelte
-      let props = Object.fromEntries(
-        Object.entries(feature.properties).map(([key, val]) => [
-          key.toLowerCase(),
-          val,
-        ])
-      );
-
-      // Assign unique sequential id
-      props["id"] = features.length + 1;
-      props["label"] =
-        props["title"] ||
-        props["name"] ||
-        props["id"] ||
-        "No title field available";
-      props["feature"] = feature;
-      props["notes"] = "";
-      props["source"] = feature.layer.source;
-      props["files"] = {
-        accepted: [],
-        rejected: [],
-      };
-      props["properties"] = feature.properties;
-
-      features.push(props);
-      return features;
-    });
-
-    $markupNodes = $markupNodes;
-  }
 </script>
 
 <article class="popup">
@@ -69,7 +33,11 @@
     </table>
   </Datatable>
 
-  <button class="bg-slate-700" id="addToList" on:click={() => addToList()}>
+  <button
+    class="bg-slate-700"
+    id="addToList"
+    on:click={() => addNewMarkupNode(feature)}
+  >
     Add to research map
   </button>
 </article>

@@ -1,10 +1,15 @@
 import { writable } from "svelte/store";
-import FileUploadModal from "./components/FileUploadModal.svelte";
 
 export let markupNodes = writable([]);
 export let uploadedSources = writable([]);
 export let annotationNodes = writable([]);
-let localNarrativeNodes = JSON.parse(localStorage.getItem("narrativeNodes"));
+
+let localNarrativeNodes;
+try {
+  localNarrativeNodes = JSON.parse(localStorage.getItem("narrativeNodes"));
+} catch (error) {
+  console.log(error);
+}
 export let narrativeNodes = writable(
   localNarrativeNodes ? localNarrativeNodes : []
 );

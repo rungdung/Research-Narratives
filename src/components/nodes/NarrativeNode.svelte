@@ -3,38 +3,9 @@
   import { narrativeNodes } from "../../stores";
   import { Textarea, Label } from "flowbite-svelte";
   import CustomAnchor from "./customAnchor.svelte";
-
+  import { addNewNarrativeNode } from "../../utils/addNewNodes.mjs";
   export let node;
   let previousNode, addNewButton;
-
-  function addNewBelow() {
-    // add a new narrative node
-    addNewButton.style.display = "none";
-    previousNode = $narrativeNodes[$narrativeNodes.length - 1];
-    let previousId = previousNode.id;
-    let id = previousNode.id.split("-")[0] + "-" + ($narrativeNodes.length + 1);
-    $narrativeNodes.push({
-      id: id,
-      label: "Section Heading",
-      notes: "Enter narrative text to accompany the section",
-      position: {
-        x: previousNode.position.x,
-        y: previousNode.position.y + 300,
-      },
-      files: {
-        accepted: [],
-        rejected: [],
-      },
-      connections: [
-        [id, id.concat("1")],
-        [previousId, previousId.concat("2")],
-      ],
-      mapFeature: null,
-      images: [],
-      charts: [],
-    });
-    $narrativeNodes = $narrativeNodes;
-  }
 
   const inputs = generateInput({
     mapFeature: null,
@@ -152,9 +123,8 @@
     <span class="add-node-below">
       <button
         class="rounded-md text-2xl mx-auto"
-        bind:this={addNewButton}
         on:click={() => {
-          addNewBelow();
+          addNewNarrativeNode();
         }}
       >
         +

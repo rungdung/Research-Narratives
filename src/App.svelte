@@ -12,6 +12,7 @@
 
   import { onMount } from "svelte";
   import { Drawer, Button, CloseButton } from "flowbite-svelte";
+  import { OpenBookSolid } from "flowbite-svelte-icons";
   import { sineIn } from "svelte/easing";
 
   import { Route, Router } from "svelte-routing";
@@ -96,8 +97,10 @@
       <span id="right-bar-trigger" class="text-center">
         <Button
           color="light"
-          class="z-10 "
-          on:click={() => (hiddenResearchMap = false)}>Open research map</Button
+          class="z-10 absolute top-5 right-5 w-50"
+          on:click={() => (hiddenResearchMap = false)}
+        >
+          <OpenBookSolid color="light" svgClass="mr-3" />Open research map</Button
         >
       </span>
       <Drawer
@@ -112,11 +115,11 @@
           id="closeButton"
         />
         <section id="markup" class="">
-          <h2 class="">Research map</h2>
-          <h2 class="">
+          <h2 class="text-2xl">Research map</h2>
+          <p class="">
             Imagine this to be a mindmap. Draw connections between documents as
             you go along
-          </h2>
+          </p>
         </section>
 
         <ResearchMap {supabase} />

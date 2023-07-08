@@ -14,8 +14,8 @@
   import AnnotationNode from "./nodes/AnnotationNode.svelte";
 
   import ShareModal from "./ShareModal.svelte";
-  import { Button } from "flowbite-svelte";
-  import { CloseCircleSolid } from "flowbite-svelte-icons";
+  import { Button, SpeedDial, Listgroup, ListgroupItem } from "flowbite-svelte";
+  import { CloseCircleSolid, PlusSolid } from "flowbite-svelte-icons";
   export let supabase;
 
   let width, height;
@@ -33,67 +33,34 @@
     {#each $narrativeNodes as narrativeNode (narrativeNode.id)}
       <NarrativeNode node={narrativeNode} />
     {/each}
-
     {#each $annotationNodes as annotationNode (annotationNode.id)}
       <AnnotationNode {annotationNode} />
     {/each}
   </Svelvet>
 
-  <button
-    id="startNarrativeMaking"
-    on:click={() => {
-      // For narrative nodes
-      // start with blank
-      $narrativeNodes.push({
-        id: "narrativeNode-" + 1,
-        label: "Provide a title for the data story",
-        notes: "Enter body text",
-        position: { x: 600, y: -100 },
-        files: {
-          accepted: [],
-          rejected: [],
-        },
-        mapFeature: null,
-        images: [],
-        charts: [],
-      });
-
-      $narrativeNodes = $narrativeNodes;
-    }}
+  <SpeedDial color="dark" class="absolute top-0 right-0" placement="bottom">
+    <Listgroup active class="w-100">
+      <ListgroupItem
+        name="Add new section for the data story"
+        on:click={addNewNarrativeNode}
+        class="w-40"
+        ><PlusSolid class="mr-2 w-5 h-5" size="20" />Add new section for the
+        data story</ListgroupItem
   >
-    Start making a narrative
-  </button>
-
-  <button
-    id="createAnnotations"
-    on:click={() => {
-      // for empty markupnodes
-      $annotationNodes.push({
-        id:
-          $annotationNodes.length > 0
-            ? "annotationNode-" + ($annotationNodes.length + 1)
-            : "annotationNode-" + 1,
-        label: "Caption for the image",
-        notes: "Annotation text",
-        position: { x: 600, y: -100 },
-        files: {
-          accepted: [],
-          rejected: [],
-        },
-        images: [],
-        charts: [],
-      });
-      $annotationNodes = $annotationNodes;
-    }}
-  >
-    Insert media
-  </button>
+      <ListgroupItem
+        name="Add new annotation node"
+        on:click={addNewAnnotationNode}
+        class="w-40"
+        ><PlusSolid class="mr-2 w-5 h-5" size="20" />
+        Add new media
+      </ListgroupItem>
+    </Listgroup>
+  </SpeedDial>
 </section>
 
 <section id="research-map-menu" class="text-center">
   <Button
     color="dark"
-    outline
     on:click={() => {
       markupNodes.set([]);
       narrativeNodes.set([]);

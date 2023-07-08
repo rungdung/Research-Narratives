@@ -1,5 +1,15 @@
+@import url("https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&family=Open+Sans:wght@500&display=swap");
+
+h1,
+h2,
+h3 {
+  font-family: "Merriweather", serif;
+}
+
+p {
+  font-family: "Open Sans", sans-serif;
+}
 :root {
-  font-family: 'Playfair Display', serif;
   line-height: 1.5;
   font-weight: 400;
 
@@ -47,7 +57,7 @@ h1 {
 
 button {
   width: auto;
-  color: white ;
+  color: white;
   border-radius: 8px;
   border: 1px solid transparent;
   padding: 0.6em 1.2em;

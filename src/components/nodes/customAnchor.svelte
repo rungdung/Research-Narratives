@@ -1,4 +1,6 @@
 <script>
+  import { P } from "flowbite-svelte";
+
   export let linked;
   export let connecting;
   export let hovering;
@@ -8,16 +10,16 @@
 
 <div class:linked class:hovering class:connecting class="my-anchor">
   {#if label}
-    <span id="label">
+    <p id="label" class="text-xl text-base/loose">
       {label}
-    </span>
+    </p>
   {/if}
 </div>
 
 <style>
   #label {
     display: inline-block;
-    transform: translate(10%, -25%);
+    transform: translate(10%, -35%);
     width: 10em;
   }
   .my-anchor {

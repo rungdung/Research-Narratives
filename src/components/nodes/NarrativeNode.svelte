@@ -1,6 +1,7 @@
 <script>
   import { Node, Anchor, generateInput, generateOutput } from "svelvet";
   import { narrativeNodes } from "../../stores";
+  import { Textarea, Label } from "flowbite-svelte";
   import CustomAnchor from "./customAnchor.svelte";
 
   export let node;
@@ -64,8 +65,11 @@
 </script>
 
 <Node id={node.id} {...node}>
-  <div class="node" let:grabHandle>
+  <div class="node pb-3 px-1" let:grabHandle>
     <div class="node-wrapper">
+      <h2 class="text-2xl my-3 text-black whitespace-normal">
+        Narrative Section
+      </h2>
       {#if node.id != "narrativeNode-1"}
         <span class="anchor-top">
           <Anchor
@@ -80,15 +84,23 @@
           </Anchor>
         </span>
       {/if}
-      <textarea
-        class="text-white title bg-slate my-1 py-1 w-100"
+      <Label for="section-title" class="mb-0 !text-gray-800"
+        >Provide a title for the section</Label
+      >
+      <Textarea
+        class="text-white title text-2xl bg-slate my-1 !p-2 "
         bind:value={node.label}
-        placeholder="Enter title markup"
+        rows="2"
+        name="section-title"
       />
-      <textarea
-        class="text-white body my-1 py-1"
+      <Label for="section-content" class="mb-0 !text-black"
+        >Section content</Label
+      >
+      <Textarea
+        class="text-white body text-lg my-1 !p-2"
         bind:value={node.notes}
-        placeholder="Enter body text"
+        rows="4"
+        name="section-content"
       />
     </div>
     <section id="inputs">
@@ -164,6 +176,9 @@
 </Node>
 
 <style>
+  #inputs {
+    transform: translate(-6%, 0);
+  }
   .anchor,
   .anchor-top {
     position: absolute;
@@ -184,27 +199,10 @@
   .add-node-below {
     margin: auto;
   }
-  textarea,
-  :global(select) {
-    background-color: #475569;
-    border: 1px solid #ccc;
-    border-radius: 10px;
-    color: white;
 
-    padding: 0.2em !important;
-    margin-right: 0.5em !important;
-  }
-  .title,
-  .body {
-    width: 100%;
-    height: fit-content;
-  }
-  .title {
-    height: 3em;
-    font-size: larger;
-  }
   .node-wrapper {
     margin: 1em;
+    min-width: 20em;
   }
 
   button {

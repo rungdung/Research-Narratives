@@ -54,12 +54,15 @@
       <h2 class="text-2xl text-white whitespace-normal">
         {markupNode.label}
       </h2>
-      <textarea
-        class="text-white body my-1 py-1"
-        value={markupNode.notes}
-        placeholder="Enter notes"
-      />
-      <Accordion flush>
+      <Accordion flush class="my-2 group-first:rounded-t-md">
+        <AccordionItem paddingFlush={"p-2"}>
+          <span slot="header" class="text-white">Notes</span>
+          <textarea
+            class="text-white body my-1 py-1"
+            value={markupNode.notes}
+            placeholder="Enter notes"
+          />
+        </AccordionItem>
         <AccordionItem paddingFlush={"p-2"}>
           <span slot="header" class="text-white">Table of properties</span>
           <section>
@@ -162,7 +165,8 @@
   }
   .title,
   .body {
-    width: 90%;
+    background-color: #475569;
+    width: 100%;
     height: fit-content;
   }
   .title {

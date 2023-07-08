@@ -2,15 +2,12 @@
   import { Node, Anchor, generateOutput, generateInput } from "svelvet";
   import Dropzone from "svelte-file-dropzone/Dropzone.svelte";
   import { DataHandler, Datatable, Th, ThFilter } from "@vincjo/datatables"; //https://vincjo.fr/datatables/
-  import { CollapsibleCard } from "svelte-collapsible";
-
+  import { Accordion, AccordionItem } from "flowbite-svelte";
   import { loadToDB } from "../../utils/loadToDB.mjs";
-  export let annotationNode;
-
   import { annotationNodes } from "../../stores";
-
   import CustomAnchor from "./customAnchor.svelte";
 
+  export let annotationNode;
   let position;
 
   // // map the data to key value pairs for the table
@@ -61,26 +58,29 @@
 >
   <div class="node" use:grabHandle>
     <section class="node-wrapper container mx-3 my-3">
-      <textarea
-        class="text-white body my-1 py-1"
-        value={annotationNode.label}
-        placeholder="Enter notes"
-      />
-      <textarea
-        class="text-white body my-1 py-1"
-        value={annotationNode.notes}
-        placeholder="Enter notes"
-      />
+      <h2 class="text-2xl text-white whitespace-normal">Uploaded Media</h2>
 
+      <Accordion flush class="my-2 group-first:rounded-t-md">
+        <AccordionItem paddingFlush={"p-2"}>
+          <span slot="header" class="text-white"> Captions and Notes </span>
+          <textarea
+            class="text-white body my-1 py-1"
+            value={annotationNode.label}
+          />
+          <textarea
+            class="text-white body my-1 py-1"
+            value={annotationNode.notes}
+          />
+        </AccordionItem>
+      </Accordion>
       <Dropzone
         on:drop={(e) => {
           handleFilesSelect(e, annotationNode.files);
           annotationNode = annotationNode;
         }}
         accept="image/*"
-        containerClasses="dropzoneChart"
+        containerClasses="dropzoneChart !bg-gray-600 text-white border-2 border-b-zinc-700"
       />
-      {console.log(annotationNode.files.accepted)}
       {#each annotationNode.files.accepted as item}
         <img src={item} alt="preview" />
       {/each}
@@ -144,7 +144,7 @@
   }
   .title,
   .body {
-    width: 90%;
+    width: 100%;
     height: fit-content;
   }
   .title {

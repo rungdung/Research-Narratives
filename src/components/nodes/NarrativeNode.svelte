@@ -4,8 +4,8 @@
   import { Textarea, Label } from "flowbite-svelte";
   import CustomAnchor from "./customAnchor.svelte";
   import { addNewNarrativeNode } from "../../utils/addNewNodes.mjs";
+
   export let node;
-  let previousNode, addNewButton;
 
   const inputs = generateInput({
     mapFeature: null,
@@ -55,70 +55,66 @@
           </Anchor>
         </span>
       {/if}
-      <Label for="section-title" class="mb-0 !text-gray-800"
+      <Label for="section-title" class="mb-0 !text-blac"
         >Provide a title for the section</Label
       >
       <Textarea
-        class="text-white title text-2xl bg-slate my-1 !p-2 "
+        class="text-black body my-1 py-1 w-full rounded-md bg-inputField-100"
         bind:value={node.label}
         rows="2"
         name="section-title"
       />
-      <Label for="section-content" class="mb-0 !text-black"
+      <Label for="section-content" class="mb-0 !text-black "
         >Section content</Label
       >
       <Textarea
-        class="text-white body text-lg my-1 !p-2"
+        class="text-black body my-1 py-1 w-full rounded-md bg-inputField-100"
         bind:value={node.notes}
         rows="4"
         name="section-content"
       />
     </div>
-    <section id="inputs">
-      <span class="">
-        <Anchor
-          let:linked
-          let:connecting
-          let:hovering
-          multiple={false}
-          inputsStore={inputs}
-          input
-          key="mapFeature"
-        >
-          <CustomAnchor
-            {hovering}
-            {connecting}
-            {linked}
-            label="Spatial Feature"
-          />
-        </Anchor>
-      </span>
-      <span class="">
-        <Anchor
-          let:linked
-          let:connecting
-          let:hovering
-          multiple={false}
-          inputsStore={inputs}
-          input
-          key="images"
-        >
-          <CustomAnchor {hovering} {connecting} {linked} label="Images" />
-        </Anchor>
-      </span>
-      <span class="">
-        <Anchor
-          let:linked
-          let:connecting
-          let:hovering
-          multiple={false}
-          inputsStore={inputs}
-          input
-          key="charts"
-        >
-          <CustomAnchor {hovering} {connecting} {linked} label="Charts" />
-        </Anchor>
-      </span>
+    <section id="inputs" class="space-y-1">
+      <Anchor
+        let:linked
+        let:connecting
+        let:hovering
+        multiple={false}
+        inputsStore={inputs}
+        input
+        key="mapFeature"
+      >
+        <CustomAnchor
+          {hovering}
+          {connecting}
+          {linked}
+          label="Spatial Feature"
+        />
+      </Anchor>
+
+      <Anchor
+        let:linked
+        let:connecting
+        let:hovering
+        multiple={false}
+        inputsStore={inputs}
+        input
+        key="images"
+      >
+        <CustomAnchor {hovering} {connecting} {linked} label="Images" />
+      </Anchor>
+
+      <Anchor
+        let:linked
+        let:connecting
+        let:hovering
+        multiple={false}
+        inputsStore={inputs}
+        input
+        key="charts"
+      >
+        <CustomAnchor {hovering} {connecting} {linked} label="Charts" />
+      </Anchor>
     </section>
     <span class="add-node-below">
       <button
@@ -147,7 +143,7 @@
 
 <style>
   #inputs {
-    transform: translate(-6%, 0);
+    transform: translate(-8%, 0);
   }
   .anchor,
   .anchor-top {

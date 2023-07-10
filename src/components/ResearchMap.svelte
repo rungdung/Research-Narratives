@@ -14,8 +14,8 @@
   import AnnotationNode from "./nodes/AnnotationNode.svelte";
 
   import ShareModal from "./ShareModal.svelte";
-  import { Button, SpeedDial, Listgroup, ListgroupItem } from "flowbite-svelte";
-  import { CloseCircleSolid, PlusSolid } from "flowbite-svelte-icons";
+  import { Button, SpeedDial, SpeedDialButton } from "flowbite-svelte";
+  import { CloseCircleSolid, PenNibSolid } from "flowbite-svelte-icons";
   import {
     addNewNarrativeNode,
     addNewAnnotationNode,
@@ -42,23 +42,31 @@
     {/each}
   </Svelvet>
 
-  <SpeedDial color="dark" class="absolute top-0 right-0" placement="bottom">
-    <Listgroup active class="w-100">
-      <ListgroupItem
-        name="Add new section for the data story"
-        on:click={addNewNarrativeNode}
-        class="w-40"
-        ><PlusSolid class="mr-2 w-5 h-5" size="20" />Add new section for the
-        data story</ListgroupItem
-      >
-      <ListgroupItem
-        name="Add new annotation node"
-        on:click={addNewAnnotationNode}
-        class="w-40"
-        ><PlusSolid class="mr-2 w-5 h-5" size="20" />
-        Add new media
-      </ListgroupItem>
-    </Listgroup>
+  <SpeedDial
+    color="dark"
+    class="absolute bottom-0 left-2 "
+    placement="top"
+    tooltip="none"
+    popperDefaultClass="flex items-left gap-2"
+  >
+    <PenNibSolid
+      slot="icon"
+      fill="currentColor"
+      class="w-8 h-8"
+      viewBox="0 0 20 20"
+      svgClass="text-white"
+      size="10"
+    />
+    <SpeedDialButton
+      name="Add new section for the data story"
+      on:click={addNewNarrativeNode}
+      class="ml-3 w-40"
+    />
+    <SpeedDialButton
+      on:click={addNewAnnotationNode}
+      class="ml-3 w-40"
+      name="Add new media"
+    />
   </SpeedDial>
 </section>
 
@@ -80,19 +88,5 @@
   #research-map {
     height: 80%;
     width: 100%;
-  }
-
-  #startNarrativeMaking,
-  #createAnnotations {
-    position: absolute;
-    top: 0;
-    right: 0;
-    margin: 1em;
-    background-color: rgb(41, 123, 123);
-    z-index: 100;
-  }
-
-  #createAnnotations {
-    top: 3em !important;
   }
 </style>

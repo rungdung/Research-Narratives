@@ -96,8 +96,8 @@
 
       <span id="right-bar-trigger" class="text-center">
         <Button
-          color="light"
-          class="z-10 absolute top-5 right-5 w-50"
+          color="dark"
+          class="z-10 absolute bg-primary-50 text-black hover:text-white top-5 right-5 w-50"
           on:click={() => (hiddenResearchMap = false)}
         >
           <OpenBookSolid color="light" svgClass="mr-3" />Open research map</Button
@@ -133,7 +133,7 @@
   <title>Research narrative building</title>
 </svelte:head>
 
-<style>
+<style global>
   main {
     max-height: 100vh;
     overflow: hidden;
@@ -174,7 +174,7 @@
     width: 100%;
     margin-top: 1em;
     color: black;
-    background-color: antiquewhite;
+    background-color: #faebd7;
   }
 
   #meta-info {

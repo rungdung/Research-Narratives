@@ -1,5 +1,8 @@
+/* Write your global styles here, in PostCSS syntax */
 @import url("https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&family=Open+Sans:wght@500&display=swap");
-
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 h1,
 h2,
 h3 {
@@ -8,6 +11,13 @@ h3 {
 
 p {
   font-family: "Open Sans", sans-serif;
+}
+
+input,
+textarea {
+  font-family: "Open Sans", sans-serif !important;
+  color: theme("colors.gray.800");
+  border-radius: 10px !important;
 }
 :root {
   line-height: 1.5;
@@ -88,3 +98,7 @@ button:focus-visible {
     background-color: #f9f9f9;
   }
 }
+
+@tailwind components;
+
+@tailwind utilities;

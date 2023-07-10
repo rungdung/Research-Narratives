@@ -9,23 +9,31 @@
     "preview": "vite preview"
   },
   "devDependencies": {
-    "@sveltejs/vite-plugin-svelte": "^2.4.1",
+    "@sveltejs/vite-plugin-svelte": "^2.4.2",
     "@vincjo/datatables": "^1.10.3",
+    "autoprefixer": "^9.8.8",
+    "concurrently": "^8.2.0",
+    "cross-env": "^7.0.3",
     "flowbite-svelte-icons": "^0.1.1",
+    "postcss": "^8.4.24",
+    "postcss-cli": "^7.1.2",
+    "postcss-load-config": "^4.0.1",
     "svelte-routing": "^1.11.0",
+    "tailwindcss": "npm:@tailwindcss/postcss7-compat@^2.2.17",
     "vite": "^4.2.0"
   },
   "dependencies": {
+    "@popperjs/core": "^2.11.8",
     "@supabase/supabase-js": "^2.26.0",
     "@turf/turf": "^6.5.0",
+    "flowbite": "^1.7.0",
     "flowbite-svelte": "^0.38.5",
     "maplibre-gl": "^3.0.1",
     "pdfobject": "^2.2.12",
-    "split.js": "^1.6.5",
     "svelte": "^4.0.0",
     "svelte-collapsible": "^0.2.1",
     "svelte-file-dropzone": "^2.0.1",
     "svelvet": "^8.0.8",
-    "tailwindcss": "^3.3.2"
+    "tailwind-merge": "^1.13.2"
   }
 }

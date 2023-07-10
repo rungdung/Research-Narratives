@@ -11,7 +11,8 @@
   // import Scatterplot from "./Scatterplot.svelte";
 
   // get from local storage and parse
-  let steps = $narrativeNodes;
+  let steps;
+  $: steps = $narrativeNodes;
   let value;
   let node;
 
@@ -33,6 +34,7 @@
   }
 </script>
 
+{#if steps.length > 1}
 <section>
   <div class="hero">
     <h1 class="text-10xl">
@@ -88,6 +90,7 @@
     <a href="" target="_blank">Github</a>
   </h2>
 </footer>
+{/if}
 
 <style>
   :global(body) {

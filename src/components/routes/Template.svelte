@@ -4,16 +4,14 @@
 
   import Scrolly from "../Scrolly.svelte";
   import Map from "../Map.svelte";
+  import { narrativeNodes } from "../../stores";
   import { zoomToFeature } from "../../utils/mapMovements.mjs";
   import { map } from "../Map.svelte";
   import { Marker, Popup } from "maplibre-gl";
-  import MarkerPopup from "../MarkerPopup.svelte";
   // import Scatterplot from "./Scatterplot.svelte";
 
   // get from local storage and parse
-  let steps;
-  $: steps = JSON.parse(localStorage.getItem("narrativeNodes"));
-  console.log(steps);
+  let steps = $narrativeNodes;
   let value;
   let node;
 

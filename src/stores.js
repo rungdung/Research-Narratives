@@ -1,18 +1,10 @@
 import { writable } from "svelte/store";
 
+// Nodes
 export let markupNodes = writable([]);
 export let uploadedSources = writable([]);
 export let annotationNodes = writable([]);
-
-let localNarrativeNodes;
-try {
-  localNarrativeNodes = JSON.parse(localStorage.getItem("narrativeNodes"));
-} catch (error) {
-  console.log(error);
-}
-export let narrativeNodes = writable(
-  localNarrativeNodes ? localNarrativeNodes : []
-);
+export let narrativeNodes = writable([]);
 
 markupNodes.subscribe((value) => {
   localStorage.setItem("markupNodes", JSON.stringify(value));
@@ -27,4 +19,5 @@ annotationNodes.subscribe((value) => {
   localStorage.setItem("annotationNodes", JSON.stringify(value));
 });
 
+// Booleans for global triggers
 export let fileUploadModal = writable(true);

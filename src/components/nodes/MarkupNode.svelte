@@ -1,6 +1,5 @@
 <script>
   import { Node, Anchor, generateOutput, generateInput } from "svelvet";
-  import Dropzone from "svelte-file-dropzone/Dropzone.svelte";
   import { DataHandler, Datatable, Th, ThFilter } from "@vincjo/datatables"; //https://vincjo.fr/datatables/
   import { AccordionItem, Accordion } from "flowbite-svelte";
   import { map } from "../Map.svelte";
@@ -58,7 +57,7 @@
         <AccordionItem paddingFlush={"p-2"}>
           <span slot="header" class="text-white">Notes</span>
           <textarea
-            class="text-white body my-1 py-1"
+            class="text-gray-500 body my-1 py-1 w-full rounded-md bg-inputField-200"
             value={markupNode.notes}
             placeholder="Enter notes"
           />
@@ -128,9 +127,6 @@
 </Node>
 
 <style>
-  .card-header {
-    width: 100% !important;
-  }
   .anchor,
   .anchor-top,
   .anchor-right {
@@ -153,26 +149,7 @@
     top: 50%;
     right: -5%;
   }
-  textarea,
-  :global(select) {
-    background-color: #475569;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    color: white;
 
-    padding: 0.2em !important;
-    margin-right: 0.5em !important;
-  }
-  .title,
-  .body {
-    background-color: #475569;
-    width: 100%;
-    height: fit-content;
-  }
-  .title {
-    height: 3em;
-    font-size: larger;
-  }
   .node-wrapper {
     margin: 1em;
     width: 90%;

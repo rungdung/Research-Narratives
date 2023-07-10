@@ -64,11 +64,11 @@
         <AccordionItem paddingFlush={"p-2"}>
           <span slot="header" class="text-white"> Captions and Notes </span>
           <textarea
-            class="text-white body my-1 py-1"
+            class="text-gray-500 body my-1 py-1 w-full rounded-md bg-inputField-200"
             value={annotationNode.label}
           />
           <textarea
-            class="text-white body my-1 py-1"
+            class="text-gray-500 body my-1 py-1 w-full rounded-md bg-inputField-200"
             value={annotationNode.notes}
           />
         </AccordionItem>
@@ -79,7 +79,7 @@
           annotationNode = annotationNode;
         }}
         accept="image/*"
-        containerClasses="dropzoneChart !bg-gray-600 text-white border-2 border-b-zinc-700"
+        containerClasses="dropzoneChart !bg-gray-300 text-white border-2 border-b-zinc-700"
       />
       {#each annotationNode.files.accepted as item}
         <img src={item} alt="preview" />
@@ -107,8 +107,8 @@
 </Node>
 
 <style>
-  .card-header {
-    width: 100% !important;
+  :global(.dropzoneChart) {
+    background-color: #5e6b6a !important;
   }
   .anchor,
   .anchor-top,
@@ -132,25 +132,7 @@
     top: 50%;
     right: -5%;
   }
-  textarea,
-  :global(select) {
-    background-color: #475569;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    color: white;
 
-    padding: 0.2em !important;
-    margin-right: 0.5em !important;
-  }
-  .title,
-  .body {
-    width: 100%;
-    height: fit-content;
-  }
-  .title {
-    height: 3em;
-    font-size: larger;
-  }
   .node-wrapper {
     margin: 1em;
     width: 90%;

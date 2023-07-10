@@ -85,11 +85,13 @@
 
 <Modal
   id="intro-file-drop"
-  class="bg-white dark:bg-gray-800"
+  color="primary"
+  class="!bg-primary-50 dark:bg-gray-800"
   bind:open={$fileUploadModal}
   size="md"
   title="Narrative Maker: easing research sharing"
   backdropClass="bg-gray-600 bg-opacity-70"
+  defaultClass="!bg-primary-50"
   outsideclose
   autoclose
 >
@@ -126,6 +128,13 @@
       }}>Load from link</Button
     >
   </section>
+  <svelte:fragment slot="footer">
+    This is a alpha prototype. Please report any bugs <a
+      href="https://github.com/rungdung/research-narratives-ui"
+    >
+      at this Github page</a
+    >
+  </svelte:fragment>
 </Modal>
 
 <style>

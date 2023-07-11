@@ -2,7 +2,16 @@
   import { Node, Anchor } from "svelvet";
   import CustomAnchor from "./customAnchor.svelte";
   import { uploadedSources } from "../../stores";
-  import { Input, Textarea, Label } from "flowbite-svelte";
+  import {
+    Input,
+    Textarea,
+    Label,
+    Table,
+    TableBodyRow,
+    TableBodyCell,
+    TableHead,
+    TableHeadCell,
+  } from "flowbite-svelte";
 
   export let sourceNode;
   let position;
@@ -26,26 +35,53 @@
   bind:position
   on:nodeClicked={updatePosition}
 >
-  <div class="node" let:grabHandle>
+  <div class="node w-full" let:grabHandle>
     <div class="node-wrapper">
-      <h3 class="text-3xl my-3">{sourceNode.fileName}</h3>
+      <h3 class="text-3xl my-3">{sourceNode.fileName.replace("_", " ")}</h3>
       <ul class="text-lg">
         <li>Type: {sourceNode.type}</li>
         {#if sourceNode.type === "Spatial"}
           <li>Geometry: {sourceNode.geometry}</li>
         {/if}
+
+        {#if sourceNode.attributes}
+          <li>
+            Attributes:
+            <Table customeColor="inputField-200">
+              <TableHead>
+                <TableHeadCell class="p-1 px-2">Name</TableHeadCell>
+                <TableHeadCell class="p-1 px-2">Data Type</TableHeadCell>
+              </TableHead>
+              {#each sourceNode.attributes as attribute}
+                <TableBodyRow>
+                  <TableBodyCell class="py-1">
+                    {attribute.name}
+                  </TableBodyCell>
+                  <TableBodyCell class="py-1">
+                    {attribute.dataType}
+                  </TableBodyCell>
+                </TableBodyRow>
+              {/each}
+            </Table>
+          </li>
+        {/if}
         <li>
           {#if sourceNode.source}
             Source: {sourceNode.source}
           {:else}
-            <Label for="Source" class="!text-black text-lg">Source</Label>
-            <Input placeholder="please provide a source link" name="citation" />
+            <Label for="Source" class="!text-black text-lg ">Source</Label>
+            <Input
+              class="bg-inputField-200"
+              placeholder="Provide a source link"
+              name="citation"
+            />
           {/if}
         </li>
         <li>
           <Label for="citation" class="!text-black text-lg">Citation</Label>
           <Textarea
-            placeholder="please provide a citation before sharing"
+            class="bg-inputField-200"
+            placeholder="Please provide a citation before sharing"
             name="citation"
           />
         </li>

@@ -1,17 +1,21 @@
 <script>
   import Map from "./components/Map.svelte";
   import ResearchMap from "./components/ResearchMap.svelte";
-  import Search from "./components/Search.svelte";
+  import Filter from "./components/Filter.svelte";
   import FileUploadModal from "./components/FileUploadModal.svelte";
   import FileNavigator from "./components/FileNavigator.svelte";
   import { loadDataFromDB } from "./utils/loadFromDB.mjs";
   import { uploadedSources, markupNodes, narrativeNodes } from "./stores";
   import SearchSemanticScholar from "./components/SearchSemanticScholar.svelte";
 
-  import { CollapsibleCard } from "svelte-collapsible";
-
   import { onMount } from "svelte";
-  import { Drawer, Button, CloseButton } from "flowbite-svelte";
+  import {
+    Drawer,
+    Button,
+    CloseButton,
+    Accordion,
+    AccordionItem,
+  } from "flowbite-svelte";
   import { OpenBookSolid } from "flowbite-svelte-icons";
   import { sineIn } from "svelte/easing";
 
@@ -62,35 +66,37 @@
             </h3>
           </div>
 
-          <aside id="data-ops">
-            <CollapsibleCard>
-              <h3 slot="header">Data operations</h3>
-              <section slot="body" id="data-ops-inner">
-                <div id="search" class="m-2">
-                  <Search />
-                </div>
+          <Accordion flush>
+            <aside id="data-ops">
+              <AccordionItem
+                class="bg-primary-50 !py-0"
+                paddingFlush="py-1"
+                padding="p-0"
+              >
+                <h3 slot="header">Data operations</h3>
+                <section id="data-ops-inner">
+                  <div id="filter" class="m-3 px-3">
+                    <Filter />
+                  </div>
+                </section>
+              </AccordionItem>
+            </aside>
 
-                <div id="filter" class="m-2">
-                  <!--<Filter/>-->
-                </div>
-              </section>
-            </CollapsibleCard>
-          </aside>
+            <aside id="sources">
+              <AccordionItem class="bg-primary-50" paddingFlush="py-1">
+                <h3 slot="header">Sources</h3>
+                <section id="sources-inner">
+                  <div id="parseFile" class="m-2 px-3">
+                    <FileNavigator />
+                  </div>
 
-          <aside id="sources">
-            <CollapsibleCard>
-              <h3 slot="header">Sources</h3>
-              <section slot="body" id="sources-inner">
-                <div id="parseFile" class="m-2">
-                  <FileNavigator />
-                </div>
-
-                <div id="searchSemanticScholar" class="m-2">
-                  <SearchSemanticScholar />
-                </div>
-              </section>
-            </CollapsibleCard>
-          </aside>
+                  <div id="searchSemanticScholar" class="m-2 px-3">
+                    <SearchSemanticScholar />
+                  </div>
+                </section>
+              </AccordionItem>
+            </aside>
+          </Accordion>
         </div>
       </div>
 

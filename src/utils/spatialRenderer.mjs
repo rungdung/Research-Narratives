@@ -4,10 +4,45 @@ import Popup from "../components/MarkerPopup.svelte";
 import { map } from "../components/Map.svelte";
 
 export async function loadSpatialData(file, fileName) {
-  let layerType, layerName;
+  let layerType, layerName, attributes;
   try {
     let responseData = await fetch(file).then((response) => response.json());
     layerType = responseData.features[0].geometry.type;
+
+    // Get Keys and unique values of the key if categorical
+    // assign data type
+    // if data or continous, get range
+    attributes = Object.entries(responseData.features[0].properties).map(
+      ([key, value]) => {
+        let dataType;
+        let range;
+        let uniqueValues = new Set();
+
+        // Check for datatypes
+        if (typeof value == "number") {
+          dataType = "continuous";
+          range = [
+            Math.min(...responseData.feature["properties"]),
+            Math.max(...responseData.features["properties"]),
+          ];
+        } else if (typeof value == "string") {
+          dataType = "string";
+          responseData.features.map((feature) => {
+            uniqueValues.add(feature.properties[key]);
+          });
+        } else if (typeof value == "boolean") {
+          dataType = "boolean";
+        }
+
+        return {
+          name: key,
+          dataType: dataType,
+          range: range,
+          values: Array.from(uniqueValues),
+        };
+      }
+    );
+    console.log(attributes);
   } catch (error) {
     alert(error);
   }
@@ -30,6 +65,7 @@ export async function loadSpatialData(file, fileName) {
         type: "Spatial",
         geometry: "Point",
         blob: file,
+        attributes: attributes,
         visible: true,
         container: null,
       });
@@ -55,6 +91,7 @@ export async function loadSpatialData(file, fileName) {
         type: "Spatial",
         geometry: "LineString",
         blob: file,
+        attributes: attributes,
         visible: true,
         container: null,
       });
@@ -79,6 +116,7 @@ export async function loadSpatialData(file, fileName) {
         type: "Spatial",
         geometry: "Polygon",
         blob: file,
+        attributes: attributes,
         visible: true,
         container: null,
       });

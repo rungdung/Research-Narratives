@@ -28,3 +28,4 @@ annotationNodes.subscribe((value) => {
 
 // Booleans for global triggers
 export let fileUploadModal = writable(true);
+export let mapLoadStatus = writable(false);

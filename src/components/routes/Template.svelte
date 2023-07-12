@@ -4,17 +4,17 @@
 
   import Scrolly from "../Scrolly.svelte";
   import Map from "../Map.svelte";
-  import { narrativeNodes } from "../../stores";
+  import { narrativeNodes, mapLoadStatus } from "../../stores";
   import { zoomToFeature } from "../../utils/mapMovements.mjs";
   import { map } from "../Map.svelte";
   import { Marker, Popup } from "maplibre-gl";
+
+  import { tick } from "svelte";
   // import Scatterplot from "./Scatterplot.svelte";
 
   // get from local storage and parse
-  let steps;
+  let steps, value, node;
   $: steps = $narrativeNodes;
-  let value;
-  let node;
 
   function zoomToFocus(node) {
     if (node.mapFeature && map) {
@@ -35,61 +35,71 @@
 </script>
 
 {#if steps.length > 1}
-<section>
-  <div class="hero">
-    <h1 class="text-10xl">
-      {steps[0].label ?? "A story about a place"}
-    </h1>
-    <h2 class="text-2xl">
-      {steps[0].notes ?? "Enter narrative text to accompany the section"}
-    </h2>
-  </div>
-  <div class="section-container">
-    <div class="steps-container">
-      <Scrolly bind:value>
-        {#each steps as text, i}
-          {#if i > 0}
-            <div class="step" class:active={value === i - 1}>
-              <div class="step-content">
-                <h2 class="text-5xl">
-                  {@html text.label ?? steps[value].label}
-                </h2>
-                <p>{@html text.notes}</p>
+  <section>
+    <div class="hero">
+      <h1 class="text-10xl">
+        {steps[0].label ?? "A story about a place"}
+      </h1>
+      <h2 class="text-2xl">
+        {steps[0].notes ?? "Enter narrative text to accompany the section"}
+      </h2>
+    </div>
+    <div class="section-container">
+      <div class="steps-container">
+        <Scrolly bind:value>
+          {#each steps as text, i}
+            {#if i > 0}
+              <div class="step" class:active={value === i - 1}>
+                <div class="step-content">
+                  <h2 class="text-5xl">
+                    {@html text.label ?? steps[value].label}
+                  </h2>
+                  <p>{@html text.notes}</p>
+                </div>
               </div>
-            </div>
-          {/if}
-        {/each}
-        <div class="spacer" />
-      </Scrolly>
+            {/if}
+          {/each}
+          <div class="spacer" />
+        </Scrolly>
+      </div>
+      <div class="sticky">
+        {#if value < steps.length}
+          <Map />
+          {#await tick()}
+            <p>... loading</p>
+          {:then}
+            {#key value}
+              {#if steps[value].narrativeData != null}
+                {#if steps[value].narrativeData.images != null}
+                  {#each steps[value].images.images.accepted as item}
+                    <img
+                      src={item}
+                      alt="preview"
+                      class="fixed top-0 right-2 w-100 block object-fill"
+                    />
+                  {/each}
+                {:else if steps[value].narrativeData.mapFeature != null && $mapLoadStatus}
+                  {map.setFilter("All", null)}
+                  {zoomToFocus(steps[value].narrativeData)}
+                {:else if steps[value].narrativeData.filterExpression != null && $mapLoadStatus}
+                  {map.setFilter(
+                    steps[value].narrativeData.targetLayer,
+                    steps[value].narrativeData.filterExpression
+                  )}
+                {/if}
+              {/if}
+            {/key}
+          {/await}
+        {/if}
+      </div>
     </div>
-    <div class="sticky">
-      {#if value < steps.length}
-        <Map />
-        {#key value}
-          {#if steps[value].images}
-            {console.log(steps[value])}
-            {console.log(steps[value].images.images.accepted)}
-            {#each steps[value].images.images.accepted as item}
-              <img
-                src={item}
-                alt="preview"
-                class="fixed top-0 right-2 w-100 block object-fill"
-              />
-            {/each}
-          {:else if steps[value].mapFeature != null && map}
-            {zoomToFocus(steps[value].mapFeature)}
-          {/if}
-        {/key}
-      {/if}
-    </div>
-  </div>
-</section>
-<footer class="hero">
-  <h1>Thanks!</h1>
-  <h2>
-    <a href="" target="_blank">Github</a>
-  </h2>
-</footer>
+  </section>
+  <footer class="hero">
+    <h1>Thanks!</h1>
+    <h2>
+      <a href="" target="_blank">Github</a>
+    </h2>
+  </footer>
 {/if}
 
 <style>

@@ -73,7 +73,7 @@
                 paddingFlush="py-1"
                 padding="p-0"
               >
-                <h3 slot="header">Data operations</h3>
+                <h3 slot="header">Filter</h3>
                 <section id="data-ops-inner">
                   <div id="filter" class="m-3 px-3">
                     <Filter />
@@ -83,7 +83,7 @@
             </aside>
 
             <aside id="sources">
-              <AccordionItem class="bg-primary-50" paddingFlush="py-1">
+              <AccordionItem class="bg-primary-50" paddingFlush="py-1" open>
                 <h3 slot="header">Sources</h3>
                 <section id="sources-inner">
                   <div id="parseFile" class="m-2 px-3">

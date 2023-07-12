@@ -5,13 +5,17 @@ import { map } from "../components/Map.svelte";
 
 export async function loadSpatialData(file, fileName) {
   let layerType, layerName, attributes;
+  let responseData;
   try {
-    let responseData = await fetch(file).then((response) => response.json());
+    responseData = await fetch(file).then((response) => response.json());
     layerType = responseData.features[0].geometry.type;
-
-    // Get Keys and unique values of the key if categorical
-    // assign data type
-    // if data or continous, get range
+  } catch (error) {
+    console.log(error);
+  }
+  // Get Keys and unique values of the key if categorical
+  // assign data type
+  // if data or continous, get range
+  try {
     attributes = Object.entries(responseData.features[0].properties).map(
       ([key, value]) => {
         let dataType;
@@ -21,9 +25,12 @@ export async function loadSpatialData(file, fileName) {
         // Check for datatypes
         if (typeof value == "number") {
           dataType = "continuous";
+          let values = responseData.features.map(
+            (feature) => feature.properties[key]
+          );
           range = [
-            Math.min(...responseData.feature["properties"]),
-            Math.max(...responseData.features["properties"]),
+            Math.round(Math.min(...values) * 10) / 10,
+            Math.round(Math.max(...values) * 10) / 10,
           ];
         } else if (typeof value == "string") {
           dataType = "string";
@@ -44,7 +51,7 @@ export async function loadSpatialData(file, fileName) {
     );
     console.log(attributes);
   } catch (error) {
-    alert(error);
+    console.log(error);
   }
 
   try {

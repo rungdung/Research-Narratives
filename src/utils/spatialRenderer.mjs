@@ -59,7 +59,7 @@ export async function loadSpatialData(file, fileName, fileUrl, DBload = false) {
       filter: ["==", "$type", "Polygon"],
       paint: {
         "fill-color": "#088",
-        "fill-opacity": 0.1,
+        "fill-opacity": 0.6,
         "fill-outline-color": "green",
       },
     });

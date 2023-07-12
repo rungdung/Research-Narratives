@@ -3,58 +3,79 @@
   import maplibre from "maplibre-gl";
   import { uploadedSources } from "../stores";
   import { Select, Label, Button, Dropdown, Search } from "flowbite-svelte";
-
+  import RangeSlider from "svelte-range-slider-pips";
   // searches a geojson layer for a given string
   // zooms to the first result
   // returns the number of results
 
   let selectedLayer;
-  let selectedAttribute, selectedAttributeValue;
+  let attributes;
+  let selectedAttribute,
+    selectedAttributeValue,
+    selectedAttributeRange = [0, 1];
   // iterate over the properties of the first feature in the geojson object
 
-  export async function search(
-    selectedLayer,
-    selectedAttribute,
-    selectedAttributeValue
-  ) {
-    map.setFilter(selectedLayer, [
+  // save attributes to a variable for looping in svelte
+  $: attributes = selectedLayer?.attributes;
+
+  // slider formmating
+  const num = new Intl.NumberFormat("en-IN");
+
+  async function search() {
+    map.setFilter(selectedLayer.name, [
       "==",
       ["get", selectedAttribute.name],
       selectedAttributeValue,
     ]);
   }
 
-  function clearAllFilters() {
+  async function clearAllFilters() {
     map.setFilter(selectedLayer, null);
   }
+
+  async function searchRange(selectedAttributeRange) {
+    map.setFilter(selectedLayer.name, [
+      "all",
+      [">=", ["get", selectedAttribute.name], selectedAttributeRange[0]],
+      ["<=", ["get", selectedAttribute.name], selectedAttributeRange[1]],
+    ]);
+  }
+
+  $: searchRange(selectedAttributeRange);
 </script>
 
-<Label for="layerSelect">Select a layer</Label>
-<Select id="layerSelect" size="sm" class="p-0 px-1" bind:value={selectedLayer}>
+<Label for="layerSelect">Select a layer to filter from</Label>
+<Select
+  id="layerSelect"
+  size="sm"
+  class="p-0 px-1 my-1"
+  bind:value={selectedLayer}
+>
   <option selected value="all">All</option>
   {#each $uploadedSources as source}
-    <option value={source.name}>{source.fileName}</option>
+    <option value={source}>{source.fileName}</option>
   {/each}
 </Select>
 
-<Label for="attribute-select">Select an attribute</Label>
-<Select
-  id="attribute-select"
-  size="sm"
-  class="p-0 px-1"
-  bind:value={selectedAttribute}
->
-  {#each $uploadedSources as source}
-    {#each source.attributes as attribute}
+{#if attributes}
+  <Label for="attribute-select">Select an attribute</Label>
+  <Select
+    id="attribute-select"
+    size="sm"
+    class="p-0 px-1 my-1"
+    bind:value={selectedAttribute}
+  >
+    {#each attributes as attribute}
       <option value={attribute}
         ><span class="text-3xs">{attribute.dataType}</span>
         {attribute.name}</option
       >
     {/each}
-  {/each}
-</Select>
+  </Select>
+{/if}
 
 {#if selectedAttribute && selectedAttribute.dataType === "string"}
+  <Label for="value-select">Select a value</Label>
   <Select
     id="value-select"
     size="sm"
@@ -65,7 +86,6 @@
       {#each source.attributes as attribute}
         {#if attribute.name === selectedAttribute.name}
           {#each attribute.values as value}
-            <Search />
             <option {value}>{value}</option>
           {/each}
         {/if}
@@ -74,9 +94,26 @@
   </Select>
 {/if}
 
+{#if selectedAttribute && selectedAttribute.dataType === "continuous"}
+  <Label for="value-select">Select a value</Label>
+  <RangeSlider
+    id="value-select"
+    steps={900}
+    bind:values={selectedAttributeRange}
+    min={selectedAttribute.range[0]}
+    max={selectedAttribute.range[1]}
+    formatter={(v) => num.format(v * 1000)}
+    range
+    float
+    pips
+    first="label"
+    last="label"
+    step={10}
+  />
+{/if}
+
 <Button
-  on:click={() =>
-    search(selectedLayer, selectedAttribute, selectedAttributeValue)}
+  on:click={search}
   class="rounded-md p-1 mt-2 bg-slate-800"
   id="search-button">Filter</Button
 >
@@ -84,3 +121,12 @@
 <Button on:click={clearAllFilters} class="rounded-md p-1 mt-2 bg-slate-800">
   Clear all filters</Button
 >
+
+<style>
+  :global(.rangeSlider) {
+    font-size: 0.7rem !important;
+  }
+
+  :global(.rangeNub) {
+  }
+</style>

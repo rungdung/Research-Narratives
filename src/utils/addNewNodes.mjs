@@ -22,10 +22,6 @@ export async function addNewNarrativeNode() {
               y: previousNode.position.y + 500,
             }
           : { x: 1000, y: -100 },
-      files: {
-        accepted: [],
-        rejected: [],
-      },
       connections:
         nodes.length > 0
           ? [
@@ -33,9 +29,6 @@ export async function addNewNarrativeNode() {
               [previousId, previousId.concat("2")],
             ]
           : [],
-      mapFeature: null,
-      images: [],
-      charts: [],
     });
     return nodes;
   });
@@ -73,6 +66,7 @@ export function addNewMarkupNode(feature) {
 
     nodes.push({
       id: "markupNode-" + nodes.length,
+      type: "singular",
       label: props.name || props.title || props.label || "Untitled",
       feature: feature,
       notes: "",
@@ -80,6 +74,25 @@ export function addNewMarkupNode(feature) {
       properties: props,
     });
 
+    return nodes;
+  });
+}
+
+export function addNewMarkupNodeCollection(
+  fileName,
+  targetLayer,
+  filterExpression
+) {
+  markupNodes.update((nodes) => {
+    nodes.push({
+      id: "markupNode-" + nodes.length,
+      type: "collection",
+      label: "Collection",
+      source: fileName,
+      filterExpression: filterExpression,
+      targetLayer: targetLayer,
+      notes: "",
+    });
     return nodes;
   });
 }

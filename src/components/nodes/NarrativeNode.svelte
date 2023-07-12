@@ -7,25 +7,20 @@
 
   export let node;
 
-  const inputs = generateInput({
-    mapFeature: null,
-    images: null,
-    charts: null,
-  });
+  const inputs = generateInput({});
 
   const processor = ($inputs) => {
     try {
-      node.mapFeature = $inputs["mapFeature"];
-      node.images = $inputs["images"];
-      node.charts = $inputs["charts"];
+      node.narrativeData = $inputs.narrativeData;
 
       // insert into parent store
-      // find index in store
       narrativeNodes.update((pNodes) => {
         let index = pNodes.findIndex((parentNode) => parentNode.id == node.id);
         pNodes[index] = node;
         return pNodes;
       });
+
+      console.log($narrativeNodes);
     } catch (error) {
       console.log(error);
     }
@@ -82,7 +77,7 @@
         multiple={false}
         inputsStore={inputs}
         input
-        key="mapFeature"
+        key="narrativeData"
       >
         <CustomAnchor
           {hovering}

@@ -1,4 +1,4 @@
-import { loadSpatialData } from "./spatialRenderer.mjs";
+import { renderData } from "./parentRenderer.mjs";
 
 export async function loadDataFromDB(supabase) {
   //get the uuid from URL
@@ -26,6 +26,6 @@ export async function loadDataFromDB(supabase) {
 
 async function loadSources(sources) {
   sources.forEach((source) => {
-    loadSpatialData(null, source.name, source.dbURL, true);
+    renderData(source.fileName, source.type, null, source.dbURL, true);
   });
 }

@@ -8,19 +8,31 @@ export async function loadData(files) {
   let file = files.accepted[currentIndex];
   let fileLocalUrl = URL.createObjectURL(file);
   let fileDBUrl = await loadToDB(file, file.name);
-  console.log(fileDBUrl);
-  renderData(file, fileLocalUrl, fileDBUrl);
+
+  const fileName = file.name.split(".")[0];
+  const fileType = file.name.split(".")[1];
+  renderData(fileName, fileType, fileLocalUrl, fileDBUrl);
 }
 
 // render files
-export async function renderData(file, fileLocalUrl, fileDBUrl) {
+export async function renderData(
+  fileName,
+  fileType,
+  fileLocalUrl,
+  fileDBUrl,
+  DBload = false
+) {
   try {
-    const fileName = file.name.split(".")[0];
-    const fileType = file.name.split(".")[1];
+    if (DBload == true) {
+      fileLocalUrl = fileDBUrl;
+    }
 
     // Handle different file types
-    if (fileType.toLowerCase() === "geojson") {
-      loadSpatialData(fileLocalUrl, fileName, fileDBUrl);
+    if (
+      fileType.toLowerCase() === "geojson" ||
+      fileType.toLowerCase() === "spatial"
+    ) {
+      loadSpatialData(null, fileName, fileDBUrl, DBload);
     } else if (fileType.toLowerCase() === "csv") {
       // Handle CSV file type
       // Perform actions specific to CSV files

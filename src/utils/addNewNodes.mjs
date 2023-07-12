@@ -19,7 +19,7 @@ export async function addNewNarrativeNode() {
         nodes.length > 0
           ? {
               x: previousNode.position.x,
-              y: previousNode.position.y + 400,
+              y: previousNode.position.y + 500,
             }
           : { x: 1000, y: -100 },
       files: {

@@ -4,6 +4,7 @@
   import { uploadedSources } from "../stores";
   import { Select, Label, Button, Dropdown, Search } from "flowbite-svelte";
   import RangeSlider from "svelte-range-slider-pips";
+  import { addNewMarkupNodeCollection } from "../utils/addNewNodes.mjs";
   // searches a geojson layer for a given string
   // zooms to the first result
   // returns the number of results
@@ -13,6 +14,7 @@
   let selectedAttribute,
     selectedAttributeValue,
     selectedAttributeRange = [0, 1];
+  let filterExpression;
   // iterate over the properties of the first feature in the geojson object
 
   // save attributes to a variable for looping in svelte
@@ -22,11 +24,11 @@
   const num = new Intl.NumberFormat("en-IN");
 
   async function search() {
-    map.setFilter(selectedLayer.name, [
-      "==",
-      ["get", selectedAttribute.name],
-      selectedAttributeValue,
-    ]);
+    filterExpression = [
+      "all",
+      ["==", ["get", selectedAttribute.name], selectedAttributeValue],
+    ];
+    map.setFilter(selectedLayer.name, filterExpression);
   }
 
   async function clearAllFilters() {
@@ -34,11 +36,12 @@
   }
 
   async function searchRange(selectedAttributeRange) {
-    map.setFilter(selectedLayer.name, [
+    filterExpression = [
       "all",
       [">=", ["get", selectedAttribute.name], selectedAttributeRange[0]],
       ["<=", ["get", selectedAttribute.name], selectedAttributeRange[1]],
-    ]);
+    ];
+    map.setFilter(selectedLayer.name, filterExpression);
   }
 
   $: searchRange(selectedAttributeRange);
@@ -122,11 +125,21 @@
   Clear all filters</Button
 >
 
+<Button
+  on:click={() => {
+    addNewMarkupNodeCollection(
+      selectedLayer.fileName,
+      selectedLayer.name,
+      filterExpression
+    );
+  }}
+  class="rounded-md p-1 mt-2 bg-slate-800"
+>
+  Add to Research Map</Button
+>
+
 <style>
   :global(.rangeSlider) {
     font-size: 0.7rem !important;
-  }
-
-  :global(.rangeNub) {
   }
 </style>

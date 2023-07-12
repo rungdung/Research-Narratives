@@ -10,26 +10,32 @@
 
   export let markupNode;
   let position;
+  let handler, rows;
 
-  // map the data to key value pairs for the table
-  let data = Object.entries(markupNode.properties).map(([key, value]) => {
-    return {
-      key: key,
-      value: value,
-    };
-  });
-  // Create a new data handler for the table
-  const handler = new DataHandler(data, { rowsPerPage: 5 });
-  const rows = handler.getRows();
+  if (markupNode.type == "singular") {
+    // map the data to key value pairs for the table
+    let data = Object.entries(markupNode.properties).map(([key, value]) => {
+      return {
+        key: key,
+        value: value,
+      };
+    });
+    // Create a new data handler for the table
+    handler = new DataHandler(data, { rowsPerPage: 5 });
+    rows = handler.getRows();
+  }
 
   // Data transfer
   let inputs = generateInput({
     mapFeature: markupNode.feature,
+    filterExpression: markupNode.filterExpression,
+    targetLayer: markupNode.targetLayer,
   });
+
   const processor = ($inputs) => {
-    console.log($inputs.mapFeature);
     return $inputs;
   };
+
   const output = generateOutput(inputs, processor);
 
   function updatePosition() {
@@ -62,27 +68,29 @@
             placeholder="Enter notes"
           />
         </AccordionItem>
-        <AccordionItem paddingFlush={"p-2"}>
-          <span slot="header" class="text-white">Table of properties</span>
-          <section>
-            <Datatable {handler} class="text-gray-300">
-              <table>
-                <thead>
-                  <Th {handler} orderBy="key">Key</Th>
-                  <Th {handler} orderBy="value">Value</Th>
-                </thead>
-                <tbody>
-                  {#each $rows as row}
-                    <tr>
-                      <td>{@html row.key}</td>
-                      <td>{@html row.value}</td>
-                    </tr>
-                  {/each}
-                </tbody>
-              </table>
-            </Datatable>
-          </section>
-        </AccordionItem>
+        {#if markupNode.type == "singular"}
+          <AccordionItem paddingFlush={"p-2"}>
+            <span slot="header" class="text-white">Table of properties</span>
+            <section>
+              <Datatable {handler} class="text-gray-300">
+                <table>
+                  <thead>
+                    <Th {handler} orderBy="key">Key</Th>
+                    <Th {handler} orderBy="value">Value</Th>
+                  </thead>
+                  <tbody>
+                    {#each $rows as row}
+                      <tr>
+                        <td>{@html row.key}</td>
+                        <td>{@html row.value}</td>
+                      </tr>
+                    {/each}
+                  </tbody>
+                </table>
+              </Datatable>
+            </section>
+          </AccordionItem>
+        {/if}
       </Accordion>
       <button
         on:click={() => {
@@ -117,7 +125,7 @@
         let:connecting
         let:hovering
         outputStore={output}
-        key="mapFeature"
+        key="narrativeData"
         output
       >
         <CustomAnchor {hovering} {connecting} {linked} label="Data" />

@@ -10,6 +10,7 @@
   import { onMount } from "svelte";
   import maplibre from "maplibre-gl";
   import "maplibre-gl/dist/maplibre-gl.css";
+  import { mapLoadStatus } from "../stores";
 
   let mapContainer;
 
@@ -29,6 +30,10 @@
       })
     );
     map.resize();
+
+    map.on("idle", async () => {
+      $mapLoadStatus = map.isStyleLoaded();
+    });
   });
 </script>
 

@@ -10,7 +10,14 @@ markupNodes.subscribe((value) => {
   localStorage.setItem("markupNodes", JSON.stringify(value));
 });
 uploadedSources.subscribe((value) => {
-  localStorage.setItem("uploadedSources", JSON.stringify(value));
+  try {
+    localStorage.setItem("uploadedSources", JSON.stringify(value));
+  } catch (error) {
+    if (error.name === "QuotaExceededError")
+      alert(
+        "The file has too many attributes. You may face performance or rendering errors. Please reduce the number of attributes."
+      );
+  }
 });
 narrativeNodes.subscribe((value) => {
   localStorage.setItem("narrativeNodes", JSON.stringify(value));

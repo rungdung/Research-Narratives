@@ -3,21 +3,11 @@ import maplibre from "maplibre-gl";
 import Popup from "../components/MarkerPopup.svelte";
 import { map } from "../components/Map.svelte";
 
-export async function loadSpatialData(
-  file,
-  fileName,
-  fileDBUrl,
-  DBload = false
-) {
+export async function loadSpatialData(file, fileName, fileUrl, DBload = false) {
   let layerType, layerName, attributes, responseData;
 
-  // Check if file is from DB or local
-  if (DBload == true) {
-    file = fileDBUrl;
-  }
-
   try {
-    responseData = await fetch(file).then((response) => response.json());
+    responseData = await fetch(fileUrl).then((response) => response.json());
     layerType = responseData.features[0].geometry.type;
   } catch (error) {
     console.log(error);
@@ -27,7 +17,7 @@ export async function loadSpatialData(
   try {
     map.addSource(fileName, {
       type: "geojson",
-      data: file,
+      data: responseData,
     });
   } catch (error) {
     alert(error);
@@ -37,6 +27,7 @@ export async function loadSpatialData(
   // Add as layer depending on geometry type
   if (layerType == "Point") {
     layerName = fileName + "-point";
+    console.log(layerName);
     map.addLayer({
       id: layerName,
       type: "circle",
@@ -147,10 +138,9 @@ export async function loadSpatialData(
       sources.push({
         fileName: fileName,
         name: layerName,
-        dbURL: fileDBUrl,
+        dbURL: fileUrl,
         type: "Spatial",
         geometry: layerType,
-        blob: file,
         attributes: attributes,
         visible: true,
         container: null,

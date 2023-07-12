@@ -3,57 +3,27 @@ import maplibre from "maplibre-gl";
 import Popup from "../components/MarkerPopup.svelte";
 import { map } from "../components/Map.svelte";
 
-export async function loadSpatialData(file, fileName) {
-  let layerType, layerName, attributes;
-  let responseData;
+export async function loadSpatialData(
+  file,
+  fileName,
+  fileDBUrl,
+  DBload = false
+) {
+  let layerType, layerName, attributes, responseData;
+
+  // Check if file is from DB or local
+  if (DBload == true) {
+    file = fileDBUrl;
+  }
+
   try {
     responseData = await fetch(file).then((response) => response.json());
     layerType = responseData.features[0].geometry.type;
   } catch (error) {
     console.log(error);
   }
-  // Get Keys and unique values of the key if categorical
-  // assign data type
-  // if data or continous, get range
-  try {
-    attributes = Object.entries(responseData.features[0].properties).map(
-      ([key, value]) => {
-        let dataType;
-        let range;
-        let uniqueValues = new Set();
 
-        // Check for datatypes
-        if (typeof value == "number") {
-          dataType = "continuous";
-          let values = responseData.features.map(
-            (feature) => feature.properties[key]
-          );
-          range = [
-            Math.round(Math.min(...values) * 10) / 10,
-            Math.round(Math.max(...values) * 10) / 10,
-          ];
-        } else if (typeof value == "string") {
-          dataType = "string";
-          responseData.features.map((feature) => {
-            uniqueValues.add(feature.properties[key]);
-          });
-        } else if (typeof value == "boolean") {
-          dataType = "boolean";
-        }
-
-        return {
-          name: key,
-          dataType: dataType,
-          range: range,
-          values: Array.from(uniqueValues),
-        };
-      }
-    );
-    console.log(attributes);
-  } catch (error) {
-    console.log(error);
-  }
-
+  // Add as source
   try {
     map.addSource(fileName, {
       type: "geojson",
@@ -61,24 +31,12 @@ export async function loadSpatialData(file, fileName) {
     });
   } catch (error) {
     alert(error);
+    return;
   }
 
+  // Add as layer depending on geometry type
   if (layerType == "Point") {
     layerName = fileName + "-point";
-    uploadedSources.update((sources) => {
-      sources.push({
-        fileName: fileName,
-        name: layerName,
-        type: "Spatial",
-        geometry: "Point",
-        blob: file,
-        attributes: attributes,
-        visible: true,
-        container: null,
-      });
-      return sources;
-    });
-
     map.addLayer({
       id: layerName,
       type: "circle",
@@ -91,19 +49,6 @@ export async function loadSpatialData(file, fileName) {
     });
   } else if (layerType == "LineString") {
     layerName = fileName + "-line";
-    uploadedSources.update((sources) => {
-      sources.push({
-        fileName: fileName,
-        name: layerName,
-        type: "Spatial",
-        geometry: "LineString",
-        blob: file,
-        attributes: attributes,
-        visible: true,
-        container: null,
-      });
-      return sources;
-    });
     map.addLayer({
       id: layerName,
       type: "line",
@@ -116,19 +61,6 @@ export async function loadSpatialData(file, fileName) {
     });
   } else if (layerType == "Polygon" || layerType == "MultiPolygon") {
     layerName = fileName + "-fill";
-    uploadedSources.update((sources) => {
-      sources.push({
-        fileName: fileName,
-        name: layerName,
-        type: "Spatial",
-        geometry: "Polygon",
-        blob: file,
-        attributes: attributes,
-        visible: true,
-        container: null,
-      });
-      return sources;
-    });
     map.addLayer({
       id: layerName,
       type: "fill",
@@ -162,7 +94,6 @@ export async function loadSpatialData(file, fileName) {
       .addTo(map);
   });
 
-  // Change cursor style
   map.on("mouseenter", layerName, function () {
     map.getCanvas().style.cursor = "pointer";
   });
@@ -171,7 +102,60 @@ export async function loadSpatialData(file, fileName) {
     map.getCanvas().style.cursor = "grab";
   });
 
-  // Extract properties from GeoJSON features
-  // for filtering in Filter.svelte
-  //loadProperties(file);
+  if (DBload == false) {
+    // Get Keys and unique values of the key if categorical assign data type
+    // if continuous, get range
+    try {
+      attributes = Object.entries(responseData.features[0].properties).map(
+        ([key, value]) => {
+          let dataType;
+          let range;
+          let uniqueValues = new Set();
+
+          // Check for datatypes
+          if (typeof value == "number") {
+            dataType = "continuous";
+            let values = responseData.features.map(
+              (feature) => feature.properties[key]
+            );
+            range = [
+              Math.round(Math.min(...values) * 10) / 10,
+              Math.round(Math.max(...values) * 10) / 10,
+            ];
+          } else if (typeof value == "string") {
+            dataType = "string";
+            responseData.features.map((feature) => {
+              uniqueValues.add(feature.properties[key]);
+            });
+          } else if (typeof value == "boolean") {
+            dataType = "boolean";
+          }
+
+          return {
+            name: key,
+            dataType: dataType,
+            range: range,
+            values: Array.from(uniqueValues),
+          };
+        }
+      );
+    } catch (error) {
+      console.log(error);
+    }
+
+    uploadedSources.update((sources) => {
+      sources.push({
+        fileName: fileName,
+        name: layerName,
+        dbURL: fileDBUrl,
+        type: "Spatial",
+        geometry: layerType,
+        blob: file,
+        attributes: attributes,
+        visible: true,
+        container: null,
+      });
+      return sources;
+    });
+  }
 }

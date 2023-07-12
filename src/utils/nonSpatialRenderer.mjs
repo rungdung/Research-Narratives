@@ -2,7 +2,7 @@ import PDFobject from "pdfobject";
 import { uploadedSources } from "../stores";
 import { loadSpatialData } from "./spatialRenderer.mjs";
 
-export async function loadPDFData(file, fileName, fileViewPort) {
+export async function loadPDFData(file, fileName, fileDBUrl) {
   try {
     // Open in new popup tab
     //window.open(file.blob, "_blank");
@@ -11,11 +11,11 @@ export async function loadPDFData(file, fileName, fileViewPort) {
     uploadedSources.update((sources) => {
       sources.push({
         name: fileName,
+        dbURL: fileDBUrl,
         type: "PDF",
         geometry: "NA",
         blob: file,
         visible: false,
-        container: fileViewPort,
       });
       return sources;
     });

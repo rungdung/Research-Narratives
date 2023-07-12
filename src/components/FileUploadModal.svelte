@@ -2,12 +2,12 @@
   import Dropzone from "svelte-file-dropzone/Dropzone.svelte";
   import { onMount } from "svelte";
 
-  import { loadSpatialData } from "../utils/spatialRenderer.mjs";
-  import { loadPDFData, loadLinkData } from "../utils/nonSpatialRenderer.mjs";
   import { Modal, Button } from "flowbite-svelte";
   import { FilePlusSolid, FileImportSolid } from "flowbite-svelte-icons";
   import { fileUploadModal } from "../stores";
 
+  import { loadData } from "../utils/parentRenderer.mjs";
+  import { loadLinkData } from "../utils/nonSpatialRenderer.mjs";
   let baseDB = {
       // file upload array
       accepted: [],
@@ -23,57 +23,8 @@
     const { acceptedFiles, fileRejections } = e.detail;
     files.accepted = [...files.accepted, ...acceptedFiles];
     files.rejected = [...files.rejected, ...fileRejections];
-    loadData();
+    loadData(files);
     $fileUploadModal = false;
-  }
-
-  // load last uploaded file
-  async function loadData() {
-    let currentIndex = baseDB.accepted.length - 1;
-    let file = baseDB.accepted[currentIndex];
-    let fileLocalUrl = URL.createObjectURL(file);
-    renderData(file, fileLocalUrl);
-  }
-
-  // render files
-  async function renderData(file, fileLocalUrl) {
-    try {
-      const fileName = file.name.split(".")[0];
-      const fileType = file.name.split(".")[1];
-
-      // Handle different file types
-      if (fileType.toLowerCase() === "geojson") {
-        loadSpatialData(fileLocalUrl, fileName);
-      } else if (fileType.toLowerCase() === "csv") {
-        // Handle CSV file type
-        // Perform actions specific to CSV files
-        console.log("CSV file detected:", fileName);
-      } else if (fileType.toLowerCase() === "pdf") {
-        loadPDFData(fileLocalUrl, fileName, fileViewPort);
-      } else {
-        alert("File type not supported");
-      }
-    } catch (error) {
-      console.error("Error uploading file:", error.message);
-    }
-
-    // Upload file to Supabase storage
-    try {
-      const { data, error } = await supabase.storage
-        .from("researchNarratives")
-        .upload("public/" + file.name, file);
-
-      const fileUrl = supabase.storage
-        .from("researchNarratives")
-        .getPublicUrl("public/" + file.name);
-      console.log(fileUrl.data.publicUrl);
-      if (error.message != "The resource already exists") {
-        console.error("Error uploading file:", error.message);
-        return;
-      }
-    } catch (error) {
-      console.error("Error uploading file:", error.message);
-    }
   }
 
   onMount(() => {

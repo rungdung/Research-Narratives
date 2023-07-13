@@ -2,9 +2,20 @@
 import maplibre from "maplibre-gl";
 import * as Turf from "@turf/turf";
 
-export function zoomToFeature(e, map) {
-  let point;
-  let geometry = e._geometry ? e._geometry : e.geometry;
+export function zoomToFeature(feature, featureSource, map, type = "singular") {
+  let point, geometry;
+  console.log(type);
+  if (type == "singular") {
+    geometry = feature._geometry ? feature._geometry : feature.geometry;
+  }
+  if (type == "collection") {
+    console.log(featureSource);
+    geometry = map.getSource(featureSource); //._data.features[0].geometry;
+    let bbox = Turf.bbox(geometry._data);
+    map.fitBounds(bbox);
+    return;
+  }
+
   // highlightLayer.clearLayers();
   if (geometry.type == "Polygon") {
     point = Turf.centerOfMass(

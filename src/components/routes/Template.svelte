@@ -3,18 +3,22 @@
 	Scrollytelling component from Russell Goldenberg https://twitter.com/codenberg/status/1432774653139984387 */
 
   import Scrolly from "../Scrolly.svelte";
-  import Map from "../Map.svelte";
-  import { narrativeNodes, mapLoadStatus } from "../../stores";
+  import Map, { map } from "../Map.svelte";
+  import { narrativeNodes } from "../../stores";
   import { zoomToFeature } from "../../utils/mapMovements.mjs";
-  import { map } from "../Map.svelte";
   import { Marker, Popup } from "maplibre-gl";
-
   import { tick } from "svelte";
-  // import Scatterplot from "./Scatterplot.svelte";
 
   // get from local storage and parse
-  let steps, value, node;
+  let steps, value, node, title, subtitle;
+
   $: steps = $narrativeNodes;
+
+  $: if (steps && steps.length > 0) {
+    title = steps[0].label;
+    subtitle = steps[0].notes;
+    steps = steps.splice(1);
+  }
 
   function zoomToFocus(node) {
     if (node.mapFeature && map) {
@@ -38,18 +42,18 @@
   <section>
     <div class="hero">
       <h1 class="text-10xl">
-        {steps[0].label ?? "A story about a place"}
+        {title}
       </h1>
       <h2 class="text-2xl">
-        {steps[0].notes ?? "Enter narrative text to accompany the section"}
+        {subtitle}
       </h2>
     </div>
     <div class="section-container">
       <div class="steps-container">
         <Scrolly bind:value>
           {#each steps as text, i}
-            {#if i > 0}
-              <div class="step" class:active={value === i - 1}>
+            {#if i >= 0}
+              <div class="step" class:active={value == i}>
                 <div class="step-content">
                   <h2 class="text-5xl">
                     {@html text.label ?? steps[value].label}
@@ -63,8 +67,8 @@
         </Scrolly>
       </div>
       <div class="sticky">
+        <Map />
         {#if value < steps.length}
-          <Map />
           {#await tick()}
             <p>... loading</p>
           {:then}

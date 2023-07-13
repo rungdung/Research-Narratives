@@ -12,8 +12,7 @@ export async function loadDataFromDB(supabase) {
       .select("*")
       .eq("uuid", uuid)
       .single();
-    console.log(data);
-    await loadSources(data.sourceNodes);
+
     if (error) {
       console.error("Error fetching data:", error.message);
     } else {
@@ -24,7 +23,7 @@ export async function loadDataFromDB(supabase) {
   }
 }
 
-async function loadSources(sources) {
+export async function loadSources(sources) {
   sources.forEach((source) => {
     renderData(source.fileName, source.type, null, source.dbURL, true);
   });

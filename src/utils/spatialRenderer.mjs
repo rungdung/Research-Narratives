@@ -6,6 +6,7 @@ import { map } from "../components/Map.svelte";
 export async function loadSpatialData(file, fileName, fileUrl, DBload = false) {
   let layerType, layerName, attributes, responseData;
 
+  // Fetch from URL
   try {
     responseData = await fetch(fileUrl).then((response) => response.json());
     layerType = responseData.features[0].geometry.type;
@@ -27,7 +28,7 @@ export async function loadSpatialData(file, fileName, fileUrl, DBload = false) {
   // Add as layer depending on geometry type
   if (layerType == "Point") {
     layerName = fileName + "-point";
-    console.log(layerName);
+
     map.addLayer({
       id: layerName,
       type: "circle",
@@ -40,6 +41,7 @@ export async function loadSpatialData(file, fileName, fileUrl, DBload = false) {
     });
   } else if (layerType == "LineString") {
     layerName = fileName + "-line";
+
     map.addLayer({
       id: layerName,
       type: "line",
@@ -52,6 +54,7 @@ export async function loadSpatialData(file, fileName, fileUrl, DBload = false) {
     });
   } else if (layerType == "Polygon" || layerType == "MultiPolygon") {
     layerName = fileName + "-fill";
+
     map.addLayer({
       id: layerName,
       type: "fill",

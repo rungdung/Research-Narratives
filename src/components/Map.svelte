@@ -10,7 +10,9 @@
   import { onMount } from "svelte";
   import maplibre from "maplibre-gl";
   import "maplibre-gl/dist/maplibre-gl.css";
-  import { mapLoadStatus } from "../stores";
+
+  import { loadSources } from "../utils/loadFromDB.mjs";
+  import { uploadedSources } from "../stores";
 
   let mapContainer;
 
@@ -29,11 +31,11 @@
         customAttribution: "",
       })
     );
-    map.resize();
 
-    map.on("idle", async () => {
-      $mapLoadStatus = map.isStyleLoaded();
+    map.on("load", () => {
+      loadSources($uploadedSources);
     });
+    map.resize();
   });
 </script>
 

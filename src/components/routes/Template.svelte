@@ -21,19 +21,22 @@
   }
 
   function zoomToFocus(node) {
-    if (node.mapFeature && map) {
-      zoomToFeature(node.mapFeature, map);
+    if (node.narrativeData.mapFeature && map) {
+      let mapFeature = node.narrativeData.mapFeature;
+      zoomToFeature(mapFeature, null, map, node.type);
       new Marker()
-        .setLngLat(node.mapFeature.geometry.coordinates)
+        .setLngLat(mapFeature.geometry.coordinates)
         .setPopup(
           new Popup({
             focusAfterOpen: false,
           }).setHTML(
-            `<h3>${node.mapFeature.properties.title}</h3><p>${node.mapFeature.properties.description}</p>`
+            `<h3>${mapFeature.properties.title}</h3><p>${mapFeature.properties.description}</p>`
           )
         )
         .addTo(map)
         .togglePopup();
+    } else if (node.narrativeData.filterExpression && map) {
+      zoomToFeature(null, node.narrativeData.source, map, "collection");
     }
   }
 </script>
@@ -82,14 +85,16 @@
                       class="fixed top-0 right-2 w-100 block object-fill"
                     />
                   {/each}
-                {:else if steps[value].narrativeData.mapFeature != null && $mapLoadStatus}
-                  {map.setFilter("All", null)}
-                  {zoomToFocus(steps[value].narrativeData)}
-                {:else if steps[value].narrativeData.filterExpression != null && $mapLoadStatus}
+                {:else if steps[value].narrativeData.mapFeature != null}
+                  {console.log(value)}
+
+                  {zoomToFocus(steps[value])}
+                {:else if steps[value].narrativeData.filterExpression != null}
                   {map.setFilter(
                     steps[value].narrativeData.targetLayer,
                     steps[value].narrativeData.filterExpression
                   )}
+                  {zoomToFocus(steps[value])}
                 {/if}
               {/if}
             {/key}

@@ -30,6 +30,7 @@
     mapFeature: markupNode.feature,
     filterExpression: markupNode.filterExpression,
     targetLayer: markupNode.targetLayer,
+    source: markupNode.source,
   });
 
   const processor = ($inputs) => {

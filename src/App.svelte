@@ -1,5 +1,5 @@
 <script>
-  import Map from "./components/Map.svelte";
+  import Map, { map } from "./components/Map.svelte";
   import ResearchMap from "./components/ResearchMap.svelte";
   import Filter from "./components/Filter.svelte";
   import FileUploadModal from "./components/FileUploadModal.svelte";
@@ -7,8 +7,8 @@
   import { loadDataFromDB } from "./utils/loadFromDB.mjs";
   import { uploadedSources, markupNodes, narrativeNodes } from "./stores";
   import SearchSemanticScholar from "./components/SearchSemanticScholar.svelte";
-
-  import { onMount } from "svelte";
+  import { loadSources } from "./utils/loadFromDB.mjs";
+  import { onMount, tick } from "svelte";
   import {
     Drawer,
     Button,
@@ -58,6 +58,7 @@
     <main>
       <div id="mapContainer">
         <Map />
+
         <div id="left-bar" class="p-4">
           <div id="meta-info" class="">
             <h1 class="font-bold text-4xl">Narrative Maker</h1>

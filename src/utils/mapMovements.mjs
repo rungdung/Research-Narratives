@@ -4,7 +4,6 @@ import * as Turf from "@turf/turf";
 
 export function zoomToFeature(feature, featureSource, map, type = "singular") {
   let point, geometry;
-  console.log(type);
   if (type == "singular") {
     geometry = feature._geometry ? feature._geometry : feature.geometry;
   }
@@ -46,8 +45,22 @@ export function zoomToFeature(feature, featureSource, map, type = "singular") {
     easing(t) {
       return t;
     },
-    // this animation is considered essential with respect to prefers-reduced-motion
   });
+
+  new maplibre.Marker()
+    .setLngLat(point.coordinates)
+    .setPopup(
+      new maplibre.Popup({
+        focusAfterOpen: false,
+      }).setHTML(
+        `<h3>${feature.properties.title || feature.properties.name}</h3><p>${
+          feature.properties.description
+        }</p>`
+      )
+    )
+    .addTo(map)
+    .togglePopup();
+  // this animation is considered essential with respect to prefers-reduced-motion
 }
 
 export function highlightAllFeatures(highlightLayer, map, selectedFeatures) {

@@ -24,17 +24,6 @@
     if (node.narrativeData.mapFeature && map) {
       let mapFeature = node.narrativeData.mapFeature;
       zoomToFeature(mapFeature, null, map, node.type);
-      new Marker()
-        .setLngLat(mapFeature.geometry.coordinates)
-        .setPopup(
-          new Popup({
-            focusAfterOpen: false,
-          }).setHTML(
-            `<h3>${mapFeature.properties.title}</h3><p>${mapFeature.properties.description}</p>`
-          )
-        )
-        .addTo(map)
-        .togglePopup();
     } else if (node.narrativeData.filterExpression && map) {
       zoomToFeature(null, node.narrativeData.source, map, "collection");
     }
@@ -85,11 +74,11 @@
                       class="fixed top-0 right-2 w-100 block object-fill"
                     />
                   {/each}
-                {:else if steps[value].narrativeData.mapFeature != null}
-                  {console.log(value)}
-
+                {/if}
+                {#if steps[value].narrativeData.mapFeature != null}
                   {zoomToFocus(steps[value])}
-                {:else if steps[value].narrativeData.filterExpression != null}
+                {/if}
+                {#if steps[value].narrativeData.filterExpression != null}
                   {map.setFilter(
                     steps[value].narrativeData.targetLayer,
                     steps[value].narrativeData.filterExpression

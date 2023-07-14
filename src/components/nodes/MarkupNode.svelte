@@ -12,6 +12,12 @@
   let position;
   let handler, rows;
 
+  // Make a deep copy of data for Svelvet. Because Svelvet seems to overwrite data.
+  let dataConnectionsCopy = JSON.parse(
+    JSON.stringify(markupNode.dataConnections)
+  );
+
+  // Differentiate UI elements for different node types
   if (markupNode.type == "singular") {
     // map the data to key value pairs for the table
     let data = Object.entries(markupNode.properties).map(([key, value]) => {
@@ -39,6 +45,7 @@
 
   const output = generateOutput(inputs, processor);
 
+  // Update position of node in store
   function updatePosition() {
     markupNodes.update((nodes) => {
       let index = nodes.findIndex((node) => node.id == markupNode.id);
@@ -102,34 +109,30 @@
         Open Source document / event
       </button>
     </section>
-    <span class="anchor-top">
-      <Anchor
-        edge={AnimatedEdge}
-        let:linked
-        let:connecting
-        let:hovering
-        multiple={false}
-        direction="north"
-        connections={[markupNode.source]}
-      >
-        <CustomAnchor {hovering} {connecting} {linked} />
-      </Anchor>
-    </span>
-    <span class="anchor">
+    <span class="anchor-left">
       <Anchor let:linked let:connecting let:hovering>
-        <CustomAnchor {hovering} {connecting} {linked} />
+        <CustomAnchor {hovering} {connecting} {linked} label="" />
       </Anchor>
     </span>
     <span class="anchor-right">
       <Anchor
+        id="data"
+        edge={AnimatedEdge}
         let:linked
         let:connecting
         let:hovering
         outputStore={output}
         key="narrativeData"
+        connections={dataConnectionsCopy}
         output
       >
-        <CustomAnchor {hovering} {connecting} {linked} label="Data" />
+        <CustomAnchor
+          {hovering}
+          {connecting}
+          {linked}
+          label="data"
+          color="red-500"
+        />
       </Anchor>
     </span>
   </div>
@@ -138,7 +141,8 @@
 <style>
   .anchor,
   .anchor-top,
-  .anchor-right {
+  .anchor-right,
+  .anchor-left {
     position: absolute;
     display: flex;
     flex-direction: column;
@@ -156,7 +160,11 @@
   }
   .anchor-right {
     top: 50%;
-    right: -5%;
+    right: -10%;
+  }
+  .anchor-left {
+    top: 50%;
+    left: -10%;
   }
 
   .node-wrapper {

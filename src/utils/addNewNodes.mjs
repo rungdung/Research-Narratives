@@ -70,6 +70,8 @@ export function addNewMarkupNode(feature) {
       label: props.name || props.title || props.label || "Untitled",
       feature: feature,
       notes: "",
+      connections: [],
+      dataConnections: [],
       source: feature.layer.source,
       properties: props,
     });
@@ -90,6 +92,8 @@ export function addNewMarkupNodeCollection(
       label: "Collection",
       source: fileName,
       filterExpression: filterExpression,
+      connections: [],
+      dataConnections: [],
       targetLayer: targetLayer,
       notes: "",
     });

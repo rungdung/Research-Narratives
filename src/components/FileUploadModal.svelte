@@ -15,7 +15,6 @@
     },
     link;
 
-  export let supabase;
   let fileViewPort; // Modal container
 
   // assign accepted files to baseDB

@@ -19,8 +19,6 @@
         pNodes[index] = node;
         return pNodes;
       });
-
-      console.log($narrativeNodes);
     } catch (error) {
       console.log(error);
     }

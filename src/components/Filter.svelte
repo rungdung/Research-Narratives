@@ -116,30 +116,31 @@
 {/if}
 
 <Button
-  on:click={search}
-  class="rounded-sm px-1 py-0 mt-2 bg-slate-800"
-  id="search-button">Filter</Button
->
-
-<Button
   on:click={clearAllFilters}
   class="rounded-sm px-1 py-0 mt-2 bg-slate-800"
 >
   Clear all filters</Button
 >
 
-<Button
-  on:click={() => {
-    addNewMarkupNodeCollection(
-      selectedLayer.fileName,
-      selectedLayer.name,
-      filterExpression
-    );
-  }}
-  class="rounded-sm px-1 py-0 mt-2 bg-slate-800"
->
-  Add to Research Map</Button
->
+{#if selectedAttribute}
+  <Button
+    on:click={search}
+    class="rounded-sm px-1 py-0 mt-2 bg-slate-800"
+    id="search-button">Filter</Button
+  >
+  <Button
+    on:click={() => {
+      addNewMarkupNodeCollection(
+        selectedLayer.fileName,
+        selectedLayer.name,
+        filterExpression
+      );
+    }}
+    class="rounded-sm px-1 py-0 mt-2 bg-slate-800"
+  >
+    Add to Research Map</Button
+  >
+{/if}
 
 <style>
   :global(.rangeSlider) {

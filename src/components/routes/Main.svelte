@@ -14,17 +14,9 @@
     AccordionItem,
   } from "flowbite-svelte";
   import { OpenBookSolid } from "flowbite-svelte-icons";
-  import { sineIn } from "svelte/easing";
-
-  import { tick } from "svelte";
 
   export let supabase;
   let hiddenResearchMap = true;
-  let transitionParams = {
-    x: -320,
-    duration: 700,
-    easing: sineIn,
-  };
 </script>
 
 <main>
@@ -85,7 +77,6 @@
   <Drawer
     placement="right"
     transitionType="fly"
-    {transitionParams}
     bind:hidden={hiddenResearchMap}
     id="right-bar"
   >

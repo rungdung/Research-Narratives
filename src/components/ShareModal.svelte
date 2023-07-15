@@ -72,9 +72,19 @@
   </svelte:fragment>
 </Modal>
 
-<Button color="dark" on:click={handleSubmit}>
+<Button
+  color="dark"
+  size="xs"
+  class="px-2 py-1 rounded-md"
+  on:click={handleSubmit}
+>
   <ShareNodesSolid svgClass="dark mx-1" /> Share Map</Button
 >
-<Button color="dark" class="" on:click={handleRenderClick}>
+<Button
+  color="dark"
+  size="xs"
+  class="px-2 py-1 rounded-md"
+  on:click={handleRenderClick}
+>
   <ShareAllSolid svgClass="dark mx-1" /> Render Data Story</Button
 >

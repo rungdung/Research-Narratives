@@ -117,11 +117,14 @@
 
 <Button
   on:click={search}
-  class="rounded-md p-1 mt-2 bg-slate-800"
+  class="rounded-sm px-1 py-0 mt-2 bg-slate-800"
   id="search-button">Filter</Button
 >
 
-<Button on:click={clearAllFilters} class="rounded-md p-1 mt-2 bg-slate-800">
+<Button
+  on:click={clearAllFilters}
+  class="rounded-sm px-1 py-0 mt-2 bg-slate-800"
+>
   Clear all filters</Button
 >
 
@@ -133,7 +136,7 @@
       filterExpression
     );
   }}
-  class="rounded-md p-1 mt-2 bg-slate-800"
+  class="rounded-sm px-1 py-0 mt-2 bg-slate-800"
 >
   Add to Research Map</Button
 >

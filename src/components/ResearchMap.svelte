@@ -144,6 +144,8 @@
 
 <section id="research-map-menu" class="text-center">
   <Button
+    size="xs"
+    class="px-2 py-1 rounded-md"
     color="dark"
     on:click={() => {
       markupNodes.set([]);
@@ -153,7 +155,11 @@
     <CloseCircleSolid svgClass="dark mx-1" />
     Clear all data
   </Button>
-  <Button color="dark" on:click={saveConnections}
+  <Button
+    color="dark"
+    size="xs"
+    class="px-2 py-1 rounded-md"
+    on:click={saveConnections}
     ><DownloadSolid svgClass="dark mx-1" />
     Save changes locally
   </Button>

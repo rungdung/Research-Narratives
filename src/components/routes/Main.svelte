@@ -20,50 +20,47 @@
 </script>
 
 <main>
-  <div id="mapContainer">
-    <Map />
-
-    <div id="left-bar" class="p-4">
-      <div id="meta-info" class="">
-        <h1 class="font-bold text-4xl">Narrative Maker</h1>
-        <h3>
-          This is a prototype to explore linked stories of geospatial data
-        </h3>
-      </div>
-
-      <Accordion flush>
-        <aside id="data-ops">
-          <AccordionItem
-            class="bg-primary-50 !py-0"
-            paddingFlush="py-1"
-            padding="p-0"
-          >
-            <h3 slot="header">Filter</h3>
-            <section id="data-ops-inner">
-              <div id="filter" class="m-3 px-3">
-                <Filter />
-              </div>
-            </section>
-          </AccordionItem>
-        </aside>
-
-        <aside id="sources">
-          <AccordionItem class="bg-primary-50" paddingFlush="py-1" open>
-            <h3 slot="header">Sources</h3>
-            <section id="sources-inner">
-              <div id="parseFile" class="m-2 px-3">
-                <FileNavigator />
-              </div>
-
-              <div id="searchSemanticScholar" class="m-2 px-3">
-                <SearchSemanticScholar />
-              </div>
-            </section>
-          </AccordionItem>
-        </aside>
-      </Accordion>
+  <section id="left-bar" class="p-4">
+    <div id="meta-info" class="">
+      <h1 class="font-bold text-3xl">Narrative Maker</h1>
+      <p>This is a prototype to explore linked stories of geospatial data</p>
     </div>
-  </div>
+
+    <Accordion flush>
+      <aside id="data-ops">
+        <AccordionItem
+          class="bg-primary-50 !py-0"
+          paddingFlush="py-1"
+          padding="p-0"
+        >
+          <h3 slot="header">Filter</h3>
+          <section id="data-ops-inner">
+            <div id="filter" class="m-3 px-3">
+              <Filter />
+            </div>
+          </section>
+        </AccordionItem>
+      </aside>
+
+      <aside id="sources">
+        <AccordionItem class="bg-primary-50" paddingFlush="py-1" open>
+          <h3 slot="header">Sources</h3>
+          <section id="sources-inner">
+            <div id="parseFile" class="m-2 px-3">
+              <FileNavigator />
+            </div>
+
+            <div id="searchSemanticScholar" class="m-2 px-3">
+              <SearchSemanticScholar />
+            </div>
+          </section>
+        </AccordionItem>
+      </aside>
+    </Accordion>
+  </section>
+  <section id="mapContainer">
+    <Map />
+  </section>
 
   <span id="right-bar-trigger" class="text-center">
     <Button
@@ -106,7 +103,7 @@
     background-color: #475569;
   }
   #markup {
-    margin-bottom: 2em;
+    margin-bottom: 1em;
     padding: 0em;
     font-size: larger;
   }
@@ -120,8 +117,9 @@
   }
   #left-bar {
     position: absolute;
-    top: 2%;
-    left: 2%;
+    z-index: 5;
+    top: 0;
+    left: 0;
     max-height: 100vh;
     text-align: left;
     width: 20%;
@@ -133,7 +131,7 @@
   #meta-info {
     border-radius: 10px;
     width: 100%;
-    margin-top: 1em;
+    margin-bottom: 1em;
     color: black;
     border: 5px double black;
     background-color: #faebd7;

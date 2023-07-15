@@ -78,7 +78,7 @@
     placement="right"
     transitionType="fly"
     bind:hidden={hiddenResearchMap}
-    id="right-bar"
+    id="research-map-container"
   >
     <CloseButton on:click={() => (hiddenResearchMap = true)} id="closeButton" />
     <section id="markup" class="">
@@ -135,6 +135,7 @@
     width: 100%;
     margin-top: 1em;
     color: black;
+    border: 5px double black;
     background-color: #faebd7;
   }
 
@@ -155,7 +156,7 @@
     right: 2%;
     z-index: 2;
   }
-  :global(#right-bar) {
+  :global(#research-map-container) {
     position: absolute;
     top: 0%;
     right: 0%;
@@ -168,5 +169,7 @@
     color: black;
     border-radius: 10px;
     background-color: antiquewhite;
+
+    border: 4px double black;
   }
 </style>

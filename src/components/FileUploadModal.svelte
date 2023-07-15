@@ -36,7 +36,7 @@
 <Modal
   id="intro-file-drop"
   color="primary"
-  class="!bg-primary-50 dark:bg-gray-800"
+  class="!bg-primary-50 dark:bg-gray-800 !p-2"
   bind:open={$fileUploadModal}
   size="md"
   title="Narrative Maker: easing research sharing"
@@ -113,6 +113,7 @@
 
     text-align: left;
     color: black;
+    border: 4px double black;
   }
 
   :global(.maplibregl-popup-content) {

@@ -6,7 +6,7 @@
   import { loadToDB } from "../../utils/loadToDB.mjs";
   import { annotationNodes } from "../../stores";
   import CustomAnchor from "./customAnchor.svelte";
-
+  import AnimatedEdge from "./customAnimatedEdge.svelte";
   export let annotationNode;
   let position;
 
@@ -93,6 +93,7 @@
     </span>
     <span class="anchor-right">
       <Anchor
+        edge={AnimatedEdge}
         let:linked
         let:connecting
         let:hovering
@@ -100,7 +101,13 @@
         key="images"
         output
       >
-        <CustomAnchor {hovering} {connecting} {linked} label="Images" />
+        <CustomAnchor
+          {hovering}
+          {connecting}
+          {linked}
+          label="Images"
+          color="red-600"
+        />
       </Anchor>
     </span>
   </div>

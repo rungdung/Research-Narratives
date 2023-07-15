@@ -6,9 +6,10 @@
   export let hovering;
 
   export let label;
+  export let color;
 </script>
 
-<div class:linked class:hovering class:connecting class="my-anchor">
+<div class:linked class:hovering class:connecting class="my-anchor bg-{color}">
   {#if label}
     <p id="label" class="text-xl text-base/loose">
       {label}

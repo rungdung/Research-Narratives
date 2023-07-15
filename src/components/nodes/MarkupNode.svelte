@@ -1,10 +1,11 @@
 <script>
   import { Node, Anchor, generateOutput, generateInput } from "svelvet";
   import { DataHandler, Datatable, Th, ThFilter } from "@vincjo/datatables"; //https://vincjo.fr/datatables/
-  import { AccordionItem, Accordion } from "flowbite-svelte";
+  import { AccordionItem, Accordion, Button } from "flowbite-svelte";
   import { map } from "../Map.svelte";
   import { zoomToFeature } from "../../utils/mapMovements.mjs";
-  import { markupNodes } from "../../stores";
+  import { markupNodes, uploadedSources } from "../../stores";
+  import DataSourceDrawer from "./DataSourceDrawer.svelte";
   import CustomAnchor from "./customAnchor.svelte";
   import AnimatedEdge from "./customAnimatedEdge.svelte";
 
@@ -106,8 +107,24 @@
         }}
         class="bg-slate-800"
       >
-        Open Source document / event
+        Open Source document / Feature
       </button>
+
+      <Button
+        size="xs"
+        class="px-1 py-0 m-0 rounded-sm"
+        on:click={() => {
+          new DataSourceDrawer({
+            target: document.body,
+            props: {
+              sourceNode: $uploadedSources.find(
+                (source) => source.fileName == markupNode.source
+              ),
+              hiddenBool: false,
+            },
+          });
+        }}>info</Button
+      >
     </section>
     <span class="anchor-left">
       <Anchor let:linked let:connecting let:hovering>

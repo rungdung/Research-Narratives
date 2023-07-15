@@ -36,12 +36,12 @@
 <Modal
   id="intro-file-drop"
   color="primary"
-  class="!bg-primary-50 dark:bg-gray-800 !p-2"
+  class="!bg-primary-50 dark:bg-gray-800"
   bind:open={$fileUploadModal}
-  size="md"
+  size="sm"
   title="Narrative Maker: easing research sharing"
   backdropClass="bg-gray-600 bg-opacity-70"
-  defaultClass="!bg-primary-50"
+  defaultClass="!bg-primary-50 !p-0"
   outsideclose
   autoclose
 >
@@ -51,8 +51,7 @@
       baseDB = baseDB;
     }}
     multiple={false}
-    containerClasses="dropzoneMain !align-middle !p-10 !text-gray-600 !py-auto"
-    containerStyles="rounded-md "
+    containerClasses="dropzoneMain !align-middle !p-10 !text-gray-600 !py-auto "
   >
     <FilePlusSolid svgClass="dark" class="w-10 h-10" />
     {#if baseDB.accepted.length > 0}
@@ -78,13 +77,15 @@
       }}>Load from link</Button
     >
   </section>
-  <svelte:fragment slot="footer">
+  <section class="text-xs">
     This is a alpha prototype. Please report any bugs <a
       href="https://github.com/rungdung/research-narratives-ui"
     >
-      at this Github page</a
-    >
-  </svelte:fragment>
+      at this Github page.</a
+    > By continuing to use this alpha prototype, you agree to our usage of the data
+    you upload and narratives you create solely for development and research. This
+    data will never be shared with third parties.
+  </section>
 </Modal>
 
 <style>
@@ -122,7 +123,7 @@
   }
 
   :global(.dropzoneMain) {
-    height: 10em !important;
+    height: 6em !important;
     width: 100%;
     margin: 1em 0em;
     max-width: 100% !important;

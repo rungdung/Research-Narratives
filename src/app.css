@@ -19,6 +19,21 @@ textarea {
   color: theme("colors.gray.800");
   border-radius: 10px !important;
 }
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f2f2f2;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #bdbdbd;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #6e6e6e;
+}
 :root {
   line-height: 1.5;
   font-weight: 400;

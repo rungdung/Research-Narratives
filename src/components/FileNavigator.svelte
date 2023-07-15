@@ -1,7 +1,9 @@
 <script>
   import { map } from "./Map.svelte";
   import { uploadedSources, fileUploadModal } from "../stores";
+  import { Button } from "flowbite-svelte";
   import PDFobject from "pdfobject";
+  import DataSourceDrawer from "./nodes/DataSourceDrawer.svelte";
 
   async function toggleLayer(layer) {
     if (layer["visible"]) {
@@ -19,7 +21,6 @@
         // layer.container.innerHTML = `<iframe src="${layer.blob}" width="100%" height="100%"></iframe>`;
       }
     } else {
-      console.log(layer["type"]);
       if (layer["type"] == "Spatial") {
         map.setLayoutProperty(layer["name"], "visibility", "none");
       } else if (layer["type"] == "PDF" || layer["type"] == "Link") {
@@ -44,7 +45,20 @@
                 bind:checked={layer["visible"]}
                 on:change={() => toggleLayer(layer)}
               />
-              {@html layer.name}
+              {@html layer.fileName}
+              <Button
+                size="xs"
+                class="px-1 py-0 m-0 rounded-sm"
+                on:click={() => {
+                  new DataSourceDrawer({
+                    target: document.body,
+                    props: {
+                      sourceNode: layer,
+                      hiddenBool: false,
+                    },
+                  });
+                }}>info</Button
+              >
             </label>
           </li>
         {/each}

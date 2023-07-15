@@ -10,7 +10,6 @@
   import { Background, Svelvet, Node, Group } from "svelvet";
 
   import MarkupNode from "./nodes/MarkupNode.svelte";
-  import DataSourceNode from "./nodes/DataSourceNode.svelte";
   import NarrativeNode from "./nodes/NarrativeNode.svelte";
   import AnnotationNode from "./nodes/AnnotationNode.svelte";
 
@@ -106,9 +105,6 @@
     <Background bgColor="#faebd7" slot="background" />
     {#each $markupNodes as markupNode (markupNode.id)}
       <MarkupNode {markupNode} />
-    {/each}
-    {#each $uploadedSources as source (source.name)}
-        <DataSourceNode sourceNode={source} />
     {/each}
     {#each $narrativeNodes as narrativeNode (narrativeNode.id)}
       <NarrativeNode node={narrativeNode} />

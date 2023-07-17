@@ -7,6 +7,9 @@
   import { Route, Router } from "svelte-routing";
   import Template from "./components/routes/Template.svelte";
   import Main from "./components/routes/Main.svelte";
+
+  import Alert from "./components/Alerts.svelte";
+
   export let supabase;
 
   //set stores
@@ -34,6 +37,7 @@
 
   <Route path="/">
     <Main {supabase} />
+    <Alert />
   </Route>
 </Router>
 <svelte:window />

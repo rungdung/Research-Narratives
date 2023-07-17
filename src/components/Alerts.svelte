@@ -9,16 +9,25 @@
     counter = 7;
     timeout();
   }
+
   function timeout() {
     if (--counter > 0) return setTimeout(timeout, 1000);
     show = false;
+  }
+
+  $: if ($uploadedSources.length > 0) {
+    trigger();
+  }
+
+  $: if ($markupNodes.length > 0) {
+    trigger();
   }
 </script>
 
 {#key $uploadedSources}
   {#if $uploadedSources.length > 0}
-    {trigger()}
     <Toast
+      bind:open={show}
       color="green"
       class="absolute bottom-3 left-0 right-0 mx-auto w-60 text-black"
     >
@@ -32,7 +41,6 @@
 
 {#key $markupNodes.length}
   {#if $markupNodes.length > 0}
-    {trigger()}
     <Toast
       bind:open={show}
       color="green"

@@ -7,25 +7,5 @@ export let annotationNodes = writable([]);
 export let narrativeNodes = writable([]);
 export let connections = writable(new Set());
 
-markupNodes.subscribe((value) => {
-  localStorage.setItem("markupNodes", JSON.stringify(value));
-});
-uploadedSources.subscribe((value) => {
-  try {
-    localStorage.setItem("uploadedSources", JSON.stringify(value));
-  } catch (error) {
-    if (error.name === "QuotaExceededError")
-      alert(
-        "The file has too many attributes. You may face performance or rendering errors. Please reduce the number of attributes."
-      );
-  }
-});
-narrativeNodes.subscribe((value) => {
-  localStorage.setItem("narrativeNodes", JSON.stringify(value));
-});
-annotationNodes.subscribe((value) => {
-  localStorage.setItem("annotationNodes", JSON.stringify(value));
-});
-
 // Booleans for global triggers
 export let fileUploadModal = writable(true);

@@ -18,7 +18,7 @@ export async function loadSpatialData(file, fileName, fileUrl, DBload = false) {
   try {
     map.addSource(fileName, {
       type: "geojson",
-      data: responseData,
+      data: fileUrl,
     });
   } catch (error) {
     alert(error);
@@ -39,7 +39,7 @@ export async function loadSpatialData(file, fileName, fileUrl, DBload = false) {
         "circle-color": "#007cbf",
       },
     });
-  } else if (layerType == "LineString") {
+  } else if (layerType == "LineString" || layerType == "MultiLineString") {
     layerName = fileName + "-line";
 
     map.addLayer({

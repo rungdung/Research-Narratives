@@ -1,7 +1,7 @@
 <script>
   import { Node, Anchor, generateInput, generateOutput } from "svelvet";
   import { narrativeNodes } from "../../stores";
-  import { Textarea, Label } from "flowbite-svelte";
+  import { Textarea, Label, Button } from "flowbite-svelte";
   import CustomAnchor from "./customAnchor.svelte";
   import { addNewNarrativeNode } from "../../utils/addNewNodes.mjs";
 
@@ -26,6 +26,14 @@
   };
 
   const output = generateOutput(inputs, processor);
+
+  function deleteNode() {
+    narrativeNodes.update((nodes) => {
+      let index = nodes.findIndex((node_) => node_.id == node.id);
+      nodes.splice(index, 1);
+      return nodes;
+    });
+  }
 </script>
 
 <Node id={node.id} {...node}>
@@ -34,6 +42,18 @@
       <h2 class="text-2xl my-3 text-black whitespace-normal">
         {node.label}
       </h2>
+
+      {#if node.id.split("-")[1] == $narrativeNodes.length - 1}
+        <section id="meta-menu" class="mt-3 absolute right-0 top-5">
+          <Button
+            size="xs"
+            class="px-1 py-0 m-0 rounded-sm"
+            on:click={() => {
+              deleteNode();
+            }}>x</Button
+          >
+        </section>
+      {/if}
 
       <Label for="section-title" class="mb-0 !text-blac"
         >Provide a title for the section</Label
@@ -72,7 +92,7 @@
           id={node.id.concat("2")}
           direction="north"
         >
-          <CustomAnchor {hovering} {connecting} {linked} label="Next Section" />
+          <CustomAnchor {hovering} {connecting} {linked} />
         </Anchor>
         {#if node.id.split("-")[1] == $narrativeNodes.length - 1}
           <span class="add-node-below">
@@ -146,7 +166,7 @@
           id={node.id.concat("2")}
           direction="north"
         >
-          <CustomAnchor {hovering} {connecting} {linked} label="Next Section" />
+          <CustomAnchor {hovering} {connecting} {linked} />
         </Anchor>
         {#if node.id.split("-")[1] == $narrativeNodes.length - 1}
           <span class="add-node-below">

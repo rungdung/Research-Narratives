@@ -2,7 +2,7 @@
   import { Node, Anchor, generateOutput, generateInput } from "svelvet";
   import Dropzone from "svelte-file-dropzone/Dropzone.svelte";
   import { DataHandler, Datatable, Th, ThFilter } from "@vincjo/datatables"; //https://vincjo.fr/datatables/
-  import { Accordion, AccordionItem } from "flowbite-svelte";
+  import { Accordion, AccordionItem, Button } from "flowbite-svelte";
   import { loadToDB } from "../../utils/loadToDB.mjs";
   import { annotationNodes } from "../../stores";
   import CustomAnchor from "./customAnchor.svelte";
@@ -47,6 +47,14 @@
       return nodes;
     });
   }
+
+  function deleteNode() {
+    annotationNodes.update((nodes) => {
+      let index = nodes.findIndex((node) => node.id == annotationNode.id);
+      nodes.splice(index, 1);
+      return nodes;
+    });
+  }
 </script>
 
 <Node
@@ -81,6 +89,15 @@
         accept="image/*"
         containerClasses="dropzoneChart !bg-gray-300 text-white border-2 border-b-zinc-700"
       />
+      <section id="meta-menu" class="mx-3">
+        <Button
+          size="xs"
+          class="px-1 py-0 m-0 rounded-sm"
+          on:click={() => {
+            deleteNode();
+          }}>delete this</Button
+        >
+      </section>
       {#each annotationNode.files.accepted as item}
         <img src={item} alt="preview" />
       {/each}

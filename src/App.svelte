@@ -1,6 +1,11 @@
 <script>
   import { loadDataFromDB } from "./utils/loadFromDB.mjs";
-  import { uploadedSources, markupNodes, narrativeNodes } from "./stores";
+  import {
+    uploadedSources,
+    markupNodes,
+    narrativeNodes,
+    annotationNodes,
+  } from "./stores";
 
   import { onMount } from "svelte";
 
@@ -21,6 +26,7 @@
         uploadedSources.set(data.sourceNodes);
         markupNodes.set(data.markupNodes);
         narrativeNodes.set(data.narrativeNodes);
+        annotationNodes.set(data.annotationNodes);
       });
     } catch (error) {
       console.log(error);
@@ -30,8 +36,8 @@
   });
 </script>
 
-<Router url="">
-  <Route path="/RenderedStory" let:params>
+<Router>
+  <Route path="/RenderedStory">
     <Template />
   </Route>
 

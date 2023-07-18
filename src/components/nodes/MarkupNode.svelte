@@ -54,6 +54,14 @@
       return nodes;
     });
   }
+
+  function deleteNode() {
+    markupNodes.update((nodes) => {
+      let index = nodes.findIndex((node) => node.id == markupNode.id);
+      nodes.splice(index, 1);
+      return nodes;
+    });
+  }
 </script>
 
 <Node
@@ -109,22 +117,30 @@
       >
         Open Source document / Feature
       </button>
-
-      <Button
-        size="xs"
-        class="px-1 py-0 m-0 rounded-sm"
-        on:click={() => {
-          new DataSourceDrawer({
-            target: document.body,
-            props: {
-              sourceNode: $uploadedSources.find(
-                (source) => source.fileName == markupNode.source
-              ),
-              hiddenBool: false,
-            },
-          });
-        }}>info</Button
-      >
+      <section id="meta-menu" class="mt-3">
+        <Button
+          size="xs"
+          class="px-1 py-0 m-0 rounded-sm"
+          on:click={() => {
+            new DataSourceDrawer({
+              target: document.body,
+              props: {
+                sourceNode: $uploadedSources.find(
+                  (source) => source.fileName == markupNode.source
+                ),
+                hiddenBool: false,
+              },
+            });
+          }}>info</Button
+        >
+        <Button
+          size="xs"
+          class="px-1 py-0 m-0 rounded-sm"
+          on:click={() => {
+            deleteNode();
+          }}>delete this</Button
+        >
+      </section>
     </section>
     <span class="anchor-left">
       <Anchor let:linked let:connecting let:hovering>

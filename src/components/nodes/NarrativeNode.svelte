@@ -29,25 +29,12 @@
 </script>
 
 <Node id={node.id} {...node}>
-  <div class="node pb-3 px-1" let:grabHandle>
+  {#if node.id != "narrativeNode-0"}
     <div class="node-wrapper">
       <h2 class="text-2xl my-3 text-black whitespace-normal">
         Narrative Section
       </h2>
-      {#if node.id != "narrativeNode-1"}
-        <span class="anchor-top">
-          <Anchor
-            let:linked
-            let:connecting
-            let:hovering
-            multiple={false}
-            direction="south"
-            id={node.id.concat("1")}
-          >
-            <CustomAnchor {hovering} {connecting} {linked} />
-          </Anchor>
-        </span>
-      {/if}
+
       <Label for="section-title" class="mb-0 !text-blac"
         >Provide a title for the section</Label
       >
@@ -57,74 +44,148 @@
         rows="2"
         name="section-title"
       />
-      <Label for="section-content" class="mb-0 !text-black "
-        >Section content</Label
-      >
+      <Label for="section-content" class="mb-0 !text-black ">Abstract</Label>
       <Textarea
         class="text-black body my-1 py-1 w-full rounded-md bg-inputField-100"
         bind:value={node.notes}
         rows="4"
         name="section-content"
       />
-    </div>
-    <section id="inputs" class="space-y-1">
-      <Anchor
-        let:linked
-        let:connecting
-        let:hovering
-        multiple={false}
-        inputsStore={inputs}
-        input
-        key="narrativeData"
-      >
-        <CustomAnchor
-          {hovering}
-          {connecting}
-          {linked}
-          label="Spatial Feature"
-        />
-      </Anchor>
+      <span class="anchor-top">
+        <Anchor
+          let:linked
+          let:connecting
+          let:hovering
+          multiple={false}
+          direction="south"
+          id={node.id.concat("1")}
+        >
+          <CustomAnchor {hovering} {connecting} {linked} />
+        </Anchor>
+      </span>
+      <span class="anchor">
+        <Anchor
+          let:linked
+          let:connecting
+          let:hovering
+          multiple={false}
+          id={node.id.concat("2")}
+          direction="north"
+        >
+          <CustomAnchor {hovering} {connecting} {linked} label="Next Section" />
+        </Anchor>
+        {#if node.id.split("-")[1] == $narrativeNodes.length - 1}
+          <span class="add-node-below">
+            <button
+              class="rounded-md text-2xl mx-auto"
+              on:click={() => {
+                addNewNarrativeNode();
+              }}
+            >
+              +
+            </button>
+          </span>
+        {/if}
+      </span>
+      <section id="inputs" class="space-y-2 my-4">
+        <Anchor
+          let:linked
+          let:connecting
+          let:hovering
+          multiple={false}
+          inputsStore={inputs}
+          input
+          key="narrativeData"
+        >
+          <CustomAnchor
+            {hovering}
+            {connecting}
+            {linked}
+            label="Spatial Feature"
+          />
+        </Anchor>
 
-      <Anchor
-        let:linked
-        let:connecting
-        let:hovering
-        multiple={false}
-        inputsStore={inputs}
-        input
-        key="images"
-      >
-        <CustomAnchor {hovering} {connecting} {linked} label="Images" />
-      </Anchor>
-    </section>
-    <span class="add-node-below">
-      <button
-        class="rounded-md text-2xl mx-auto"
-        on:click={() => {
-          addNewNarrativeNode();
-        }}
-      >
-        +
-      </button>
-    </span>
-    <span class="anchor">
-      <Anchor
-        let:linked
-        let:connecting
-        let:hovering
-        multiple={false}
-        id={node.id.concat("2")}
-        direction="north"
-      >
-        <CustomAnchor {hovering} {connecting} {linked} label="Next Section" />
-      </Anchor>
-    </span>
-  </div>
+        <Anchor
+          let:linked
+          let:connecting
+          let:hovering
+          multiple={false}
+          inputsStore={inputs}
+          input
+          key="images"
+        >
+          <CustomAnchor {hovering} {connecting} {linked} label="Images" />
+        </Anchor>
+      </section>
+    </div>
+  {:else if node.id == "narrativeNode-0"}
+    <div class="node-wrapper node-1">
+      <h2 class="text-3xl my-3 text-black whitespace-normal">
+        {node.label}
+      </h2>
+      <Textarea
+        class="text-black body my-1 py-1 w-full rounded-md bg-inputField-100"
+        bind:value={node.label}
+        rows="2"
+        name="section-title"
+      />
+      <Label for="section-content" class="mb-0 !text-black ">Abstract</Label>
+      <Textarea
+        class="text-black body my-1 py-1 w-full rounded-md bg-inputField-100"
+        bind:value={node.notes}
+        rows="4"
+        name="section-content"
+      />
+
+      <span class="anchor">
+        <Anchor
+          let:linked
+          let:connecting
+          let:hovering
+          multiple={false}
+          id={node.id.concat("2")}
+          direction="north"
+        >
+          <CustomAnchor {hovering} {connecting} {linked} label="Next Section" />
+        </Anchor>
+        {#if node.id.split("-")[1] == $narrativeNodes.length - 1}
+          <span class="add-node-below">
+            <button
+              class="rounded-md text-2xl mx-auto"
+              on:click={() => {
+                addNewNarrativeNode();
+              }}
+            >
+              +
+            </button>
+          </span>
+        {/if}
+      </span>
+    </div>
+  {/if}
 </Node>
 
 <style>
+  .node-1 {
+    margin-top: 2em;
+    border: 5px black double;
+    background-color: #b2d1c9 !important;
+    width: 130% !important;
+    max-width: 35em !important;
+  }
+
+  .node-wrapper {
+    width: 100%;
+    height: 100%;
+    min-width: 3em;
+    max-width: 25em;
+    padding: 0em 1em 1em 1em;
+    background-color: #d2e8e3;
+    border-radius: 8px;
+    border: 3px solid black;
+  }
   #inputs {
-    transform: translate(-8%, 0);
+    transform: translate(-13%, 0);
   }
   .anchor,
   .anchor-top {
@@ -159,12 +220,5 @@
   }
 
   .node {
-    width: 100%;
-    height: 100%;
-    min-width: 3em;
-    max-width: 25em;
-    background-color: #d2e8e3;
-    border-radius: 8px;
-    border: 3px solid black;
   }
 </style>

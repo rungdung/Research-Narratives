@@ -96,18 +96,6 @@
       >
         <CustomAnchor {hovering} {connecting} {linked} label="Images" />
       </Anchor>
-
-      <Anchor
-        let:linked
-        let:connecting
-        let:hovering
-        multiple={false}
-        inputsStore={inputs}
-        input
-        key="charts"
-      >
-        <CustomAnchor {hovering} {connecting} {linked} label="Charts" />
-      </Anchor>
     </section>
     <span class="add-node-below">
       <button

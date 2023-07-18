@@ -5,6 +5,7 @@
   import { markupNodes, uploadedSources, narrativeNodes } from "../stores";
   import { Modal, Button } from "flowbite-svelte";
   import { ShareNodesSolid, ShareAllSolid } from "flowbite-svelte-icons";
+  import { Link } from "svelte-routing";
   export let supabase;
 
   let shareDialog = false;
@@ -54,22 +55,11 @@
   autoclose
   outsideclose
 >
-  <p>Use this link to access your research map</p>
-  <input
-    class="w-full text-gray-200 rounded-sm p-3 my-4 bg-inputField-50"
-    bind:value={link}
-  />
+  <p>Use this link to share your research map</p>
+  <Link to="/?uuid={uuid}">Research map</Link>
 
-  <p class="mt-1">Use this link to access your rendered story</p>
-  <input
-    class="w-full text-gray-200 rounded-sm p-3 my-4 bg-inputField-50"
-    value={"localhost:5173/RenderedStory?uuid=" + uuid}
-  />
-  <svelte:fragment slot="footer">
-    <Button color="dark" href="/RenderedStory" target="_blank"
-      >Open rendered story</Button
-    >
-  </svelte:fragment>
+  <p class="mt-1">Use this link to share/view your rendered story</p>
+  <Link to="/RenderedStory?uuid={uuid}">Data Story</Link>
 </Modal>
 
 <Button

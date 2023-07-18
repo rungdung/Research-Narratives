@@ -2,7 +2,12 @@
   // Modal that will provide options for users to share their research map
   // with others
 
-  import { markupNodes, uploadedSources, narrativeNodes } from "../stores";
+  import {
+    markupNodes,
+    uploadedSources,
+    narrativeNodes,
+    annotationNodes,
+  } from "../stores";
   import { Modal, Button } from "flowbite-svelte";
   import { ShareNodesSolid, ShareAllSolid } from "flowbite-svelte-icons";
   import { Link } from "svelte-routing";
@@ -20,6 +25,7 @@
       created_at: new Date(), //current date
       sourceNodes: $uploadedSources,
       narrativeNodes: $narrativeNodes,
+      annotationNodes: $annotationNodes,
       markupNodes: $markupNodes,
       publishedStory: null,
     };

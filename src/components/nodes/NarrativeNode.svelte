@@ -32,7 +32,7 @@
   {#if node.id != "narrativeNode-0"}
     <div class="node-wrapper">
       <h2 class="text-2xl my-3 text-black whitespace-normal">
-        Narrative Section
+        {node.label}
       </h2>
 
       <Label for="section-title" class="mb-0 !text-blac"

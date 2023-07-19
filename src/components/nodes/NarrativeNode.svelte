@@ -132,7 +132,7 @@
           multiple={false}
           inputsStore={inputs}
           input
-          key="images"
+          key="narrativeData"
         >
           <CustomAnchor {hovering} {connecting} {linked} label="Images" />
         </Anchor>

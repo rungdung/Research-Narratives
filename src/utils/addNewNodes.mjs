@@ -48,8 +48,8 @@ export function addNewAnnotationNode() {
         accepted: [],
         rejected: [],
       },
-      images: [],
-      charts: [],
+      dataConnections: [],
+      connections: [],
     });
     return nodes;
   });

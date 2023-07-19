@@ -27,7 +27,8 @@
 
   import { onMount } from "svelte";
   export let supabase;
-  let nodesCopy = [];
+  let mnodesCopy = [],
+    anodesCopy = [];
 
   let width, height;
 
@@ -60,24 +61,46 @@
 
   async function saveConnections() {
     // go through markup nodes, search for sourceId and append to conenctions
-    nodesCopy = $markupNodes;
+
     try {
       // https://stackoverflow.com/a/51537887
       $connections.forEach((connection) => {
+        let index;
         connection = JSON.parse(connection);
-        let index = $markupNodes.findIndex(
-          (node) => node.id == connection.sourceNodeId
-        );
+        anodesCopy = $annotationNodes;
+        mnodesCopy = $markupNodes;
 
-        let connectionToPush = [
-          connection.targetNodeId,
-          connection.targetAnchorId,
-        ];
+        if (connection.sourceNodeId.split("-")[0] == "annotationNode") {
+          index = $annotationNodes.findIndex(
+            (node) => node.id == connection.sourceNodeId
+          );
+          let connectionToPush = [
+            connection.targetNodeId,
+            connection.targetAnchorId,
+          ];
+          if (connection.sourceAnchorId == "images") {
+            anodesCopy[index].dataConnections.push(connectionToPush);
+          } else {
+            anodesCopy[index].connections.push(connectionToPush);
+          }
+        }
 
-        if (index >= 0 && connection.sourceAnchorId == "data") {
-          nodesCopy[index].dataConnections.push(connectionToPush);
-        } else if (index >= 0) {
-          nodesCopy[index].connections.push(connectionToPush);
+        if (connection.sourceNodeId.split("-")[0] == "markupNode") {
+          index = $markupNodes.findIndex(
+            (node) => node.id == connection.sourceNodeId
+          );
+          let connectionToPush = [
+            connection.targetNodeId,
+            connection.targetAnchorId,
+          ];
+          if (connection.sourceAnchorId == "data") {
+            mnodesCopy[index].dataConnections.push([
+              connection.targetNodeId,
+              connection.targetAnchorId,
+            ]);
+          } else {
+            mnodesCopy[index].connections.push(connectionToPush);
+          }
         }
       });
     } catch (err) {
@@ -86,10 +109,14 @@
   }
 
   onMount(() => {
-    if (nodesCopy.length > 0) {
-      markupNodes.set(nodesCopy);
+    if (mnodesCopy.length > 0) {
+      markupNodes.set(mnodesCopy);
+    }
+    if (anodesCopy.length > 0) {
+      annotationNodes.set(anodesCopy);
     }
     console.log($markupNodes);
+    console.log($annotationNodes);
   });
 </script>
 

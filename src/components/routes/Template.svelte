@@ -11,6 +11,7 @@
 
   // get from local storage and parse
   let steps, value, node, title, subtitle;
+  let mapContainer;
 
   $: steps = $narrativeNodes;
 
@@ -26,6 +27,14 @@
       zoomToFeature(mapFeature, null, map, node.type);
     } else if (node.narrativeData.filterExpression && map) {
       zoomToFeature(null, node.narrativeData.source, map, "collection");
+    }
+  }
+
+  function toggleMapContainer(status = null) {
+    if (mapContainer.style.display == "none" || status == "show") {
+      mapContainer.style.display = "block";
+    } else if (status == "hide" || mapContainer.style.display == "block") {
+      mapContainer.style.display = "none";
     }
   }
 </script>
@@ -59,7 +68,9 @@
         </Scrolly>
       </div>
       <div class="sticky">
-        <Map />
+        <section id="map-container" bind:this={mapContainer}>
+          <Map />
+        </section>
         {#if value < steps.length}
           {#await tick()}
             <p>... loading</p>
@@ -67,18 +78,19 @@
             {#key value}
               {#if steps[value].narrativeData != null}
                 {#if steps[value].narrativeData.images != null}
-                  {#each steps[value].images.images.accepted as item}
-                    <img
-                      src={item}
-                      alt="preview"
-                      class="fixed top-0 right-2 w-100 block object-fill"
-                    />
-                  {/each}
+                  {toggleMapContainer("hide")}
+                  <section class="image-container">
+                    {#each steps[value].narrativeData.images as item}
+                      <img src={item} alt="preview" class="image-preview" />
+                    {/each}
+                  </section>
                 {/if}
                 {#if steps[value].narrativeData.mapFeature != null}
+                  {toggleMapContainer("show")}
                   {zoomToFocus(steps[value])}
                 {/if}
                 {#if steps[value].narrativeData.filterExpression != null}
+                  {toggleMapContainer("show")}
                   {map.setFilter(
                     steps[value].narrativeData.targetLayer,
                     steps[value].narrativeData.filterExpression
@@ -103,6 +115,24 @@
 <style>
   :global(body) {
     overflow-x: hidden;
+  }
+
+  .image-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    margin: 1em 1em;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    object-fit: contain;
+  }
+
+  .image-preview {
+    max-width: 100vh;
+    max-height: 100vh;
+    margin: 1em;
   }
 
   .hero {

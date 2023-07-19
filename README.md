@@ -11,6 +11,11 @@ This was developed as part of my internship at the [Urban Informatics Lab at IIH
 
 This was designed and developed to help students, educators, journalists and researchers to have a common whiteboard that links data, writing and visualization. This project is a proof of concept.
 
+## Alpha Demo
+
+[Use the alpha demo here](https://researchnarratives.netlify.app/)
+This is a proof of concept and may not live up to production standards. Please use it with caution. Please report any bugs or issues that you find. Use the discussions tab to provide feedback or to start a discussion.
+
 ## Components
 
 ### Resources
@@ -112,5 +117,3 @@ Please express your interest via email adhavan dot sivaraj 16 at gmail dot com o
 
 - Supabase account and API keys
 - Set up env vars for Supabase in Netlify or other alternatives
-
-## How do I cite this?

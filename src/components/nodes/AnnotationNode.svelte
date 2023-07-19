@@ -9,17 +9,12 @@
   import AnimatedEdge from "./customAnimatedEdge.svelte";
   export let annotationNode;
   let position;
-
-  // // map the data to key value pairs for the table
-  // let data = Object.entries(annotationNode.properties).map(([key, value]) => {
-  //   return {
-  //     key: key,
-  //     value: value,
-  //   };
-  // });
-  // // Create a new data handler for the table
-  // const handler = new DataHandler(data, { rowsPerPage: 5 });
-  // const rows = handler.getRows();
+  let inputs, processor, output;
+  let nodeId = annotationNode.id.split("-")[1];
+  // Deep copy to prevent Svelvet from overwriting data
+  let dataConnectionsCopy = JSON.parse(
+    JSON.stringify(annotationNode.dataConnections)
+  );
 
   //File uploads
   async function handleFilesSelect(e, files) {
@@ -27,18 +22,28 @@
     acceptedFiles = await loadToDB(acceptedFiles[0], acceptedFiles[0].name);
     files.accepted = [...files.accepted, acceptedFiles];
     files.rejected = [...files.rejected, fileRejections];
+    // sync with store
+    annotationNodes.update((nodes) => {
+      let index = nodes.findIndex((node) => node.id == annotationNode.id);
+      nodes[index].files = files;
+      return nodes;
+    });
   }
 
-  // Data transfer
-  let inputs = generateInput({
-    images: annotationNode.files,
-  });
-  const processor = ($inputs) => {
-    console.log($inputs);
-    console.log($inputs.images);
-    return $inputs;
-  };
-  const output = generateOutput(inputs, processor);
+  // Reactively update inputs
+  $: if (annotationNode.files.accepted.length > 0) {
+    // Data transfer
+    inputs = generateInput({
+      images: $annotationNodes[nodeId - 1].files.accepted,
+    });
+
+    processor = ($inputs) => {
+      console.log("test");
+      $inputs.images = annotationNode.files.accepted;
+      return $inputs;
+    };
+    output = generateOutput(inputs, processor);
+  }
 
   function updatePosition() {
     annotationNodes.update((nodes) => {
@@ -110,12 +115,14 @@
     </span>
     <span class="anchor-right">
       <Anchor
+        id="images"
         edge={AnimatedEdge}
         let:linked
         let:connecting
         let:hovering
         outputStore={output}
-        key="images"
+        key="narrativeData"
+        connections={dataConnectionsCopy}
         output
       >
         <CustomAnchor

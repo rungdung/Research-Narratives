@@ -14,12 +14,16 @@
   import { loadSources } from "../utils/loadFromDB.mjs";
   import { uploadedSources } from "../stores";
 
+  const maptilerKey = import.meta.env.VITE_MAPTILER_KEY;
+
   let mapContainer;
 
   onMount(() => {
     map = new maplibre.Map({
       container: mapContainer,
-      style: "https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json",
+      style:
+        "https://api.maptiler.com/maps/47780736-e784-40ca-9f2e-6da4248ada51/style.json?key=" +
+        maptilerKey,
       center: [78.398438, 21.616579],
       pitch: 0, // pitch in degrees
       bearing: 0, // bearing in degrees

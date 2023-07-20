@@ -1,0 +1,1 @@
+This project contains ideas and code developed at the Urban Informatics Lab at the Indian Institute for Human Settlements (https://iihs.co.in/research/labs/urban-informatics-lab/)

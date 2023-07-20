@@ -22,8 +22,8 @@
 <main>
   <section id="left-bar" class="p-4">
     <div id="meta-info" class="">
-      <h1 class="font-bold text-3xl">Narrative Maker</h1>
-      <p>This is a prototype to explore linked stories of geospatial data</p>
+      <h1 class="font-bold text-3xl">Research Narratives</h1>
+      <p>Augmenting data analysis, visualization and storytelling.</p>
     </div>
 
     <Accordion flush>

@@ -42,5 +42,5 @@
 </Router>
 <svelte:window />
 <svelte:head>
-  <title>Research narrative building</title>
+  <title>Research Narratives</title>
 </svelte:head>

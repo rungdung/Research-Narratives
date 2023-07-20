@@ -39,7 +39,7 @@
   class="!bg-primary-50 dark:bg-gray-800"
   bind:open={$fileUploadModal}
   size="sm"
-  title="Narrative Maker: easing research sharing"
+  title="Research Narratives: easing research sharing"
   backdropClass="bg-gray-600 bg-opacity-70"
   defaultClass="!bg-primary-50 !p-0"
   outsideclose

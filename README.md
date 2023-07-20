@@ -30,7 +30,7 @@ This _proof of concept_ has been developed as part of my internship at the [Urba
 
 ## Alpha Demo
 
-[Use the alpha demo here. ](https://researchnarratives.netlify.app/)
+[Use the alpha demo here. ](https://researchnarratives.netlify.app/) (DESKTOP ONLY!)
 This is a proof of concept and may not live up to production standards, use it with caution. Please report any bugs or issues that you find. Use the discussions tab to provide feedback or to start a discussion. There are no warranties provided.
 
 ## How do I use this in general?

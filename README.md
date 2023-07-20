@@ -4,17 +4,48 @@ Research Narratives
 
 </h1>
 
-<bold align="center"> A webapp to augment data analysis, visualization and storytelling through data driven mindmaps.
-This was developed as part of my internship at the [Urban Informatics Lab at IIHS, Bengaluru](https://iihs.co.in/urban-informatics-lab/) </bold>
+<div align="center">
 
-[![Netlify Status](https://api.netlify.com/api/v1/badges/2ee03dd3-d8b4-4332-91c6-d915d9278723/deploy-status)](https://app.netlify.com/sites/researchnarratives/deploys)
+A web app to augment data analysis, visualization and storytelling through **data-driven mindmaps**. This was designed to help _students, educators, journalists and researchers_ have a common whiteboard that _links data, writing and narrative visualization._
 
-This was designed and developed to help students, educators, journalists and researchers to have a common whiteboard that links data, writing and visualization. This project is a proof of concept.
+<br>
+
+This _proof of concept_ has been developed as part of my internship at the [Urban Informatics Lab at IIHS, Bengaluru](https://iihs.co.in/urban-informatics-lab/)
+
+[Demo site build status: ![Netlify Status](https://api.netlify.com/api/v1/badges/2ee03dd3-d8b4-4332-91c6-d915d9278723/deploy-status)](https://app.netlify.com/sites/researchnarratives/deploys)
+
+</div>
+
+<p float="left">
+
+<img src="./assets/home-example-1.png" width="49%">
+<img src="./assets/multiple-features-example-1.png" width="49%">
+
+<img src="./assets/mindmap-example-1.png" width="99%">
+
+<img src="./assets/spatial-connection-example-1.png" width="49%">
+<img src="./assets/media-connection-example-1.png" width="49%">
+
+</p>
 
 ## Alpha Demo
 
-[Use the alpha demo here](https://researchnarratives.netlify.app/)
-This is a proof of concept and may not live up to production standards. Please use it with caution. Please report any bugs or issues that you find. Use the discussions tab to provide feedback or to start a discussion.
+[Use the alpha demo here. ](https://researchnarratives.netlify.app/)
+This is a proof of concept and may not live up to production standards, use it with caution. Please report any bugs or issues that you find. Use the discussions tab to provide feedback or to start a discussion. There are no warranties provided.
+
+## How do I use this in general?
+
+```mermaid
+graph TB
+    subgraph Uploading data
+        a(Upload data you want to annotate)-->b(Select features or filter collections \n you want to annotate and add to the Research map)
+    end
+    subgraph Writing your story
+        b-->d(Start a narrative and write your story)-->e(Connect data from \nResearch Map to sections of your story)-->f(Share your data-story)
+        e-->g(Share your annotations)
+    end
+
+```
 
 ## Components
 
@@ -29,9 +60,9 @@ This is a proof of concept and may not live up to production standards. Please u
         Non-spatial-->Media
 ```
 
-Resources can be any document that you want to annotate and link to your mind map. This can be spatial data, papers, news articles, media and so on. Spatial data is currently treated as first class data, and is the only data that can be annotated. PDFs and media can be annotated, but not spatially and neither on the interface
+Resources can be any document that you want to annotate and link to your mind map. This can be spatial data, papers, news articles, media and so on. Spatial data is currently treated as first-class data and is the only data that can be annotated. PDFs and media can be annotated, but not spatially and neither on the interface. This is a work in progress. So is support for other spatial formats.
 
-## What is a research map?
+### What is a research map?
 
 ```mermaid
 graph LR;
@@ -40,12 +71,11 @@ graph LR;
     c[Add text, images, media]-->|Add as second class citizens \n from within Research map|R;
 ```
 
-A research map is the analogue of a mind map, but everything on it carries some annotated data.
-Once you upload Spatial data, you can select and/or filter a set of features and add them to the Research map.
-You can link these features to other features, just like you would on a mind map.
-You can also add text, and images alongside these to the Research map.
+A research map is the analogue of a mind map, but everything on it carries some annotated data. Once you upload Spatial data, you can select and/or filter a set of features and add them to the Research map.
 
-## How do I create data stories?
+You can link these features to other features, just like you would on a mind map. You can also add text, and images alongside these to the Research map.
+
+### How do I create data stories?
 
 ```mermaid
 graph TD
@@ -53,7 +83,7 @@ graph TD
     A(Upload all spatial datasets, \n filter and add as necessary to the research map) -->B(Collect all features and media \n on the research map)-->C(Start a narrative from the pen menu)
     end
     subgraph Start a narrative
-    D(Fill in title and subtitle)-->E(Add a section to the data-story)-->F(Connect data from other nodes to this sections \n ie: Spatial or Image)
+    C-->D(Fill in title and subtitle)-->E(Add a section to the data story)-->F(Connect data from other nodes to this sections \n ie: Spatial or Image)
     end
 ```
 
@@ -65,11 +95,11 @@ You can
 - Add media to the narrative section
 - Add spatial data to the narrative section
 
-## How is non-spatial data annotated?
+### How is non-spatial data annotated?
 
 PDF and AV media annotation on the interface is not yet supported. Media can be annotated through the notes field. Pertinent annotations can be displayed in the Narrative section as required for the time being.
 
-## How do I share what I have created?
+### How do I share what I have created?
 
 ```mermaid
 graph TB
@@ -84,7 +114,7 @@ graph TB
 
 ```
 
-Your research map is shareable, so is your data-story.
+Your research map is shareable, and so is your data story.
 Your research map will contain all the data that you have uploaded, and the annotations that you have made.
 
 # Technical FAQ
@@ -103,12 +133,12 @@ Your research map will contain all the data that you have uploaded, and the anno
 
 ## How do I contribute?
 
-Please express your interest via email adhavan dot sivaraj 16 at gmail dot com or start a discussion thread.
+Please create a discussion thread or email at adhavan[dot]sivaraj16+RN[at]gmail[dot]com with Research Narratives as subject if you would like to contribute.
 
 ## How do I run this locally?
 
 ```
-    git clone https://github.com/rungdung/research-narratives-UI.git
+    git clone https://github.com/rungdung/Research-Narratives.git
     npm install --force
     npm run dev
 ```
@@ -116,4 +146,9 @@ Please express your interest via email adhavan dot sivaraj 16 at gmail dot com o
 ## How do I deploy this?
 
 - Supabase account and API keys
-- Set up env vars for Supabase in Netlify or other alternatives
+- Set up a Supabase project and API keys
+- Set up a MapTiler account and API keys
+
+# License
+
+This project is licensed under the Apache License 2.0 - see the [LICENSE.txt](LICENSE.txt) and [NOTICE.txt](NOTICE.txt) file for details.

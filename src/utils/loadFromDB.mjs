@@ -25,6 +25,7 @@ export async function loadDataFromDB(supabase) {
 
 export async function loadSources(sources) {
   sources.forEach((source) => {
-    renderData(source.fileName, source.type, null, source.dbURL, true);
+    // renderData(fileName, fileType, fileLocalUrl, fileDBUrl, expression for appearance, DBload: is it loading from DB or local upload)
+    renderData(source.fileName, source.type, null, source.dbURL, null, true);
   });
 }

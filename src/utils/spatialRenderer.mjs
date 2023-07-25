@@ -2,8 +2,15 @@ import { uploadedSources } from "../stores";
 import maplibre from "maplibre-gl";
 import Popup from "../components/MarkerPopup.svelte";
 import { map } from "../components/Map.svelte";
+import { BinGuru } from "binguru";
 
-export async function loadSpatialData(file, fileName, fileUrl, DBload = false) {
+export async function loadSpatialData(
+  file,
+  fileName,
+  fileUrl,
+  appearanceExpression,
+  DBload = false
+) {
   let layerType, layerName, attributes, responseData;
 
   // Fetch from URL
@@ -103,18 +110,18 @@ export async function loadSpatialData(file, fileName, fileUrl, DBload = false) {
       attributes = Object.entries(responseData.features[0].properties).map(
         ([key, value]) => {
           let dataType;
-          let range;
+          let range, numericValues;
           let uniqueValues = new Set();
 
           // Check for datatypes
           if (typeof value == "number") {
-            dataType = "continuous";
-            let values = responseData.features.map(
+            dataType = "numeric";
+            numericValues = responseData.features.map(
               (feature) => feature.properties[key]
             );
             range = [
-              Math.round(Math.min(...values) * 10) / 10,
-              Math.round(Math.max(...values) * 10) / 10,
+              Math.round(Math.min(...numericValues) * 10) / 10,
+              Math.round(Math.max(...numericValues) * 10) / 10,
             ];
           } else if (typeof value == "string") {
             dataType = "string";
@@ -129,6 +136,7 @@ export async function loadSpatialData(file, fileName, fileUrl, DBload = false) {
             name: key,
             dataType: dataType,
             range: range,
+            numericValues: numericValues,
             values: Array.from(uniqueValues),
           };
         }
@@ -143,6 +151,7 @@ export async function loadSpatialData(file, fileName, fileUrl, DBload = false) {
         name: layerName,
         dbURL: fileUrl,
         type: "Spatial",
+        appearanceExpression: null,
         geometry: layerType,
         attributes: attributes,
         visible: true,

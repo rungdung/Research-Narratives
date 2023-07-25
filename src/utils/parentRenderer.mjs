@@ -11,7 +11,7 @@ export async function loadData(files) {
 
   const fileName = file.name.split(".")[0];
   const fileType = file.name.split(".")[1];
-  renderData(fileName, fileType, fileLocalUrl, fileDBUrl);
+  renderData(fileName, fileType, fileLocalUrl, fileDBUrl, null, false);
 }
 
 // render files
@@ -20,19 +20,19 @@ export async function renderData(
   fileType,
   fileLocalUrl,
   fileDBUrl,
+  appearanceExpression,
   DBload = false
 ) {
   try {
     if (DBload == true) {
       fileLocalUrl = fileDBUrl;
     }
-
     // Handle different file types
     if (
       fileType.toLowerCase() === "geojson" ||
       fileType.toLowerCase() === "spatial"
     ) {
-      loadSpatialData(null, fileName, fileDBUrl, DBload);
+      loadSpatialData(null, fileName, fileDBUrl, appearanceExpression, DBload);
     } else if (fileType.toLowerCase() === "csv") {
       // Handle CSV file type
       // Perform actions specific to CSV files

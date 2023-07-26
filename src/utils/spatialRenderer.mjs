@@ -46,6 +46,11 @@ export async function loadSpatialData(
         "circle-color": "#007cbf",
       },
     });
+
+    if (appearanceExpression) {
+      console.log("expression", appearanceExpression);
+      map.setPaintProperty(layerName, "circle-color", appearanceExpression);
+    }
   } else if (layerType == "LineString" || layerType == "MultiLineString") {
     layerName = fileName + "-line";
 
@@ -59,6 +64,10 @@ export async function loadSpatialData(
         "line-width": 2,
       },
     });
+    if (appearanceExpression) {
+      console.log("expression", appearanceExpression);
+      map.setPaintProperty(layerName, "line-color", appearanceExpression);
+    }
   } else if (layerType == "Polygon" || layerType == "MultiPolygon") {
     layerName = fileName + "-fill";
 
@@ -73,6 +82,11 @@ export async function loadSpatialData(
         "fill-outline-color": "green",
       },
     });
+
+    if (appearanceExpression) {
+      console.log("expression", appearanceExpression);
+      map.setPaintProperty(layerName, "fill-color", appearanceExpression);
+    }
   }
 
   map.on("click", layerName, function (e) {

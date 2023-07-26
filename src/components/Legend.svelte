@@ -3,13 +3,19 @@
   import { Accordion, AccordionItem } from "flowbite-svelte";
 
   // Get only the layer name and the appearance expression
-  let layerStyles = $uploadedSources.map((source) => {
-    return {
-      fileName: source.fileName,
-      layerName: source.appearanceExpression[2][1],
-      appearanceExpression: source.appearanceExpression,
-      zippedExpression: [],
-    };
+  let layerStyles = $uploadedSources.filter((source) => {
+    return source.appearanceExpression != null;
+  });
+
+  layerStyles = layerStyles.map((source) => {
+    if (source.appearanceExpression) {
+      return {
+        fileName: source.fileName,
+        layerName: source.appearanceExpression[2][1],
+        appearanceExpression: source.appearanceExpression,
+        zippedExpression: [],
+      };
+    }
   });
 
   // map the maplibre style expression into pairs for each break/ bin

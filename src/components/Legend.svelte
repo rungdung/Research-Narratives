@@ -2,12 +2,15 @@
   import { uploadedSources } from "../stores";
   import { Accordion, AccordionItem } from "flowbite-svelte";
 
+  let layerStyles;
+
   // Get only the layer name and the appearance expression
-  let layerStyles = $uploadedSources.filter((source) => {
+  $: layerStyles = $uploadedSources.filter((source) => {
     return source.appearanceExpression != null;
   });
 
-  layerStyles = layerStyles.map((source) => {
+  // Obtain necessary properties to map
+  $: layerStyles = layerStyles.map((source) => {
     if (source.appearanceExpression) {
       return {
         fileName: source.fileName,
@@ -20,7 +23,7 @@
 
   // map the maplibre style expression into pairs for each break/ bin
   // each pair contains the break point (prev, next) and hex code for the colour
-  layerStyles.forEach((layer) => {
+  $: layerStyles.forEach((layer) => {
     if (layer.appearanceExpression) {
       layer.appearanceExpression = layer.appearanceExpression.slice(3);
       for (let i = 0; i < layer.appearanceExpression.length; i += 2) {

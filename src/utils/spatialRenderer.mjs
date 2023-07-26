@@ -48,7 +48,6 @@ export async function loadSpatialData(
     });
 
     if (appearanceExpression) {
-      console.log("expression", appearanceExpression);
       map.setPaintProperty(layerName, "circle-color", appearanceExpression);
     }
   } else if (layerType == "LineString" || layerType == "MultiLineString") {
@@ -65,7 +64,6 @@ export async function loadSpatialData(
       },
     });
     if (appearanceExpression) {
-      console.log("expression", appearanceExpression);
       map.setPaintProperty(layerName, "line-color", appearanceExpression);
     }
   } else if (layerType == "Polygon" || layerType == "MultiPolygon") {
@@ -84,7 +82,6 @@ export async function loadSpatialData(
     });
 
     if (appearanceExpression) {
-      console.log("expression", appearanceExpression);
       map.setPaintProperty(layerName, "fill-color", appearanceExpression);
     }
   }

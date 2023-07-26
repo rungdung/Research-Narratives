@@ -10,8 +10,9 @@
   import { onMount } from "svelte";
 
   import { Route, Router } from "svelte-routing";
-  import Template from "./components/routes/Template.svelte";
-  import Main from "./components/routes/Main.svelte";
+  import Template from "./routes/Template.svelte";
+  import Main from "./routes/Main.svelte";
+  import Home from "./routes/Home.svelte";
 
   import Alert from "./components/Alerts.svelte";
 
@@ -37,13 +38,17 @@
 </script>
 
 <Router>
-  <Route path="/RenderedStory">
+  <Route path="/demo/RenderedStory">
     <Template />
   </Route>
 
-  <Route path="/">
+  <Route path="/demo">
     <Main {supabase} />
     <Alert />
+  </Route>
+
+  <Route path="/">
+    <Home />
   </Route>
 </Router>
 <svelte:window />

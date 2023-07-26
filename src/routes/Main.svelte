@@ -1,13 +1,13 @@
 <script>
-  import Map, { map } from "../Map.svelte";
-  import ResearchMap from "../ResearchMap.svelte";
-  import Filter from "../Filter.svelte";
-  import Appearance from "../Appearance.svelte";
-  import Legend from "../Legend.svelte";
-  import FileUploadModal from "../FileUploadModal.svelte";
-  import FileNavigator from "../FileNavigator.svelte";
+  import Map, { map } from "../components/Map.svelte";
+  import ResearchMap from "../components/ResearchMap.svelte";
+  import Filter from "../components/Filter.svelte";
+  import Appearance from "../components/Appearance.svelte";
+  import Legend from "../components/Legend.svelte";
+  import FileUploadModal from "../components/FileUploadModal.svelte";
+  import FileNavigator from "../components/FileNavigator.svelte";
 
-  import SearchSemanticScholar from "../SearchSemanticScholar.svelte";
+  import SearchSemanticScholar from "../components/SearchSemanticScholar.svelte";
   import {
     Drawer,
     Button,

@@ -2,10 +2,10 @@
   /* By Connor Rothschild https://twitter.com/CL_Rothschild
 	Scrollytelling component from Russell Goldenberg https://twitter.com/codenberg/status/1432774653139984387 */
 
-  import Scrolly from "../Scrolly.svelte";
-  import Map, { map } from "../Map.svelte";
-  import { narrativeNodes } from "../../stores";
-  import { zoomToFeature } from "../../utils/mapMovements.mjs";
+  import Scrolly from "../components/Scrolly.svelte";
+  import Map, { map } from "../components/Map.svelte";
+  import { narrativeNodes } from "../stores";
+  import { zoomToFeature } from "../utils/mapMovements.mjs";
   import { Marker, Popup } from "maplibre-gl";
   import { tick } from "svelte";
 

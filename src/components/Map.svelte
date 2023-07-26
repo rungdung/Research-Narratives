@@ -30,11 +30,7 @@
       zoom: 1,
       maxZoom: 14,
       minZoom: 3,
-    }).addControl(
-      new maplibre.AttributionControl({
-        customAttribution: "",
-      })
-    );
+    });
 
     map.on("load", () => {
       loadSources($uploadedSources);

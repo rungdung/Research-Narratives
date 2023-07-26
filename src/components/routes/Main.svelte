@@ -2,6 +2,8 @@
   import Map, { map } from "../Map.svelte";
   import ResearchMap from "../ResearchMap.svelte";
   import Filter from "../Filter.svelte";
+  import Appearance from "../Appearance.svelte";
+  import Legend from "../Legend.svelte";
   import FileUploadModal from "../FileUploadModal.svelte";
   import FileNavigator from "../FileNavigator.svelte";
 
@@ -17,6 +19,11 @@
 
   export let supabase;
   let hiddenResearchMap = true;
+
+  let styleChange = 0;
+  function receiveStyleChange() {
+    styleChange++;
+  }
 </script>
 
 <main>
@@ -40,6 +47,19 @@
             </div>
           </section>
         </AccordionItem>
+
+        <AccordionItem
+          class="bg-primary-50 !py-0"
+          paddingFlush="py-1"
+          padding="p-0"
+        >
+          <h3 slot="header">Appearance</h3>
+          <section id="appearance-inner">
+            <div id="appearance" class="m-3 px-3">
+              <Appearance on:layerStyled={receiveStyleChange} />
+            </div>
+          </section>
+        </AccordionItem>
       </aside>
 
       <aside id="sources">
@@ -60,6 +80,11 @@
   </section>
   <section id="mapContainer">
     <Map />
+  </section>
+  <section id="legends">
+    {#key styleChange}
+      <Legend />
+    {/key}
   </section>
 
   <span id="right-bar-trigger" class="text-center">

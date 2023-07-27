@@ -2,8 +2,18 @@ import { uploadedSources } from "../stores";
 import maplibre from "maplibre-gl";
 import Popup from "../components/MarkerPopup.svelte";
 import { map } from "../components/Map.svelte";
-import { BinGuru } from "binguru";
+import { kml } from "@tmcw/togeojson";
 
+export async function fileConvert(file, fileName, fileType) {
+  switch (fileType) {
+    case "kml":
+      let fileUrl = URL.createObjectURL(file);
+      let response = await fetch(fileUrl);
+      let data = kml(
+        new DOMParser().parseFromString(await response.text(), "text/xml")
+      );
+      return new Blob([JSON.stringify(data)], { type: "application/json" });
+  }
 export async function loadSpatialData(
   file,
   fileName,

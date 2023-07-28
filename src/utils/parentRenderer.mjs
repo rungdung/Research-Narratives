@@ -52,6 +52,8 @@ export async function renderData(
         );
         break;
       case "tif":
+      case "tiff":
+      case "geotiff":
         loadGeoTiffData(fileName, fileDBUrl, DBload);
         break;
       case "csv":

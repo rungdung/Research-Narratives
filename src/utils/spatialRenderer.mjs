@@ -2,6 +2,17 @@ import { uploadedSources } from "../stores";
 import maplibre from "maplibre-gl";
 import Popup from "../components/MarkerPopup.svelte";
 import { map } from "../components/Map.svelte";
+import * as Turf from "@turf/turf";
+import { fromArrayBuffer } from "geotiff";
+
+// Polyfill for Buffers in vite
+// Check discussion at https://github.com/vitejs/vite/discussions/2785
+import Buffer from "buffer";
+// @ts-ignore
+window.Buffer = Buffer;
+
+import JPEG from "jpeg-js";
+
 import { kml } from "@tmcw/togeojson";
 
 export async function fileConvert(file, fileName, fileType) {
@@ -14,16 +25,19 @@ export async function fileConvert(file, fileName, fileType) {
       );
       return new Blob([JSON.stringify(data)], { type: "application/json" });
   }
+}
+
 export async function loadSpatialData(
   file,
   fileName,
   fileUrl,
+  filetype,
   appearanceExpression,
   DBload = false
 ) {
   let layerType, layerName, attributes, responseData;
 
-  // Fetch from URL
+  // Fetch from URL and check geometry types
   try {
     responseData = await fetch(fileUrl).then((response) => response.json());
     layerType = responseData.features[0].geometry.type;
@@ -175,6 +189,77 @@ export async function loadSpatialData(
         appearanceExpression: null,
         geometry: layerType,
         attributes: attributes,
+        visible: true,
+        container: null,
+      });
+      return sources;
+    });
+  }
+}
+
+export async function loadGeoTiffData(name, fileUrl, DBload = false) {
+  // Load the file
+  const response = await fetch(fileUrl);
+  const arrayBuffer = await response.arrayBuffer();
+
+  // Convert the image to a JPEG
+  const tiff = await fromArrayBuffer(arrayBuffer);
+  const image = await tiff.getImage();
+  const width = image.getWidth();
+  const height = image.getHeight();
+  let bounds = image.getBoundingBox();
+  let data = await image.readRasters({ interleave: true });
+
+  // Create a buffer to feed the JPEG encoder
+  let rgbBuffer = Buffer.Buffer.alloc(width * height * 4); // 3 bytes per pixel (RGB)
+  data.forEach((band, i) => {
+    rgbBuffer[i] = band;
+  });
+  data = null;
+
+  // Encode to JPEG, ideally PNG
+  const jpeg = await JPEG.encode(
+    {
+      data: rgbBuffer,
+      width: width,
+      height: height,
+    },
+    100
+  );
+
+  // Convert the JPEG to a Blob
+  var blob = new Blob([jpeg.data], { type: "image/jpeg" });
+
+  // Get the bounds of the image.
+  let boundsP = Turf.bboxPolygon(bounds);
+
+  // Load the jpeg onto maplibre
+  map.addSource(name, {
+    type: "image",
+    url: URL.createObjectURL(blob),
+    coordinates: boundsP.geometry.coordinates[0].slice(0, -1),
+  });
+  // Render the image on the map.
+  map.addLayer({
+    id: name,
+    type: "raster",
+    source: name,
+    paint: {
+      "raster-fade-duration": 0,
+    },
+  });
+
+  // Publish to Source Store
+  if (DBload == false) {
+    uploadedSources.update((sources) => {
+      sources.push({
+        fileName: name,
+        name: name,
+        dbURL: fileUrl,
+        type: "GeoTIFF",
+        appearanceExpression: null,
+        geometry: null,
+        attributes: null,
         visible: true,
         container: null,
       });

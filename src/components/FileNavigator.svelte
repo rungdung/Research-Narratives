@@ -31,21 +31,6 @@
       }
     }
   }
-
-  async function removeSource(layer) {
-    if (layer["type"] == "Spatial") {
-      map.removeLayer(layer["name"]);
-      map.removeSource(layer["fileName"]);
-    } else if (layer["type"] == "PDF" || layer["type"] == "Link") {
-      // // destroy the iframe
-      // layer.container.innerHTML = "";
-      // // set display css property to none
-      // layer.container.style.display = "none";
-    }
-    uploadedSources.update((sources) => {
-      return sources.filter((source) => source["name"] != layer["name"]);
-    });
-  }
 </script>
 
 <section id="layerControl">
@@ -73,15 +58,6 @@
                     },
                   });
                 }}>info</Button
-              >
-              <Button
-                size="xs"
-                class="px-1 py-0 m-0 rounded-sm"
-                on:click={() => {
-                  removeSource(layer);
-                }}
-              >
-                Remove Source</Button
               >
             </label>
           </li>

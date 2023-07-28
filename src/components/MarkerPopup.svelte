@@ -1,6 +1,7 @@
 <script>
   import { DataHandler, Datatable, Th, ThFilter } from "@vincjo/datatables"; //https://vincjo.fr/datatables/
   import { addNewMarkupNode } from "../utils/addNewNodes.mjs";
+  import sanitizeHtml from "sanitize-html";
   export let feature; //import from UploadData.svelte
 
   // map the data to key value pairs for the table
@@ -13,9 +14,25 @@
   // Create a new data handler for the table
   const handler = new DataHandler(data, { rowsPerPage: 5 });
   const rows = handler.getRows();
+
+  const sanitizerProps = {
+    allowedTags: ["img"],
+    allowedAttributes: {
+      img: ["src", "alt"],
+    },
+  };
 </script>
 
 <article class="popup">
+  <!--
+    KML images support
+  -->
+  {#if typeof feature.properties.gx_media_links === "string"}
+    <img
+      src={feature.properties.gx_media_links}
+      alt={feature.properties.gx_media_links}
+    />
+  {/if}
   <Datatable {handler}>
     <table>
       <thead>
@@ -25,8 +42,8 @@
       <tbody>
         {#each $rows as row}
           <tr>
-            <td>{@html row.key}</td>
-            <td>{@html row.value}</td>
+            <td>{sanitizeHtml(row.key, sanitizerProps)}</td>
+            <td>{sanitizeHtml(row.value, sanitizerProps)}</td>
           </tr>
         {/each}
       </tbody>

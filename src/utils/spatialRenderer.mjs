@@ -9,8 +9,7 @@ import { fromArrayBuffer } from "geotiff";
 // Check discussion at https://github.com/vitejs/vite/discussions/2785
 import Buffer from "buffer";
 // @ts-ignore
-window.Buffer = Buffer;
-
+window.Buffer = Buffer.Buffer;
 import JPEG from "jpeg-js";
 
 import { kml } from "@tmcw/togeojson";

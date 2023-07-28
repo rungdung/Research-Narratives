@@ -3,6 +3,13 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer components {
+  button {
+    background-color: #272727;
+    color: #fff;
+  }
+}
 h1,
 h2,
 h3 {
@@ -82,14 +89,12 @@ h1 {
 
 button {
   width: auto;
-  color: white;
   border-radius: 8px;
   border: 1px solid transparent;
   padding: 0.6em 1.2em;
   font-size: 1em;
   font-weight: 500;
   font-family: inherit;
-  background-color: #1a1a1a;
   cursor: pointer;
   transition: border-color 0.25s;
 }

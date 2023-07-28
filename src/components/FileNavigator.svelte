@@ -90,19 +90,21 @@
     {/if}
   </section>
 
-  <button
+  <Button
     class="dropzoneAddSource bg-slate-800"
+    size="sm"
     on:click={() => {
       $fileUploadModal = true;
     }}
   >
     Add data sources
-  </button>
+  </Button>
 </section>
 
 <style>
   #layerList {
-    height: 10em;
+    height: 100%;
+    margin: 5% 0%;
     overflow-y: scroll;
   }
   :global(.dropzoneAddSource) {

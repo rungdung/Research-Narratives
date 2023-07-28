@@ -36,6 +36,7 @@
     "intersection-observer": "^0.12.2",
     "maplibre-gl": "^3.0.1",
     "pdfobject": "^2.2.12",
+    "sanitize-html": "^2.11.0",
     "scrollama": "^3.2.0",
     "svelte": "^4.0.0",
     "svelte-collapsible": "^0.2.1",

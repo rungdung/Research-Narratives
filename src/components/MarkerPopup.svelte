@@ -4,6 +4,7 @@
   import { addNewMarkupNode } from "../utils/addNewNodes.mjs";
 
   import Alert from "./Alerts.svelte";
+  import sanitizeHtml from "sanitize-html";
 
   export let feature; //import from UploadData.svelte
 
@@ -27,9 +28,24 @@
       },
     });
   }
+  const sanitizerProps = {
+    allowedTags: ["img"],
+    allowedAttributes: {
+      img: ["src", "alt"],
+    },
+  };
 </script>
 
 <article class="popup">
+  <!--
+    KML images support
+  -->
+  {#if typeof feature.properties.gx_media_links === "string"}
+    <img
+      src={feature.properties.gx_media_links}
+      alt={feature.properties.gx_media_links}
+    />
+  {/if}
   <Datatable {handler}>
     <table>
       <thead>
@@ -39,8 +55,8 @@
       <tbody>
         {#each $rows as row}
           <tr>
-            <td>{@html row.key}</td>
-            <td>{@html row.value}</td>
+            <td>{sanitizeHtml(row.key, sanitizerProps)}</td>
+            <td>{sanitizeHtml(row.value, sanitizerProps)}</td>
           </tr>
         {/each}
       </tbody>

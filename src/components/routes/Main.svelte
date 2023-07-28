@@ -145,7 +145,8 @@
     z-index: 5;
     top: 0;
     left: 0;
-    max-height: 100vh;
+    max-height: 90vh;
+    margin: 1% 0%;
     text-align: left;
     width: 20%;
     color: black;

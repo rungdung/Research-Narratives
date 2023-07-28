@@ -1,5 +1,6 @@
 <script>
   import { DataHandler, Datatable, Th, ThFilter } from "@vincjo/datatables"; //https://vincjo.fr/datatables/
+  import { Button } from "flowbite-svelte";
   import { addNewMarkupNode } from "../utils/addNewNodes.mjs";
   export let feature; //import from UploadData.svelte
 
@@ -33,13 +34,14 @@
     </table>
   </Datatable>
 
-  <button
+  <Button
     class="bg-slate-700"
+    size="xs"
     id="addToList"
     on:click={() => addNewMarkupNode(feature)}
   >
     Add to research map
-  </button>
+  </Button>
 </article>
 
 <style global>
@@ -57,16 +59,5 @@
 
   :global(.maplibregl-popup-tip) {
     border-top-color: rgb(172, 142, 104) !important;
-  }
-  .popup h3 {
-    margin: 0;
-    font-size: 1.2rem;
-  }
-
-  .popup button {
-    margin-top: 10px;
-    padding: 5px;
-    border-radius: 5px;
-    color: #fff;
   }
 </style>

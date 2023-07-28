@@ -25,7 +25,7 @@ export async function loadSpatialData(
   try {
     map.addSource(fileName, {
       type: "geojson",
-      data: fileUrl,
+      data: responseData,
     });
   } catch (error) {
     alert(error);

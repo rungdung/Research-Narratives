@@ -2,6 +2,16 @@
 import maplibre from "maplibre-gl";
 import * as Turf from "@turf/turf";
 
+/**
+ * Zooms to a given set of features on the map.
+ * If the feature is a collection, it will zoom to the extent of the collection
+ * It will also create a popup with the feature's name
+ * @param {object} feature - Feature to zoom to
+ * @param {string} featureSource - Source name of the feature
+ * @param {object} map - MapLibre GL JS map object
+ * @param {string} type - Single feature or collection to zoom to. Filtered results are collections
+ * @returns
+ */
 export function zoomToFeature(feature, featureSource, map, type = "singular") {
   let point, geometry;
   if (type == "singular") {
@@ -61,23 +71,4 @@ export function zoomToFeature(feature, featureSource, map, type = "singular") {
     .addTo(map)
     .togglePopup();
   // this animation is considered essential with respect to prefers-reduced-motion
-}
-
-export function highlightAllFeatures(highlightLayer, map, selectedFeatures) {
-  //highlightLayer.clearLayers();
-  console.log("Zooming to feature");
-
-  selectedFeatures.forEach((feature) => {
-    highlightLayer.addLayer(
-      new L.CircleMarker(feature.feature.geometry.coordinates.reverse(), {
-        radius: 30,
-        color: "#ff7800",
-        weight: 5,
-        opacity: 0.9,
-      })
-    );
-  });
-
-  // map.flyTo(feature.geometry.coordinates, 8);
-  highlightLayer.addTo(map);
 }

@@ -8,7 +8,6 @@ export function zoomToFeature(feature, featureSource, map, type = "singular") {
     geometry = feature._geometry ? feature._geometry : feature.geometry;
   }
   if (type == "collection") {
-    console.log(featureSource);
     geometry = map.getSource(featureSource); //._data.features[0].geometry;
     let bbox = Turf.bbox(geometry._data);
     map.fitBounds(bbox);

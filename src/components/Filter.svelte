@@ -97,7 +97,7 @@
   </Select>
 {/if}
 
-{#if selectedAttribute && selectedAttribute.dataType === "continuous"}
+{#if selectedAttribute && selectedAttribute.dataType === "numeric"}
   <Label for="value-select">Select a value</Label>
   <RangeSlider
     id="value-select"

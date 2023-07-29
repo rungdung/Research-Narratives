@@ -9,6 +9,7 @@
     Input,
     Textarea,
   } from "flowbite-svelte";
+  import { addNewMarkupNodeCollection } from "../../utils/addNewNodes.mjs";
   import { map } from "../Map.svelte";
 
   let handler, rows;
@@ -73,6 +74,17 @@
           }}
         >
           Remove Source</Button
+        >
+        <Button
+          size="xs"
+          class="px-1 py-0 m-0 rounded-sm"
+          on:click={() => {
+            addNewMarkupNodeCollection(
+              sourceNode.fileName,
+              sourceNode.layerName,
+              ["all", "any"]
+            );
+          }}>Add all to Research map</Button
         >
       </section>
       {#if sourceNode.attributes}

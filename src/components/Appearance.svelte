@@ -13,6 +13,8 @@
   import { BinGuru } from "binguru";
   import chroma from "chroma-js";
   import { createEventDispatcher } from "svelte";
+  import Alert from "./Alerts.svelte";
+
   let attributes;
   let selectedLayer,
     selectedAttribute,
@@ -150,6 +152,14 @@
     map.setPaintProperty(selectedLayer.name, paintProperty, null);
     map.setPaintProperty(selectedLayer.name, paintProperty, fullExpression);
     updateExpressionToSource();
+
+    new Alert({
+      target: document.body,
+      props: {
+        pos: "right",
+        content: "Choropleth applied",
+      },
+    });
   }
 
   async function updateExpressionToSource() {

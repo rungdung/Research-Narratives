@@ -21,9 +21,10 @@
 
 {#if pos == "bottom"}
   <Toast
+    simple
     bind:open={show}
     color="green"
-    class="absolute bottom-3 left-0 right-0 mx-auto w-60 text-black"
+    divClass="absolute bottom-3 left-0 right-0 mx-auto w-40 px-4 py-1 text-black bg-primary-100 "
   >
     {content}
   </Toast>
@@ -31,10 +32,20 @@
 
 {#if pos == "right"}
   <Toast
+    simple
     bind:open={show}
     color="green"
-    class="absolute z-10 right-10 top-40 mx-auto w-50  text-black"
+    divClass="absolute z-10 right-10 top-40 mx-auto w-40 px-4 py-1 text-black bg-primary-100 text-left"
   >
     {content}
   </Toast>
 {/if}
+
+<style>
+  .alert {
+    background-color: #f1f1f1;
+    color: black;
+    padding: 2px !important;
+    margin-bottom: 0px;
+  }
+</style>

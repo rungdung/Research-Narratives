@@ -2,6 +2,9 @@
   import { DataHandler, Datatable, Th, ThFilter } from "@vincjo/datatables"; //https://vincjo.fr/datatables/
   import { Button } from "flowbite-svelte";
   import { addNewMarkupNode } from "../utils/addNewNodes.mjs";
+
+  import Alert from "./Alerts.svelte";
+
   export let feature; //import from UploadData.svelte
 
   // map the data to key value pairs for the table
@@ -14,6 +17,16 @@
   // Create a new data handler for the table
   const handler = new DataHandler(data, { rowsPerPage: 5 });
   const rows = handler.getRows();
+
+  function createAlert() {
+    new Alert({
+      target: document.body,
+      props: {
+        pos: "right",
+        content: "Feature added to research map",
+      },
+    });
+  }
 </script>
 
 <article class="popup">
@@ -38,7 +51,10 @@
     class="bg-slate-700"
     size="xs"
     id="addToList"
-    on:click={() => addNewMarkupNode(feature)}
+    on:click={() => {
+      addNewMarkupNode(feature);
+      createAlert();
+    }}
   >
     Add to research map
   </Button>

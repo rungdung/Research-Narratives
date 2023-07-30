@@ -5,6 +5,9 @@
   import { Select, Label, Button, Dropdown, Search } from "flowbite-svelte";
   import RangeSlider from "svelte-range-slider-pips";
   import { addNewMarkupNodeCollection } from "../utils/addNewNodes.mjs";
+
+  import Alert from "./Alerts.svelte";
+
   // searches a geojson layer for a given string
   // zooms to the first result
   // returns the number of results
@@ -29,6 +32,13 @@
       ["==", ["get", selectedAttribute.name], selectedAttributeValue],
     ];
     map.setFilter(selectedLayer.name, filterExpression);
+    new Alert({
+      target: document.body,
+      props: {
+        pos: "right",
+        content: "All filters cleared",
+      },
+    });
   }
 
   async function clearAllFilters() {
@@ -42,8 +52,33 @@
       ["<=", ["get", selectedAttribute.name], selectedAttributeRange[1]],
     ];
     map.setFilter(selectedLayer.name, filterExpression);
+    new Alert({
+      target: document.body,
+      props: {
+        pos: "right",
+        content: "Filter applied",
+      },
+    });
   }
 
+  function addToResearchMap() {
+    addNewMarkupNodeCollection(
+      selectedLayer.fileName,
+      selectedLayer.name,
+      filterExpression
+    );
+
+    new Alert({
+      target: document.body,
+      props: {
+        pos: "right",
+        content:
+          "Filtered content from " +
+          selectedLayer.fileName +
+          " added to Research Map",
+      },
+    });
+  }
   $: searchRange(selectedAttributeRange);
 </script>
 
@@ -129,13 +164,7 @@
     id="search-button">Filter</Button
   >
   <Button
-    on:click={() => {
-      addNewMarkupNodeCollection(
-        selectedLayer.fileName,
-        selectedLayer.name,
-        filterExpression
-      );
-    }}
+    on:click={addToResearchMap}
     class="rounded-sm px-1 py-0 mt-2 bg-slate-800"
   >
     Add to Research Map</Button

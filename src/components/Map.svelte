@@ -14,9 +14,13 @@
   import { loadSources } from "../utils/loadFromDB.mjs";
   import { uploadedSources } from "../stores";
 
+  import Alert from "./Alerts.svelte";
+
   const maptilerKey = import.meta.env.VITE_MAPTILER_KEY;
 
   let mapContainer;
+
+  let sourceLoading, sourceLoaded;
 
   onMount(() => {
     map = new maplibre.Map({
@@ -35,11 +39,50 @@
     map.on("load", () => {
       loadSources($uploadedSources);
     });
+
+    map.on("sourcedataloading", (e) => {
+      if (e.sourceId != sourceLoading) {
+        //check if source exists in uploaded sources
+        if (
+          $uploadedSources.find((source) => {
+            return source.fileName == e.sourceId;
+          })
+        ) {
+          sourceLoading = e.sourceId;
+        }
+      }
+    });
+
+    map.on("sourcedata", (e) => {
+      if (
+        $uploadedSources.find((source) => {
+          return source.fileName == e.sourceId;
+        })
+      ) {
+        if (e.sourceId != sourceLoaded) {
+          sourceLoaded = e.sourceId;
+        }
+      }
+    });
+
+    map.on("");
     map.resize();
   });
 </script>
 
 <div id="map" bind:this={mapContainer} />
+
+{#key sourceLoading}
+  {#if sourceLoading != undefined}
+    <Alert pos="bottom" content="{sourceLoading} is loading" />
+  {/if}
+{/key}
+
+{#key sourceLoaded}
+  {#if sourceLoaded != undefined}
+    <Alert pos="bottom" content="{sourceLoaded} is loaded" />
+  {/if}
+{/key}
 
 <style>
   #map {

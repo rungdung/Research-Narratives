@@ -131,6 +131,17 @@
       {/each}
     {/each}
   </Select>
+  <Button
+    on:click={search}
+    class="rounded-sm px-1 py-0 mt-2 bg-slate-800"
+    id="search-button">Filter</Button
+  >
+  <Button
+    on:click={addToResearchMap}
+    class="rounded-sm px-1 py-0 mt-2 bg-slate-800"
+  >
+    Add to Research Map</Button
+  >
 {/if}
 
 {#if selectedAttribute && selectedAttribute.dataType === "numeric"}
@@ -149,16 +160,6 @@
     last="label"
     step={10}
   />
-{/if}
-
-<Button
-  on:click={clearAllFilters}
-  class="rounded-sm px-1 py-0 mt-2 bg-slate-800"
->
-  Clear all filters</Button
->
-
-{#if selectedAttribute}
   <Button
     on:click={searchRange}
     class="rounded-sm px-1 py-0 mt-2 bg-slate-800"
@@ -171,6 +172,13 @@
     Add to Research Map</Button
   >
 {/if}
+
+<Button
+  on:click={clearAllFilters}
+  class="rounded-sm px-1 py-0 mt-2 bg-slate-800"
+>
+  Clear all filters</Button
+>
 
 <style>
   :global(.rangeSlider) {

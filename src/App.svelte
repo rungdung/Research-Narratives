@@ -5,47 +5,75 @@
     markupNodes,
     narrativeNodes,
     annotationNodes,
+    loadedSources,
   } from "./stores";
-
-  import { onMount } from "svelte";
 
   import { Route, Router } from "svelte-routing";
   import Template from "./components/routes/Template.svelte";
   import Main from "./components/routes/Main.svelte";
 
-  import Alert from "./components/Alerts.svelte";
+  import { PenNibOutline } from "flowbite-svelte-icons";
 
   export let supabase;
 
-  //set stores
+  // Final Bool to ensure DB has returned data
+  let storesUpdated = false;
+
+  // set stores
   let returnFromDB = loadDataFromDB(supabase);
 
-  onMount(() => {
+  // set local stores to data from DB
+  async function loadStoresFromDB() {
     try {
-      returnFromDB.then((data) => {
-        uploadedSources.set(data.sourceNodes);
-        markupNodes.set(data.markupNodes);
-        narrativeNodes.set(data.narrativeNodes);
-        annotationNodes.set(data.annotationNodes);
-      });
+      await returnFromDB
+        .then(async (data) => {
+          await uploadedSources.set(data.sourceNodes);
+          await markupNodes.set(data.markupNodes);
+          await narrativeNodes.set(data.narrativeNodes);
+          await annotationNodes.set(data.annotationNodes);
+        })
+        .then(() => (storesUpdated = true));
     } catch (error) {
       console.log(error);
-    } finally {
-      return null;
+      storesUpdated = true;
     }
-  });
+  }
+
+  loadStoresFromDB();
+
+  // trigger reactivity
+  $: console.log($uploadedSources, $loadedSources);
 </script>
 
-<Router>
-  <Route path="/RenderedStory">
-    <Template />
-  </Route>
+{#key storesUpdated}
+  {#if storesUpdated}
+    <Router>
+      <Route path="/RenderedStory">
+        {#if $loadedSources.size != $uploadedSources.length}
+          <section
+            class="flex justify-center items-center text-left bg-white text-xl h-screen z-100"
+          >
+            <PenNibOutline size="60" class="text-9xl animate-bounce" />
+            Your narrative data is loading! {$loadedSources.size} /{" "}
+            {$uploadedSources.length}
+          </section>
+        {/if}
+        <Template />
+      </Route>
 
-  <Route path="/">
-    <Main {supabase} />
-    <Alert />
-  </Route>
-</Router>
+      <Route path="/">
+        <Main {supabase} />
+      </Route>
+    </Router>
+  {:else}
+    <section
+      class="flex justify-center items-center text-left text-xl h-screen"
+    >
+      <PenNibOutline size="60" class="text-9xl animate-bounce" />
+      Your narrative environment is loading!
+    </section>
+  {/if}
+{/key}
 <svelte:window />
 <svelte:head>
   <title>Research Narratives</title>

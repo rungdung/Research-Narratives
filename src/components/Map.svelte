@@ -20,7 +20,8 @@
 
   let mapContainer;
 
-  let sourceLoading, sourceLoaded;
+  let sourceLoading = new Set(),
+    sourceLoaded = new Set();
 
   onMount(() => {
     map = new maplibre.Map({
@@ -48,7 +49,8 @@
             return source.fileName == e.sourceId;
           })
         ) {
-          sourceLoading = e.sourceId;
+          sourceLoading.add(e.sourceId);
+          sourceLoading = sourceLoading;
         }
       }
     });
@@ -60,7 +62,8 @@
         })
       ) {
         if (e.sourceId != sourceLoaded) {
-          sourceLoaded = e.sourceId;
+          sourceLoaded.add(e.sourceId);
+          sourceLoaded = sourceLoaded;
         }
       }
     });
@@ -72,16 +75,12 @@
 
 <div id="map" bind:this={mapContainer} />
 
-{#key sourceLoading}
-  {#if sourceLoading != undefined}
-    <Alert pos="bottom" content="{sourceLoading} is loading" />
-  {/if}
+{#key sourceLoading.size}
+  <Alert pos="bottom" content="{Array.from(sourceLoading).pop()} is loading" />
 {/key}
 
-{#key sourceLoaded}
-  {#if sourceLoaded != undefined}
-    <Alert pos="bottom" content="{sourceLoaded} is loaded" />
-  {/if}
+{#key sourceLoaded.size}
+  <Alert pos="bottom" content="{Array.from(sourceLoaded).pop()} is loaded" />
 {/key}
 
 <style>

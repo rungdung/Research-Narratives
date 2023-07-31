@@ -166,6 +166,8 @@ export async function loadSpatialData(
         geometry: layerType,
         attributes: attributes,
         visible: true,
+        source: null,
+        citation: null,
         container: null,
       });
       return sources;

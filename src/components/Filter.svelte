@@ -36,20 +36,21 @@
       target: document.body,
       props: {
         pos: "right",
-        content: "All filters cleared",
+        content: "Filter created",
       },
     });
   }
 
   async function clearAllFilters() {
-    map.setFilter(selectedLayer, null);
+    console.log(selectedLayer);
+    map.setFilter(selectedLayer.name, null);
   }
 
-  async function searchRange(selectedAttributeRange) {
+  async function searchRange(selectedAttributeRange_ = selectedAttributeRange) {
     filterExpression = [
       "all",
-      [">=", ["get", selectedAttribute.name], selectedAttributeRange[0]],
-      ["<=", ["get", selectedAttribute.name], selectedAttributeRange[1]],
+      [">=", ["get", selectedAttribute.name], selectedAttributeRange_[0]],
+      ["<=", ["get", selectedAttribute.name], selectedAttributeRange_[1]],
     ];
     map.setFilter(selectedLayer.name, filterExpression);
     new Alert({
@@ -159,7 +160,7 @@
 
 {#if selectedAttribute}
   <Button
-    on:click={search}
+    on:click={searchRange}
     class="rounded-sm px-1 py-0 mt-2 bg-slate-800"
     id="search-button">Filter</Button
   >

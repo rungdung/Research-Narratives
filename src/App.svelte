@@ -51,7 +51,7 @@
       <Route path="/RenderedStory">
         {#if $loadedSources.size != $uploadedSources.length}
           <section
-            class="flex justify-center items-center text-left bg-white text-xl h-screen z-100"
+            class="flex justify-center items-center text-left text-xl h-screen z-100"
           >
             <PenNibOutline size="60" class="text-9xl animate-bounce" />
             Your narrative data is loading! {$loadedSources.size} /{" "}

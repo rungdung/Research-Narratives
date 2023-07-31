@@ -2,19 +2,20 @@
   /* By Connor Rothschild https://twitter.com/CL_Rothschild
 	Scrollytelling component from Russell Goldenberg https://twitter.com/codenberg/status/1432774653139984387 */
 
-  import Scrolly from "../Scrolly.svelte";
+  import scrollama from "scrollama"; // or...
   import Map, { map } from "../Map.svelte";
   import { narrativeNodes } from "../../stores";
   import { zoomToFeature } from "../../utils/mapMovements.mjs";
   import { Marker, Popup } from "maplibre-gl";
-  import { tick } from "svelte";
+  import { onMount, tick } from "svelte";
 
   // get from local storage and parse
-  let steps, value, node, title, subtitle;
+  let steps, globalScrollIndex, node, title, subtitle;
   let mapContainer;
 
   $: steps = $narrativeNodes;
 
+  // get title and subtitle from first node
   $: if (steps && steps.length > 0) {
     title = steps[0].label;
     subtitle = steps[0].notes;
@@ -25,18 +26,78 @@
     if (node.narrativeData.mapFeature && map) {
       let mapFeature = node.narrativeData.mapFeature;
       zoomToFeature(mapFeature, null, map, node.type);
-    } else if (node.narrativeData.filterExpression && map) {
+    } else if (node.narrativeData.targetLayer && map) {
       zoomToFeature(null, node.narrativeData.source, map, "collection");
     }
   }
 
-  function toggleMapContainer(status = null) {
+  function clearFilters(value) {
+    if (value >= 1 && value < steps.length - 2) {
+      if (steps[value - 1].narrativeData.filterExpression != null) {
+        map.setFilter(steps[value - 1].narrativeData.targetLayer, null);
+      } else if (steps[value + 1].narrativeData.filterExpression != null) {
+        map.setFilter(steps[value + 1].narrativeData.targetLayer, null);
+      }
+    }
+  }
+
+  function toggleMapContainer(
+    status = null,
+    clearFilterIndex = null,
+    zoomTo = null
+  ) {
+    // Zoom to feature
+    if (zoomTo != null) {
+      zoomToFocus(zoomTo);
+    }
+
+    // Clear filter
+    if (clearFilterIndex != null) {
+      clearFilters(clearFilterIndex);
+    }
+    // Toggle map
     if (mapContainer.style.display == "none" || status == "show") {
       mapContainer.style.display = "block";
     } else if (status == "hide" || mapContainer.style.display == "block") {
       mapContainer.style.display = "none";
     }
   }
+
+  // instantiate the scrollama
+  const scroller = scrollama();
+
+  // setup the instance, pass callback functions
+  onMount(() => {
+    scroller
+      .setup({
+        step: ".step",
+      })
+      .onStepEnter((response) => {
+        if (response.index < steps.length) {
+          globalScrollIndex = response.index;
+          if (
+            steps[response.index].narrativeData &&
+            steps[response.index].narrativeData.mapFeature != null
+          ) {
+            toggleMapContainer("show", response.index, steps[response.index]);
+          } else if (
+            steps[response.index].narrativeData &&
+            steps[response.index].narrativeData.targetLayer != null
+          ) {
+            toggleMapContainer("show", response.index, steps[response.index]);
+            map.setFilter(
+              steps[response.index].narrativeData.targetLayer,
+              steps[response.index].narrativeData.filterExpression == null
+                ? null
+                : steps[response.index].narrativeData.filterExpression
+            );
+          }
+        }
+      })
+      .onStepExit((response) => {
+        clearFilters(response.index);
+      });
+  });
 </script>
 
 {#if steps.length > 1}
@@ -51,55 +112,29 @@
     </div>
     <div class="section-container">
       <div class="steps-container">
-        <Scrolly bind:value>
-          {#each steps as text, i}
-            {#if i >= 0}
-              <div class="step" class:active={value == i}>
-                <div class="step-content">
-                  <h2 class="text-5xl">
-                    {@html text.label ?? steps[value].label}
-                  </h2>
-                  <p>{@html text.notes}</p>
-                </div>
-              </div>
-            {/if}
-          {/each}
-          <div class="spacer" />
-        </Scrolly>
+        {#each steps as text, i}
+          <div class="step" class:active={i === globalScrollIndex}>
+            <div class="step-content">
+              <h2 class="text-5xl">
+                {@html text.label}
+              </h2>
+              <p>{@html text.notes}</p>
+            </div>
+          </div>
+        {/each}
+        <div class="spacer" />
       </div>
       <div class="sticky">
         <section id="map-container" bind:this={mapContainer}>
           <Map />
         </section>
-        {#if value < steps.length}
-          {#await tick()}
-            <p>... loading</p>
-          {:then}
-            {#key value}
-              {#if steps[value].narrativeData != null}
-                {#if steps[value].narrativeData.images != null}
-                  {toggleMapContainer("hide")}
-                  <section class="image-container">
-                    {#each steps[value].narrativeData.images as item}
-                      <img src={item} alt="preview" class="image-preview" />
-                    {/each}
-                  </section>
-                {/if}
-                {#if steps[value].narrativeData.mapFeature != null}
-                  {toggleMapContainer("show")}
-                  {zoomToFocus(steps[value])}
-                {/if}
-                {#if steps[value].narrativeData.filterExpression != null}
-                  {toggleMapContainer("show")}
-                  {map.setFilter(
-                    steps[value].narrativeData.targetLayer,
-                    steps[value].narrativeData.filterExpression
-                  )}
-                  {zoomToFocus(steps[value])}
-                {/if}
-              {/if}
-            {/key}
-          {/await}
+        {#if globalScrollIndex < steps.length && steps[globalScrollIndex].narrativeData && steps[globalScrollIndex].narrativeData.images}
+          {toggleMapContainer("hide")}
+          <section class="image-container">
+            {#each steps[globalScrollIndex].narrativeData.images as item}
+              <img src={item} alt="preview" class="image-preview" />
+            {/each}
+          </section>
         {/if}
       </div>
     </div>

@@ -42,7 +42,7 @@
   loadStoresFromDB();
 
   // trigger reactivity
-  $: console.log($uploadedSources, $loadedSources);
+  $: $uploadedSources, $loadedSources;
 </script>
 
 {#key storesUpdated}

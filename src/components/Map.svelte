@@ -12,7 +12,7 @@
   import "maplibre-gl/dist/maplibre-gl.css";
 
   import { loadSources } from "../utils/loadFromDB.mjs";
-  import { uploadedSources } from "../stores";
+  import { uploadedSources, loadedSources } from "../stores";
 
   import Alert from "./Alerts.svelte";
 
@@ -61,14 +61,13 @@
           return source.fileName == e.sourceId;
         })
       ) {
-        if (e.sourceId != sourceLoaded) {
-          sourceLoaded.add(e.sourceId);
-          sourceLoaded = sourceLoaded;
+        if (e.sourceId != $loadedSources) {
+          $loadedSources.add(e.sourceId);
+          $loadedSources = $loadedSources;
         }
       }
     });
 
-    map.on("");
     map.resize();
   });
 </script>
@@ -79,8 +78,9 @@
   <Alert pos="bottom" content="{Array.from(sourceLoading).pop()} is loading" />
 {/key}
 
-{#key sourceLoaded.size}
-  <Alert pos="bottom" content="{Array.from(sourceLoaded).pop()} is loaded" />
+
+{#key $loadedSources.size}
+  <Alert pos="bottom" content="{Array.from($loadedSources).pop()} is loaded" />
 {/key}
 
 <style>

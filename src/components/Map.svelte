@@ -20,7 +20,8 @@
 
   let mapContainer;
 
-  let sourceLoading = new Set();
+  let sourceLoading = new Set(),
+    sourceLoaded = new Set();
 
   onMount(() => {
     map = new maplibre.Map({
@@ -76,6 +77,7 @@
 {#key sourceLoading.size}
   <Alert pos="bottom" content="{Array.from(sourceLoading).pop()} is loading" />
 {/key}
+
 
 {#key $loadedSources.size}
   <Alert pos="bottom" content="{Array.from($loadedSources).pop()} is loaded" />

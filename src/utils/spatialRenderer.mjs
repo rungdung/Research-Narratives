@@ -13,9 +13,9 @@ function getRandColor() {
     selectedColor = colors[randIndex];
     colors.splice(randIndex, 1);
   } else if (colors.length == 0) {
-    colors = colorsOG;
-    console.log(colors);
+    colors = colorsOG.map((color) => color);
     selectedColor = colors[randIndex];
+    colors.splice(randIndex, 1);
   }
   return selectedColor;
 }

@@ -104,10 +104,10 @@
   <section>
     <div class="hero">
       <h1 class="text-10xl">
-        {title}
+        {@html title}
       </h1>
       <h2 class="text-2xl">
-        {subtitle}
+        {@html subtitle}
       </h2>
     </div>
     <div class="section-container">

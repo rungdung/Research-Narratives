@@ -32,49 +32,41 @@
   }
 
   function clearFilters(value) {
-    if (value >= 1 && value < steps.length - 2) {
-      if (steps[value - 1].narrativeData.filterExpression != null) {
-        map.setFilter(steps[value - 1].narrativeData.targetLayer, null);
-      } else if (steps[value + 1].narrativeData.filterExpression != null) {
-        map.setFilter(steps[value + 1].narrativeData.targetLayer, null);
+    if (value >= 1 && value < steps.length - 1) {
+      if (
+        steps[value].narrativeData &&
+        steps[value].narrativeData.filterExpression != null
+      ) {
+        map.setFilter(steps[value].narrativeData.targetLayer, null);
       }
     }
   }
 
-  function toggleMapContainer(
-    status = null,
-    clearFilterIndex = null,
-    zoomTo = null
-  ) {
-    // Zoom to feature
-    if (zoomTo != null) {
-      zoomToFocus(zoomTo);
-    }
-
-    // Clear filter
-    if (clearFilterIndex != null) {
-      clearFilters(clearFilterIndex);
-    }
+  async function toggleMapContainer(status = null, zoomTo = null) {
     // Toggle map
     if (status == "show") {
       mapContainer.style.display = "block";
     } else if (status == "hide") {
       mapContainer.style.display = "none";
     }
-  }
 
-  // instantiate the scrollama
-  const scroller = scrollama();
+    // Zoom to feature
+    if (zoomTo != null) {
+      await zoomToFocus(zoomTo);
+    }
+  }
 
   // setup the instance, pass callback functions
   onMount(() => {
+    // switch map off
+    toggleMapContainer("hide");
+
     // instantiate the scrollama
     const scroller = scrollama();
 
     scroller
       .setup({
         step: ".step",
-        offset: 0.5,
       })
       .onStepEnter((response) => {
         if (
@@ -83,22 +75,23 @@
         ) {
           globalScrollIndex = response.index;
           if (steps[response.index].narrativeData.mapFeature) {
-            toggleMapContainer("show", response.index, steps[response.index]);
+            toggleMapContainer("show", steps[response.index]);
           } else if (steps[response.index].narrativeData.targetLayer) {
-            toggleMapContainer("show", response.index, steps[response.index]);
             map.setFilter(
               steps[response.index].narrativeData.targetLayer,
               steps[response.index].narrativeData.filterExpression == null
                 ? null
                 : steps[response.index].narrativeData.filterExpression
             );
+
+            toggleMapContainer("show", steps[response.index]);
           } else if (steps[response.index].narrativeData.images) {
             toggleMapContainer("hide");
           }
         }
       })
-      .onStepExit((response) => {
-        clearFilters(response.index);
+      .onStepExit(async (response) => {
+        //clearFilters(response.index);
       });
   });
 </script>
@@ -131,13 +124,13 @@
         <section id="map-container" bind:this={mapContainer}>
           <Map />
         </section>
-          {#if globalScrollIndex < steps.length && steps[globalScrollIndex].narrativeData && steps[globalScrollIndex].narrativeData.images}
-            <section class="image-container">
-              {#each steps[globalScrollIndex].narrativeData.images as item}
-                <img src={item} alt="preview" class="image-preview" />
-              {/each}
-            </section>
-          {/if}
+        {#if globalScrollIndex < steps.length && steps[globalScrollIndex].narrativeData && steps[globalScrollIndex].narrativeData.images}
+          <section class="image-container">
+            {#each steps[globalScrollIndex].narrativeData.images as item}
+              <img src={item} alt="preview" class="image-preview" />
+            {/each}
+          </section>
+        {/if}
       </div>
     </div>
   </section>
@@ -212,7 +205,7 @@
   }
 
   .step {
-    height: 80vh;
+    height: 70vh;
     display: flex;
     place-items: center;
     justify-content: center;

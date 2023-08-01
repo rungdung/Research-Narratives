@@ -2,7 +2,7 @@
   import { Node, Anchor, generateOutput, generateInput } from "svelvet";
   import Dropzone from "svelte-file-dropzone/Dropzone.svelte";
   import { DataHandler, Datatable, Th, ThFilter } from "@vincjo/datatables"; //https://vincjo.fr/datatables/
-  import { Accordion, AccordionItem, Button } from "flowbite-svelte";
+  import { Accordion, AccordionItem, Button, P } from "flowbite-svelte";
   import { loadToDB } from "../../utils/loadToDB.mjs";
   import { annotationNodes } from "../../stores";
   import CustomAnchor from "./customAnchor.svelte";
@@ -31,10 +31,10 @@
   }
 
   // Reactively update inputs
-  $: if (annotationNode.files.accepted.length > 0) {
+  $: if (annotationNode.files.accepted.length > 0 && nodeId >= 1) {
     // Data transfer
     inputs = generateInput({
-      images: $annotationNodes[nodeId - 1].files.accepted,
+      images: annotationNode.files.accepted,
     });
 
     processor = ($inputs) => {
@@ -48,7 +48,9 @@
   function updatePosition() {
     annotationNodes.update((nodes) => {
       let index = nodes.findIndex((node) => node.id == annotationNode.id);
-      nodes[index].position = position;
+      if (index) {
+        nodes[index].position = position;
+      }
       return nodes;
     });
   }
@@ -60,6 +62,18 @@
       return nodes;
     });
   }
+
+  function updateImages() {
+    annotationNodes.update((nodes) => {
+      let index = nodes.findIndex((node) => node.id == annotationNode.id);
+      nodes[index].files = annotationNode.files;
+      return nodes;
+    });
+  }
+
+  // Update parent store
+  $: $annotationNodes;
+  $: updateImages();
 </script>
 
 <Node

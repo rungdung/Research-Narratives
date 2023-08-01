@@ -3,8 +3,6 @@ import maplibre from "maplibre-gl";
 import Popup from "../components/MarkerPopup.svelte";
 import { map } from "../components/Map.svelte";
 
-import { kml } from "@tmcw/togeojson";
-
 const colorsOG = ["#6E07EB", "#00CAF5", "#5FDE43", "#F5C83D", "#EB533B"];
 let colors = colorsOG.map((color) => color);
 
@@ -20,18 +18,6 @@ function getRandColor() {
     colors.splice(randIndex, 1);
   }
   return selectedColor;
-}
-
-export async function fileConvert(file, fileName, fileType) {
-  switch (fileType) {
-    case "kml":
-      let fileUrl = URL.createObjectURL(file);
-      let response = await fetch(fileUrl);
-      let data = kml(
-        new DOMParser().parseFromString(await response.text(), "text/xml")
-      );
-      return new Blob([JSON.stringify(data)], { type: "application/json" });
-  }
 }
 
 export async function loadSpatialData(

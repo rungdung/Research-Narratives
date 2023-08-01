@@ -1,4 +1,4 @@
-import { loadSpatialData, fileConvert } from "./spatialRenderer.mjs";
+import { loadSpatialData } from "./spatialRenderer.mjs";
 import { loadPDFData } from "./nonSpatialRenderer.mjs";
 import { loadToDB } from "./loadToDB.mjs";
 
@@ -7,17 +7,10 @@ export async function loadData(files) {
   let currentIndex = files.accepted.length - 1;
   let file = files.accepted[currentIndex];
   let fileLocalUrl = URL.createObjectURL(file);
+  let fileDBUrl = await loadToDB(file, file.name);
 
   const fileName = file.name.split(".")[0];
-  let fileType = file.name.split(".")[1];
-
-  if (fileType.toLowerCase() == "kml") {
-    file = await fileConvert(file, fileName, fileType);
-    fileType = "geojson";
-  }
-
-  let fileDBUrl = await loadToDB(file, fileName, fileType);
-
+  const fileType = file.name.split(".")[1];
   renderData(fileName, fileType, fileLocalUrl, fileDBUrl, null, false);
 }
 
@@ -27,31 +20,27 @@ export async function renderData(
   fileType,
   fileLocalUrl,
   fileDBUrl,
-  appearanceExpression = null,
+  appearanceExpression,
   DBload = false
 ) {
   try {
     if (DBload == true) {
       fileLocalUrl = fileDBUrl;
     }
-
-    switch (fileType.toLowerCase()) {
-      case "kml":
-      case "geojson":
-        loadSpatialData(
-          null,
-          fileName,
-          fileDBUrl,
-          appearanceExpression,
-          DBload
-        );
-        break;
-      case "csv":
-        alert("CSVs are not supported yet");
-        break;
-      case "pdf":
-        loadPDFData(fileLocalUrl, fileName, fileDBUrl);
-        break;
+    // Handle different file types
+    if (
+      fileType.toLowerCase() === "geojson" ||
+      fileType.toLowerCase() === "spatial"
+    ) {
+      loadSpatialData(null, fileName, fileDBUrl, appearanceExpression, DBload);
+    } else if (fileType.toLowerCase() === "csv") {
+      // Handle CSV file type
+      // Perform actions specific to CSV files
+      console.log("CSV file detected:", fileName);
+    } else if (fileType.toLowerCase() === "pdf") {
+      loadPDFData(fileLocalUrl, fileName, fileDBUrl);
+    } else {
+      alert("File type not supported");
     }
   } catch (error) {
     console.error("Error loading file:", error.message);

@@ -5,12 +5,9 @@ const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
 const supabaseKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
 const supabase = createClient(supabaseUrl, supabaseKey);
 
-export async function loadToDB(fileObj, fileName, fileType) {
+export async function loadToDB(fileObj, fileName) {
   try {
-    // Remove spaces
-    fileName = fileName.split(".")[0].replace(" ", "-");
-    // Set file type manually
-    fileName = fileName + "." + fileType;
+    fileName = fileName.replace(" ", "-");
     const { data, error } = await supabase.storage
       .from("researchNarratives")
       .upload("public/" + fileName, fileObj);

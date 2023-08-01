@@ -22,7 +22,6 @@ function getRandColor() {
   return selectedColor;
 }
 
-
 export async function fileConvert(file, fileName, fileType) {
   switch (fileType) {
     case "kml":
@@ -33,7 +32,8 @@ export async function fileConvert(file, fileName, fileType) {
       );
       return new Blob([JSON.stringify(data)], { type: "application/json" });
   }
-  
+}
+
 export async function loadSpatialData(
   file,
   fileName,

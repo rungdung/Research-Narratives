@@ -1,8 +1,4 @@
-import {
-  loadSpatialData,
-  fileConvert,
-  loadGeoTiffData,
-} from "./spatialRenderer.mjs";
+import { loadSpatialData, fileConvert } from "./spatialRenderer.mjs";
 import { loadPDFData } from "./nonSpatialRenderer.mjs";
 import { loadToDB } from "./loadToDB.mjs";
 
@@ -14,12 +10,12 @@ export async function loadData(files) {
 
   const fileName = file.name.split(".")[0];
   let fileType = file.name.split(".")[1];
-  console.log(fileName);
+
   if (fileType.toLowerCase() == "kml") {
     file = await fileConvert(file, fileName, fileType);
     fileType = "geojson";
   }
-  console.log(file);
+
   let fileDBUrl = await loadToDB(file, fileName, fileType);
 
   renderData(fileName, fileType, fileLocalUrl, fileDBUrl, null, false);

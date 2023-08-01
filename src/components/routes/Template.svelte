@@ -128,14 +128,13 @@
         <section id="map-container" bind:this={mapContainer}>
           <Map />
         </section>
-        {#if globalScrollIndex < steps.length && steps[globalScrollIndex].narrativeData && steps[globalScrollIndex].narrativeData.images}
-          {toggleMapContainer("hide")}
-          <section class="image-container">
-            {#each steps[globalScrollIndex].narrativeData.images as item}
-              <img src={item} alt="preview" class="image-preview" />
-            {/each}
-          </section>
-        {/if}
+          {#if globalScrollIndex < steps.length && steps[globalScrollIndex].narrativeData && steps[globalScrollIndex].narrativeData.images}
+            <section class="image-container">
+              {#each steps[globalScrollIndex].narrativeData.images as item}
+                <img src={item} alt="preview" class="image-preview" />
+              {/each}
+            </section>
+          {/if}
       </div>
     </div>
   </section>
@@ -145,6 +144,10 @@
       <a href="" target="_blank">Github</a>
     </h2>
   </footer>
+{:else}
+  <section class="">
+    You have not created a narrative on the research map!
+  </section>
 {/if}
 
 <style>

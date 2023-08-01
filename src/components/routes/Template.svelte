@@ -68,22 +68,23 @@
 
   // setup the instance, pass callback functions
   onMount(() => {
+    // instantiate the scrollama
+    const scroller = scrollama();
+
     scroller
       .setup({
         step: ".step",
+        offset: 0.5,
       })
       .onStepEnter((response) => {
-        if (response.index < steps.length) {
+        if (
+          response.index < steps.length &&
+          steps[response.index].narrativeData
+        ) {
           globalScrollIndex = response.index;
-          if (
-            steps[response.index].narrativeData &&
-            steps[response.index].narrativeData.mapFeature != null
-          ) {
+          if (steps[response.index].narrativeData.mapFeature) {
             toggleMapContainer("show", response.index, steps[response.index]);
-          } else if (
-            steps[response.index].narrativeData &&
-            steps[response.index].narrativeData.targetLayer != null
-          ) {
+          } else if (steps[response.index].narrativeData.targetLayer) {
             toggleMapContainer("show", response.index, steps[response.index]);
             map.setFilter(
               steps[response.index].narrativeData.targetLayer,
@@ -91,6 +92,8 @@
                 ? null
                 : steps[response.index].narrativeData.filterExpression
             );
+          } else if (steps[response.index].narrativeData.images) {
+            toggleMapContainer("hide");
           }
         }
       })

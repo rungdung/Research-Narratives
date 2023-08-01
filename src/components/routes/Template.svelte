@@ -56,9 +56,9 @@
       clearFilters(clearFilterIndex);
     }
     // Toggle map
-    if (mapContainer.style.display == "none" || status == "show") {
+    if (status == "show") {
       mapContainer.style.display = "block";
-    } else if (status == "hide" || mapContainer.style.display == "block") {
+    } else if (status == "hide") {
       mapContainer.style.display = "none";
     }
   }

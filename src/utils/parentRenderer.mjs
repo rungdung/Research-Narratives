@@ -27,7 +27,7 @@ export async function renderData(
   fileType,
   fileLocalUrl,
   fileDBUrl,
-  appearanceExpression,
+  appearanceExpression = null,
   DBload = false
 ) {
   try {
@@ -42,7 +42,6 @@ export async function renderData(
           null,
           fileName,
           fileDBUrl,
-          fileType.toLowerCase(),
           appearanceExpression,
           DBload
         );

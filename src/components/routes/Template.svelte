@@ -55,6 +55,19 @@
   }
 
   /**
+   * Handle wheel events
+   * @param {WheelEvent} event
+   */
+  function handleWheel(event) {
+    console.log(event);
+    if (event.deltaY > 0) {
+      moveNext();
+    } else if (event.deltaY < 0) {
+      movePrev();
+    }
+  }
+
+  /**
    * Handle keydown events
    * @param {KeyboardEvent} event
    */
@@ -113,7 +126,7 @@
   }
 </script>
 
-<svelte:window on:keydown={handleKeydown} />
+<svelte:window on:keydown={handleKeydown} on:wheel={handleWheel} />
 
 {#if steps.length > 1}
   <section>

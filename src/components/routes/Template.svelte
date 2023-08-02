@@ -6,7 +6,7 @@
   import { uploadedSources } from "../../stores";
   import { Button } from "flowbite-svelte";
   import { AngleLeftSolid, AngleRightSolid } from "flowbite-svelte-icons";
-  import { ScrollZoomHandler } from "maplibre-gl";
+  import { fly } from "svelte/transition";
 
   let steps,
     globalScrollIndex = 0;
@@ -118,9 +118,12 @@
 {#if steps.length > 1}
   <section>
     <div class="section-container">
-      <div class="steps-container">
+      <div
+        class:steps-container={globalScrollIndex != 0}
+        class:hero-container={globalScrollIndex == 0}
+      >
         {#key currentText}
-          <div class="step">
+          <div class="step" in:fly={{ x: 100, duration: 800 }}>
             <div class="step-content" class:hero={globalScrollIndex == 0}>
               <h2 class="text-5xl" class:heading={globalScrollIndex == 0}>
                 {@html currentText.label}
@@ -142,16 +145,16 @@
             >
           {:else if globalScrollIndex > 0}
             <section id="buttons-internal" class="absolute right-0">
-        <Button
+              <Button
                 class=" bg-gray-300 hover:bg-gray-400 rounded inline-flex items-center"
-          on:click={movePrev}><AngleLeftSolid /></Button
-        >
+                on:click={movePrev}><AngleLeftSolid /></Button
+              >
 
               {#if globalScrollIndex < steps.length - 1}
-        <Button
+                <Button
                   class=" bg-gray-300 hover:bg-gray-400 rounded inline-flex items-center"
-          on:click={moveNext}><AngleRightSolid /></Button
-        >
+                  on:click={moveNext}><AngleRightSolid /></Button
+                >
               {/if}
             </section>
           {/if}
@@ -213,17 +216,18 @@
     height: auto;
     display: flex;
     font: serif;
-
-    /*move to the centre of the screen*/
-    translate: transform(-50%, -50%);
+    transform: translate(-10%, 30%);
     place-items: center;
     flex-direction: column;
     justify-content: center;
     text-align: center;
-    padding: 1em !important;
+    padding: 3em !important;
     width: 60vw !important;
-    max-width: 70vw !important;
+    max-width: 60vw !important;
     margin: auto !important;
+
+    /* you need to match the shadow color to your background or image border for the desired effect*/
+    box-shadow: 0 0 100vh 100vw antiquewhite !important;
   }
 
   .heading {
@@ -297,6 +301,17 @@
     width: 60vw;
     margin: 3em;
     z-index: 10;
+  }
+
+  .hero-container {
+    position: fixed;
+    z-index: 30;
+    top: 0;
+    right: 0;
+    width: 100vw;
+    margin: auto;
+    vertical-align: middle;
+    padding: 0;
   }
 
   /* Comment out the following line to always make it 'text-on-top' */

@@ -2,7 +2,23 @@ import { uploadedSources } from "../stores";
 import maplibre from "maplibre-gl";
 import Popup from "../components/MarkerPopup.svelte";
 import { map } from "../components/Map.svelte";
-import { BinGuru } from "binguru";
+
+const colorsOG = ["#6E07EB", "#00CAF5", "#5FDE43", "#F5C83D", "#EB533B"];
+let colors = colorsOG.map((color) => color);
+
+function getRandColor() {
+  let selectedColor;
+  let randIndex = Math.floor(Math.random() * colors.length);
+  if (colors.length > 0) {
+    selectedColor = colors[randIndex];
+    colors.splice(randIndex, 1);
+  } else if (colors.length == 0) {
+    colors = colorsOG.map((color) => color);
+    selectedColor = colors[randIndex];
+    colors.splice(randIndex, 1);
+  }
+  return selectedColor;
+}
 
 export async function loadSpatialData(
   file,
@@ -43,7 +59,7 @@ export async function loadSpatialData(
       filter: ["==", "$type", "Point"],
       paint: {
         "circle-radius": 6,
-        "circle-color": "#007cbf",
+        "circle-color": getRandColor(),
       },
     });
 
@@ -59,7 +75,7 @@ export async function loadSpatialData(
       source: fileName,
       filter: ["==", "$type", "LineString"],
       paint: {
-        "line-color": "#007cbf",
+        "line-color": getRandColor(),
         "line-width": 2,
       },
     });
@@ -75,7 +91,7 @@ export async function loadSpatialData(
       source: fileName,
       filter: ["==", "$type", "Polygon"],
       paint: {
-        "fill-color": "#088",
+        "fill-color": getRandColor(),
         "fill-opacity": 0.6,
         "fill-outline-color": "green",
       },
@@ -166,6 +182,8 @@ export async function loadSpatialData(
         geometry: layerType,
         attributes: attributes,
         visible: true,
+        source: null,
+        citation: null,
         container: null,
       });
       return sources;

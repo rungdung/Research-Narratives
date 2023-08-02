@@ -81,8 +81,8 @@
           on:click={() => {
             addNewMarkupNodeCollection(
               sourceNode.fileName,
-              sourceNode.layerName,
-              ["all", "any"]
+              sourceNode.name,
+              null
             );
           }}>Add all to Research map</Button
         >
@@ -110,19 +110,17 @@
         </section>
       {/if}
 
-      {#if sourceNode.source}
-        Source: {sourceNode.source}
-      {:else}
-        <Label for="Source" class="!text-black text-lg ">Source</Label>
-        <Input
-          class="bg-inputField-200"
-          placeholder="Provide a source link"
-          name="citation"
-        />
-      {/if}
+      <Label for="Source" class="!text-black text-lg ">Source</Label>
+      <Input
+        bind:value={sourceNode.source}
+        class="bg-inputField-200"
+        placeholder="Provide a source link"
+        name="citation"
+      />
 
       <Label for="citation" class="!text-black text-lg">Citation</Label>
       <Textarea
+        bind:value={sourceNode.citation}
         class="bg-inputField-200"
         placeholder="Please provide a citation before sharing"
         name="citation"

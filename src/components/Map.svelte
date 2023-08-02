@@ -12,11 +12,16 @@
   import "maplibre-gl/dist/maplibre-gl.css";
 
   import { loadSources } from "../utils/loadFromDB.mjs";
-  import { uploadedSources } from "../stores";
+  import { uploadedSources, loadedSources } from "../stores";
+
+  import Alert from "./Alerts.svelte";
 
   const maptilerKey = import.meta.env.VITE_MAPTILER_KEY;
 
   let mapContainer;
+
+  let sourceLoading = new Set(),
+    sourceLoaded = new Set();
 
   onMount(() => {
     map = new maplibre.Map({
@@ -35,11 +40,48 @@
     map.on("load", () => {
       loadSources($uploadedSources);
     });
+
+    map.on("sourcedataloading", (e) => {
+      if (e.sourceId != sourceLoading) {
+        //check if source exists in uploaded sources
+        if (
+          $uploadedSources.find((source) => {
+            return source.fileName == e.sourceId;
+          })
+        ) {
+          sourceLoading.add(e.sourceId);
+          sourceLoading = sourceLoading;
+        }
+      }
+    });
+
+    map.on("sourcedata", (e) => {
+      if (
+        $uploadedSources.find((source) => {
+          return source.fileName == e.sourceId;
+        })
+      ) {
+        if (e.sourceId != $loadedSources) {
+          $loadedSources.add(e.sourceId);
+          $loadedSources = $loadedSources;
+        }
+      }
+    });
+
     map.resize();
   });
 </script>
 
 <div id="map" bind:this={mapContainer} />
+
+{#key sourceLoading.size}
+  <Alert pos="bottom" content="{Array.from(sourceLoading).pop()} is loading" />
+{/key}
+
+
+{#key $loadedSources.size}
+  <Alert pos="bottom" content="{Array.from($loadedSources).pop()} is loaded" />
+{/key}
 
 <style>
   #map {

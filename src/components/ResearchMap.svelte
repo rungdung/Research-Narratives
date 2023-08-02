@@ -25,7 +25,7 @@
     addNewAnnotationNode,
   } from "../utils/addNewNodes.mjs";
 
-  import { onMount } from "svelte";
+  import { onDestroy, onMount } from "svelte";
   export let supabase;
   let mnodesCopy = [],
     anodesCopy = [];
@@ -108,6 +108,10 @@
     }
   }
 
+  onDestroy(() => {
+    saveConnections();
+  });
+
   onMount(() => {
     if (mnodesCopy.length > 0) {
       markupNodes.set(mnodesCopy);
@@ -182,14 +186,14 @@
     <CloseCircleSolid svgClass="dark mx-1" />
     Clear all data
   </Button>
-  <Button
+  <!-- <Button
     color="dark"
     size="xs"
     class="px-2 py-1 rounded-md"
     on:click={saveConnections}
     ><DownloadSolid svgClass="dark mx-1" />
     Save changes locally
-  </Button>
+  </Button> -->
   <ShareModal {supabase} />
 </section>
 

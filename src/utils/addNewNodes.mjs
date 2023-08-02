@@ -85,11 +85,12 @@ export function addNewMarkupNodeCollection(
   targetLayer,
   filterExpression
 ) {
+  console.log(fileName, targetLayer, filterExpression);
   markupNodes.update((nodes) => {
     nodes.push({
       id: "markupNode-" + nodes.length,
       type: "collection",
-      label: "Collection",
+      label: "Collection of features from" + fileName,
       source: fileName,
       filterExpression: filterExpression,
       connections: [],

@@ -9,3 +9,4 @@ export let connections = writable(new Set());
 
 // Booleans for global triggers
 export let fileUploadModal = writable(true);
+export let loadedSources = writable(new Set());

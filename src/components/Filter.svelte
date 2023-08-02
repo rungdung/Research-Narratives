@@ -5,6 +5,9 @@
   import { Select, Label, Button, Dropdown, Search } from "flowbite-svelte";
   import RangeSlider from "svelte-range-slider-pips";
   import { addNewMarkupNodeCollection } from "../utils/addNewNodes.mjs";
+
+  import Alert from "./Alerts.svelte";
+
   // searches a geojson layer for a given string
   // zooms to the first result
   // returns the number of results
@@ -29,21 +32,54 @@
       ["==", ["get", selectedAttribute.name], selectedAttributeValue],
     ];
     map.setFilter(selectedLayer.name, filterExpression);
+    new Alert({
+      target: document.body,
+      props: {
+        pos: "right",
+        content: "Filter created",
+      },
+    });
   }
 
   async function clearAllFilters() {
-    map.setFilter(selectedLayer, null);
+    console.log(selectedLayer);
+    map.setFilter(selectedLayer.name, null);
   }
 
-  async function searchRange(selectedAttributeRange) {
+  async function searchRange(selectedAttributeRange_ = selectedAttributeRange) {
     filterExpression = [
       "all",
-      [">=", ["get", selectedAttribute.name], selectedAttributeRange[0]],
-      ["<=", ["get", selectedAttribute.name], selectedAttributeRange[1]],
+      [">=", ["get", selectedAttribute.name], selectedAttributeRange_[0]],
+      ["<=", ["get", selectedAttribute.name], selectedAttributeRange_[1]],
     ];
     map.setFilter(selectedLayer.name, filterExpression);
+    new Alert({
+      target: document.body,
+      props: {
+        pos: "right",
+        content: "Filter applied",
+      },
+    });
   }
 
+  function addToResearchMap() {
+    addNewMarkupNodeCollection(
+      selectedLayer.fileName,
+      selectedLayer.name,
+      filterExpression
+    );
+
+    new Alert({
+      target: document.body,
+      props: {
+        pos: "right",
+        content:
+          "Filtered content from " +
+          selectedLayer.fileName +
+          " added to Research Map",
+      },
+    });
+  }
   $: searchRange(selectedAttributeRange);
 </script>
 
@@ -95,6 +131,17 @@
       {/each}
     {/each}
   </Select>
+  <Button
+    on:click={search}
+    class="rounded-sm px-1 py-0 mt-2 bg-slate-800"
+    id="search-button">Filter</Button
+  >
+  <Button
+    on:click={addToResearchMap}
+    class="rounded-sm px-1 py-0 mt-2 bg-slate-800"
+  >
+    Add to Research Map</Button
+  >
 {/if}
 
 {#if selectedAttribute && selectedAttribute.dataType === "numeric"}
@@ -113,6 +160,17 @@
     last="label"
     step={10}
   />
+  <Button
+    on:click={searchRange}
+    class="rounded-sm px-1 py-0 mt-2 bg-slate-800"
+    id="search-button">Filter</Button
+  >
+  <Button
+    on:click={addToResearchMap}
+    class="rounded-sm px-1 py-0 mt-2 bg-slate-800"
+  >
+    Add to Research Map</Button
+  >
 {/if}
 
 <Button
@@ -121,26 +179,6 @@
 >
   Clear all filters</Button
 >
-
-{#if selectedAttribute}
-  <Button
-    on:click={search}
-    class="rounded-sm px-1 py-0 mt-2 bg-slate-800"
-    id="search-button">Filter</Button
-  >
-  <Button
-    on:click={() => {
-      addNewMarkupNodeCollection(
-        selectedLayer.fileName,
-        selectedLayer.name,
-        filterExpression
-      );
-    }}
-    class="rounded-sm px-1 py-0 mt-2 bg-slate-800"
-  >
-    Add to Research Map</Button
-  >
-{/if}
 
 <style>
   :global(.rangeSlider) {

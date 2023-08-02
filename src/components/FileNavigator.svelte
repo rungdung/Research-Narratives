@@ -82,6 +82,7 @@
     height: 100%;
     margin: 5% 0%;
     overflow-y: scroll;
+    max-height: 10em;
   }
   :global(.dropzoneAddSource) {
     width: 100%;

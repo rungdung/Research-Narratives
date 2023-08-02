@@ -6,7 +6,7 @@
   import { uploadedSources } from "../../stores";
   import { Button } from "flowbite-svelte";
   import { AngleLeftSolid, AngleRightSolid } from "flowbite-svelte-icons";
-  import { ScrollZoomHandler } from "maplibre-gl";
+  import { fly } from "svelte/transition";
 
   let steps,
     globalScrollIndex = 0;
@@ -55,7 +55,50 @@
   }
 
   /**
-   * On increment, update actions
+   * Handle wheel events
+   * @param {WheelEvent} event
+   */
+  function handleWheel(event) {
+    console.log(event);
+    if (event.deltaY > 0) {
+      moveNext();
+    } else if (event.deltaY < 0) {
+      movePrev();
+    }
+  }
+
+  /**
+   * Handle keydown events
+   * @param {KeyboardEvent} event
+   */
+  function handleKeydown(event) {
+    if (event.key == "ArrowRight") {
+      moveNext();
+    } else if (event.key == "ArrowLeft") {
+      movePrev();
+    }
+  }
+
+  /**
+   * Increment globalScrollIndex to move to next section
+   */
+  function moveNext() {
+    if (globalScrollIndex < steps.length - 1) {
+      globalScrollIndex++;
+    }
+  }
+
+  /**
+   * Decrement globalScrollIndex to move to previous section
+   */
+  function movePrev() {
+    if (globalScrollIndex > 0) {
+      globalScrollIndex--;
+    }
+  }
+
+  /**
+   * On increment or decrement, update actions
    */
   $: currentText = steps[globalScrollIndex];
   $: if (globalScrollIndex < steps.length && currentText.narrativeData) {
@@ -83,14 +126,17 @@
   }
 </script>
 
-<svelte:window bind:scrollY />
+<svelte:window on:keydown={handleKeydown} on:wheel={handleWheel} />
 
 {#if steps.length > 1}
   <section>
     <div class="section-container">
-      <div class="steps-container">
+      <div
+        class:steps-container={globalScrollIndex != 0}
+        class:hero-container={globalScrollIndex == 0}
+      >
         {#key currentText}
-          <div class="step">
+          <div class="step" in:fly={{ x: 100, duration: 800 }}>
             <div class="step-content" class:hero={globalScrollIndex == 0}>
               <h2 class="text-5xl" class:heading={globalScrollIndex == 0}>
                 {@html currentText.label}
@@ -100,23 +146,32 @@
           </div>
         {/key}
         <!-- on button press increment globalScrollIndex-->
-        <Button
-          class="bg-gray-300 hover:bg-gray-400 rounded inline-flex items-center"
-          on:click={() => {
-            if (globalScrollIndex > 0) {
-              globalScrollIndex--;
-            }
-          }}><AngleLeftSolid /></Button
-        >
-        <Button
-          class="bg-gray-300 hover:bg-gray-400 rounded inline-flex items-center"
-          on:click={() => {
-            if (globalScrollIndex < steps.length - 1) {
-              globalScrollIndex++;
-            }
-          }}><AngleRightSolid /></Button
-        >
+        <section id="buttons">
+          {#if globalScrollIndex == 0}
+            <Button
+              class="absolute right-0 bg-transparent rounded "
+              on:click={moveNext}
+              ><AngleRightSolid
+                size="50"
+                class="animate-bounce opacity-40"
+              /></Button
+            >
+          {:else if globalScrollIndex > 0}
+            <section id="buttons-internal" class="absolute right-0">
+              <Button
+                class=" bg-gray-300 hover:bg-gray-400 rounded inline-flex items-center"
+                on:click={movePrev}><AngleLeftSolid /></Button
+              >
 
+              {#if globalScrollIndex < steps.length - 1}
+                <Button
+                  class=" bg-gray-300 hover:bg-gray-400 rounded inline-flex items-center"
+                  on:click={moveNext}><AngleRightSolid /></Button
+                >
+              {/if}
+            </section>
+          {/if}
+        </section>
         <div class="spacer" />
       </div>
       <div class="sticky">
@@ -174,17 +229,18 @@
     height: auto;
     display: flex;
     font: serif;
-
-    /*move to the centre of the screen*/
-    translate: transform(-50%, -50%);
+    transform: translate(-10%, 30%);
     place-items: center;
     flex-direction: column;
     justify-content: center;
     text-align: center;
-    padding: 1em !important;
+    padding: 3em !important;
     width: 60vw !important;
-    max-width: 70vw !important;
+    max-width: 60vw !important;
     margin: auto !important;
+
+    /* you need to match the shadow color to your background or image border for the desired effect*/
+    box-shadow: 0 0 150vh 20vw antiquewhite !important;
   }
 
   .heading {
@@ -258,6 +314,17 @@
     width: 60vw;
     margin: 3em;
     z-index: 10;
+  }
+
+  .hero-container {
+    position: fixed;
+    z-index: 30;
+    top: 0;
+    right: 0;
+    width: 100vw;
+    margin: auto;
+    vertical-align: middle;
+    padding: 0;
   }
 
   /* Comment out the following line to always make it 'text-on-top' */

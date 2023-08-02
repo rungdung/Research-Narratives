@@ -240,7 +240,7 @@
     margin: auto !important;
 
     /* you need to match the shadow color to your background or image border for the desired effect*/
-    box-shadow: 0 0 100vh 100vw antiquewhite !important;
+    box-shadow: 0 0 150vh 20vw antiquewhite !important;
   }
 
   .heading {

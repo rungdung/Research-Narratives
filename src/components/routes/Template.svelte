@@ -55,7 +55,37 @@
   }
 
   /**
-   * On increment, update actions
+   * Handle keydown events
+   * @param {KeyboardEvent} event
+   */
+  function handleKeydown(event) {
+    if (event.key == "ArrowRight") {
+      moveNext();
+    } else if (event.key == "ArrowLeft") {
+      movePrev();
+    }
+  }
+
+  /**
+   * Increment globalScrollIndex to move to next section
+   */
+  function moveNext() {
+    if (globalScrollIndex < steps.length - 1) {
+      globalScrollIndex++;
+    }
+  }
+
+  /**
+   * Decrement globalScrollIndex to move to previous section
+   */
+  function movePrev() {
+    if (globalScrollIndex > 0) {
+      globalScrollIndex--;
+    }
+  }
+
+  /**
+   * On increment or decrement, update actions
    */
   $: currentText = steps[globalScrollIndex];
   $: if (globalScrollIndex < steps.length && currentText.narrativeData) {
@@ -83,7 +113,7 @@
   }
 </script>
 
-<svelte:window bind:scrollY />
+<svelte:window on:keydown={handleKeydown} />
 
 {#if steps.length > 1}
   <section>
@@ -102,19 +132,11 @@
         <!-- on button press increment globalScrollIndex-->
         <Button
           class="bg-gray-300 hover:bg-gray-400 rounded inline-flex items-center"
-          on:click={() => {
-            if (globalScrollIndex > 0) {
-              globalScrollIndex--;
-            }
-          }}><AngleLeftSolid /></Button
+          on:click={movePrev}><AngleLeftSolid /></Button
         >
         <Button
           class="bg-gray-300 hover:bg-gray-400 rounded inline-flex items-center"
-          on:click={() => {
-            if (globalScrollIndex < steps.length - 1) {
-              globalScrollIndex++;
-            }
-          }}><AngleRightSolid /></Button
+          on:click={moveNext}><AngleRightSolid /></Button
         >
 
         <div class="spacer" />

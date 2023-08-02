@@ -130,15 +130,32 @@
           </div>
         {/key}
         <!-- on button press increment globalScrollIndex-->
+        <section id="buttons">
+          {#if globalScrollIndex == 0}
+            <Button
+              class="absolute right-0 bg-transparent rounded "
+              on:click={moveNext}
+              ><AngleRightSolid
+                size="50"
+                class="animate-bounce opacity-40"
+              /></Button
+            >
+          {:else if globalScrollIndex > 0}
+            <section id="buttons-internal" class="absolute right-0">
         <Button
-          class="bg-gray-300 hover:bg-gray-400 rounded inline-flex items-center"
+                class=" bg-gray-300 hover:bg-gray-400 rounded inline-flex items-center"
           on:click={movePrev}><AngleLeftSolid /></Button
         >
+
+              {#if globalScrollIndex < steps.length - 1}
         <Button
-          class="bg-gray-300 hover:bg-gray-400 rounded inline-flex items-center"
+                  class=" bg-gray-300 hover:bg-gray-400 rounded inline-flex items-center"
           on:click={moveNext}><AngleRightSolid /></Button
         >
-
+              {/if}
+            </section>
+          {/if}
+        </section>
         <div class="spacer" />
       </div>
       <div class="sticky">

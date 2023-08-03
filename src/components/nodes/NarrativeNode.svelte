@@ -7,18 +7,29 @@
 
   export let node;
 
+  // If data is spatial or image, grey out the input
+  let mapDataConnected = false,
+    imageDataConnected = false,
+    mapDataLinked = false,
+    imageDataLinked = false;
+
   const inputs = generateInput({});
 
   const processor = ($inputs) => {
     try {
       node.narrativeData = $inputs.narrativeData;
-
       // insert into parent store
       narrativeNodes.update((pNodes) => {
         let index = pNodes.findIndex((parentNode) => parentNode.id == node.id);
         pNodes[index] = node;
         return pNodes;
       });
+
+      if ("mapFeature" in $inputs.narrativeData) {
+        mapDataConnected = true;
+      } else if ("images" in $inputs.narrativeData) {
+        imageDataConnected = true;
+      }
     } catch (error) {
       console.log(error);
     }
@@ -108,6 +119,7 @@
         {/if}
       </span>
       <section id="inputs" class="space-y-2 my-4">
+        <div class:hidden={imageDataConnected}>
         <Anchor
           let:linked
           let:connecting
@@ -124,7 +136,8 @@
             label="Spatial Feature"
           />
         </Anchor>
-
+        </div>
+        <div class:hidden={mapDataConnected}>
         <Anchor
           let:linked
           let:connecting
@@ -136,6 +149,7 @@
         >
           <CustomAnchor {hovering} {connecting} {linked} label="Images" />
         </Anchor>
+        </div>
       </section>
     </div>
   {:else if node.id == "narrativeNode-0"}

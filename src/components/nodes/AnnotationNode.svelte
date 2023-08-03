@@ -1,8 +1,13 @@
 <script>
   import { Node, Anchor, generateOutput, generateInput } from "svelvet";
   import Dropzone from "svelte-file-dropzone/Dropzone.svelte";
-  import { DataHandler, Datatable, Th, ThFilter } from "@vincjo/datatables"; //https://vincjo.fr/datatables/
-  import { Accordion, AccordionItem, Button, P } from "flowbite-svelte";
+  import {
+    Accordion,
+    AccordionItem,
+    Button,
+    Label,
+    Input,
+  } from "flowbite-svelte";
   import { loadToDB } from "../../utils/loadToDB.mjs";
   import { annotationNodes } from "../../stores";
   import CustomAnchor from "./customAnchor.svelte";
@@ -85,15 +90,21 @@
 >
   <div class="node" use:grabHandle>
     <section class="node-wrapper container mx-3 my-3">
-      <h2 class="text-2xl text-white whitespace-normal">Uploaded Media</h2>
+      <h2 class="text-2xl text-white whitespace-normal">
+        {annotationNode.label}
+      </h2>
+
+      <Input
+        type="text"
+        placeholder="Small input"
+        size="sm"
+        class="bg-inputField-200 my-2"
+        bind:value={annotationNode.label}
+      />
 
       <Accordion flush class="my-2 group-first:rounded-t-md">
         <AccordionItem paddingFlush={"p-2"}>
-          <span slot="header" class="text-white"> Captions and Notes </span>
-          <textarea
-            class="text-gray-500 body my-1 py-1 w-full rounded-md bg-inputField-200"
-            value={annotationNode.label}
-          />
+          <span slot="header" class="text-white"> Notes </span>
           <textarea
             class="text-gray-500 body my-1 py-1 w-full rounded-md bg-inputField-200"
             value={annotationNode.notes}
@@ -108,7 +119,11 @@
         accept="image/*"
         containerClasses="dropzoneChart !bg-gray-300 text-white border-2 border-b-zinc-700"
       />
-      <section id="meta-menu" class="mx-3">
+
+      {#each annotationNode.files.accepted as item}
+        <img src={item} alt="preview" />
+      {/each}
+      <section id="meta-menu" class="my-2">
         <Button
           size="xs"
           class="px-1 py-0 m-0 rounded-sm"
@@ -117,9 +132,6 @@
           }}>delete this</Button
         >
       </section>
-      {#each annotationNode.files.accepted as item}
-        <img src={item} alt="preview" />
-      {/each}
     </section>
 
     <span class="anchor">

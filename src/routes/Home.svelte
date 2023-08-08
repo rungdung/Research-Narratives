@@ -100,7 +100,7 @@
       </Dropdown>
       <NavLi href="/#roadmap">Going forward</NavLi>
       <NavLi href="/#demo">Alpha</NavLi>
-      <NavLi href="/#github">Contact</NavLi>
+      <NavLi href="/#links">Contact</NavLi>
     </NavUl>
   </Navbar>
 
@@ -163,7 +163,7 @@
 
   <p>This project is being developed under the Apache license</p>
   <p id="links">
-    Email at adhavan16[dot]sivaraj[at]gmail[dot]com
+    Email at adhavan[dot]sivaraj16[at]gmail[dot]com
     <a href="" target="_blank">Github</a>
   </p>
 </footer>

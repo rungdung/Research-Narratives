@@ -18,17 +18,17 @@
     {
       id: "spatial-whiteboarding",
       text: "What if spatial data and media could be explored on a whiteboard?",
-      visual: "../../assets/researchMap.webm",
+      visual: "./assets/researchMap.webm",
     },
     {
       id: "filtering",
       text: "Visualise your spatial data with filters and Choropleths",
-      visual: "../../assets/spatialFeatures.webm",
+      visual: "./assets/spatialFeatures.webm",
     },
     {
       id: "rendered-stories",
       text: "Convert your mindmaps into interactive data stories",
-      visual: "../../assets/renderedStory.webm",
+      visual: "./assets/renderedStory.webm",
     },
     {
       id: "collaboration",
@@ -41,21 +41,21 @@
       title: "Bengaluru's Land-Use Change Trends",
       description:
         "..., the data from 2007-2019 showcases how 'Hi-Tech' a land use introduced specially in the 2007 master plan to promote IT industries has become the new location for residential and commercial real estate in the city. ",
-      image: "../../assets/landuse-bengaluru-sample-thumbnail.jpg",
+      image: "./assets/landuse-bengaluru-sample-thumbnail.jpg",
       link: "./demo/RenderedStory?uuid=4be2d2ce-8431-48d4-8ae7-c1a56177e98c",
     },
     {
       title: "Geographical Patterns of Child Malnutrition in Karnataka",
       description:
         "Even after making decades of progress, India is still home to a major fraction of the world's malnourished children. Malnutrition in early childhood is associated with lower cognitive and physical ability, and can have a lifelong impact...",
-      image: "../../assets/stunting-karnataka-sample-thumbnail.jpg",
+      image: "./assets/stunting-karnataka-sample-thumbnail.jpg",
       link: "./demo/RenderedStory?uuid=4e0aeb83-702e-4403-868a-ff081622229d",
     },
     {
       title: "Try out the proof of concept",
       description:
         "You can upload your own data and create your own stories. The tool is in its alpha stages, so please bear with us. We are looking for contributors to help us build this tool. If you are interested, please reach out to us at...",
-      image: "../../assets/empty-home-sample-thumbnail.jpg",
+      image: ".   /assets/empty-home-sample-thumbnail.jpg",
       link: "./demo/",
       type: "demo",
     },

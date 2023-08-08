@@ -55,7 +55,7 @@
       title: "Try out the proof of concept",
       description:
         "You can upload your own data and create your own stories. The tool is in its alpha stages, so please bear with us. We are looking for contributors to help us build this tool. If you are interested, please reach out to us at...",
-      image: ".   /assets/empty-home-sample-thumbnail.jpg",
+      image: "./assets/empty-home-sample-thumbnail.jpg",
       link: "./demo/",
       type: "demo",
     },

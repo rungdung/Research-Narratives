@@ -140,7 +140,7 @@
     </section>
   </section>
 
-  <section id="roadmap">
+  <section id="roadmap" class="px-5">
     The project is being tracked on a public Github Project here: <a
       href="https://github.com/users/rungdung/projects/3/views/1"
       target="_blank"
@@ -156,10 +156,10 @@
   <div>
     This project is a proof of concept in development and requires active
     contributors. If you share our vision or can contribute time and effort to
-    develop this, reach out to us on Github Issues. This proof of concept was
-    developed as part of an internship at the Indian Institute for Human
-    Settlements, Bengaluru.
-  </p>
+    develop this, reach out to us on Github Issues. <br /> <br />This proof of
+    concept was developed as part of an internship at Urban Informatics Lab the
+    Indian Institute for Human Settlements, Bengaluru.
+  </div>
 
   <div>This project is being developed under the Apache license</div>
   <div id="links">

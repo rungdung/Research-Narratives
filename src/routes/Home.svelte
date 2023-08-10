@@ -151,9 +151,9 @@
 </section>
 
 <footer
-  class="w-screen bg-gradient-to-t from-primary-200 to-primary-50 text-black text-left px-10 py-40 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 space-x-5"
+  class="w-screen bg-gradient-to-t from-primary-200 to-primary-50 text-black text-left px-10 py-40 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 sm:space-x-5 sm:space-y-0 space-y-10 pr-5"
 >
-  <p class="pr-5">
+  <div>
     This project is a proof of concept in development and requires active
     contributors. If you share our vision or can contribute time and effort to
     develop this, reach out to us on Github Issues. This proof of concept was
@@ -161,11 +161,11 @@
     Settlements, Bengaluru.
   </p>
 
-  <p>This project is being developed under the Apache license</p>
-  <p id="links">
+  <div>This project is being developed under the Apache license</div>
+  <div id="links">
     Email at adhavan[dot]sivaraj16[at]gmail[dot]com
     <a href="" target="_blank">Github</a>
-  </p>
+  </div>
 </footer>
 
 <style>

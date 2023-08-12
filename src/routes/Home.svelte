@@ -134,7 +134,14 @@
         <Card class="p-0 bg-brown drop-shadow mx-2 my-2" img={image}>
           <h2 class="text-2xl text-black py-2">{title}</h2>
           <p>{description}</p>
+
+          {#if type == "demo"}
+            <Button class="bg-gray-500 my-4" size="xs" href={link}
+              >Try out the tool</Button
+            >
+          {:else}
           <Button class="bg-gray-500 my-4" size="xs" href={link}>View</Button>
+          {/if}
         </Card>
       {/each}
     </section>

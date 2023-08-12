@@ -60,8 +60,6 @@
       type: "demo",
     },
   ];
-
-  let roadMap;
 </script>
 
 <section class="bg-primary-50 text-black">
@@ -84,18 +82,31 @@
       looking for contributors
     </p>
     <NavHamburger on:click={toggle} />
-    <NavUl {hidden} activeClass="" divClass="w-1/2 md:block ">
+    <NavUl
+      {hidden}
+      activeClass=""
+      divClass="sm:w-1/2 text-left w-full md:block "
+    >
       <NavLi id="nav-menu1" class="cursor-pointer"
         ><Chevron aligned>Possibilities</Chevron></NavLi
       >
-      <Dropdown triggeredBy="#nav-menu1" class="w-44 z-20">
-        <DropdownItem href="/#filtering">Spatial Data exploration</DropdownItem>
-        <DropdownItem href="/#spatial-whiteboarding"
-          >Mindmapping data</DropdownItem
+      <Dropdown
+        triggeredBy="#nav-menu1"
+        class="w-100 z-20 bg-yellow-500 rounded-md"
+      >
+        <DropdownItem href="/#filtering" class="text-white hover:text-black"
+          >Spatial Data exploration</DropdownItem
         >
-        <DropdownItem href="/#collaboration">Share and collaborate</DropdownItem
+        <DropdownItem
+          href="/#spatial-whiteboarding"
+          class="text-white hover:text-black">Mindmapping data</DropdownItem
         >
-        <DropdownItem href="/#rendered-stories">Create datastories</DropdownItem
+        <DropdownItem href="/#collaboration" class="text-white hover:text-black"
+          >Share and collaborate</DropdownItem
+        >
+        <DropdownItem
+          href="/#rendered-stories"
+          class="text-white hover:text-black">Create datastories</DropdownItem
         >
       </Dropdown>
       <NavLi href="/#roadmap">Going forward</NavLi>
@@ -125,7 +136,7 @@
       {/if}
     {/each}
   </section>
-  <section id="trial" class="text-left">
+  <section id="trial" class="text-left mx-3">
     <h2 id="demo" class="text-4xl text-center py-10">Some sample stories...</h2>
     <section
       class="grid grid-flow-row grid-cols-1 w-full mx-auto sm:grid-cols-3 sm:mx-0 sm:w-full md:w-5/6 md:mx-auto my-10"
@@ -140,7 +151,7 @@
               >Try out the tool</Button
             >
           {:else}
-          <Button class="bg-gray-500 my-4" size="xs" href={link}>View</Button>
+            <Button class="bg-gray-500 my-4" size="xs" href={link}>View</Button>
           {/if}
         </Card>
       {/each}

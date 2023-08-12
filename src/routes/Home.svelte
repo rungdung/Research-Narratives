@@ -42,6 +42,7 @@
       description:
         "..., the data from 2007-2019 showcases how 'Hi-Tech' a land use introduced specially in the 2007 master plan to promote IT industries has become the new location for residential and commercial real estate in the city. ",
       image: "./assets/landuse-bengaluru-sample-thumbnail.jpg",
+      researchMapLink: "./demo/?uuid=4be2d2ce-8431-48d4-8ae7-c1a56177e98c",
       link: "./demo/RenderedStory?uuid=4be2d2ce-8431-48d4-8ae7-c1a56177e98c",
     },
     {
@@ -49,6 +50,7 @@
       description:
         "Even after making decades of progress, India is still home to a major fraction of the world's malnourished children. Malnutrition in early childhood is associated with lower cognitive and physical ability, and can have a lifelong impact...",
       image: "./assets/stunting-karnataka-sample-thumbnail.jpg",
+      researchMapLink: "./demo/?uuid=4e0aeb83-702e-4403-868a-ff081622229d",
       link: "./demo/RenderedStory?uuid=4e0aeb83-702e-4403-868a-ff081622229d",
     },
     {
@@ -56,6 +58,7 @@
       description:
         "You can upload your own data and create your own stories. The tool is in its alpha stages, so please bear with us. We are looking for contributors to help us build this tool. If you are interested, please reach out to us at...",
       image: "./assets/empty-home-sample-thumbnail.jpg",
+      researchMapLink: "",
       link: "./demo/",
       type: "demo",
     },
@@ -141,7 +144,7 @@
     <section
       class="grid grid-flow-row grid-cols-1 w-full mx-auto sm:grid-cols-3 sm:mx-0 sm:w-full md:w-5/6 md:mx-auto my-10"
     >
-      {#each sampleStories as { title, description, image, link, type }}
+      {#each sampleStories as { title, description, image, researchMapLink, link, type }}
         <Card class="p-0 bg-brown drop-shadow mx-2 my-2" img={image}>
           <h2 class="text-2xl text-black py-2">{title}</h2>
           <p>{description}</p>
@@ -151,7 +154,12 @@
               >Try out the tool</Button
             >
           {:else}
-            <Button class="bg-gray-500 my-4" size="xs" href={link}>View</Button>
+            <Button class="bg-gray-500 my-4" size="xs" href={link}
+              >View Data Story</Button
+            >
+            <Button class="bg-gray-500 my-4" size="xs" href={researchMapLink}
+              >View Raw Mind Map</Button
+            >
           {/if}
         </Card>
       {/each}

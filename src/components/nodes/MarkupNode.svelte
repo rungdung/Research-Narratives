@@ -1,7 +1,13 @@
 <script>
   import { Node, Anchor, generateOutput, generateInput } from "svelvet";
   import { DataHandler, Datatable, Th, ThFilter } from "@vincjo/datatables"; //https://vincjo.fr/datatables/
-  import { AccordionItem, Accordion, Button } from "flowbite-svelte";
+  import {
+    AccordionItem,
+    Accordion,
+    Button,
+    Label,
+    Input,
+  } from "flowbite-svelte";
   import { map } from "../Map.svelte";
   import { zoomToFeature } from "../../utils/mapMovements.mjs";
   import { markupNodes, uploadedSources } from "../../stores";
@@ -76,6 +82,17 @@
       <h2 class="text-2xl text-white whitespace-normal">
         {markupNode.label}
       </h2>
+      <Label class="space-y-1">
+        <span class="text-gray-200">Name of feature(s)</span>
+        <Input
+          type="text"
+          placeholder="Small input"
+          size="sm"
+          class="bg-inputField-200"
+          bind:value={markupNode.label}
+        />
+      </Label>
+
       <Accordion flush class="my-2 group-first:rounded-t-md">
         <AccordionItem paddingFlush={"p-2"}>
           <span slot="header" class="text-white">Notes</span>

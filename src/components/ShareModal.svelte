@@ -62,10 +62,10 @@
   outsideclose
 >
   <p>Use this link to share your research map</p>
-  <Link to="/?uuid={uuid}">Research map</Link>
+  <Link to="/demo/?uuid={uuid}">Research map</Link>
 
   <p class="mt-1">Use this link to share/view your rendered story</p>
-  <Link to="/RenderedStory?uuid={uuid}">Data Story</Link>
+  <Link to="/demo/RenderedStory?uuid={uuid}">Data Story</Link>
 </Modal>
 
 <Button

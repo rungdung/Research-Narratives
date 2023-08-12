@@ -9,8 +9,9 @@
   } from "./stores";
 
   import { Route, Router } from "svelte-routing";
-  import Template from "./components/routes/Template.svelte";
-  import Main from "./components/routes/Main.svelte";
+  import Template from "./routes/Template.svelte";
+  import Main from "./routes/Main.svelte";
+  import Home from "./routes/Home.svelte";
 
   import { PenNibOutline } from "flowbite-svelte-icons";
 
@@ -48,7 +49,7 @@
 {#key storesUpdated}
   {#if storesUpdated}
     <Router>
-      <Route path="/RenderedStory">
+      <Route path="/demo/RenderedStory">
         {#if $loadedSources.size != $uploadedSources.length}
           <section
             class="flex justify-center items-center text-left text-xl h-screen z-100"
@@ -61,8 +62,12 @@
         <Template />
       </Route>
 
-      <Route path="/">
+      <Route path="/demo">
         <Main {supabase} />
+      </Route>
+
+      <Route path="/">
+        <Home />
       </Route>
     </Router>
   {:else}
@@ -74,6 +79,7 @@
     </section>
   {/if}
 {/key}
+
 <svelte:window />
 <svelte:head>
   <title>Research Narratives</title>

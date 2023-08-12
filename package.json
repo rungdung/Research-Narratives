@@ -1,7 +1,12 @@
 {
-  "name": "template-mapping",
-  "private": true,
-  "version": "0.0.0",
+  "name": "Research-Narratives",
+  "version": "0.2.0-alpha",
+  "homepage": "researchnarratives.netlify.app",
+  "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/rungdung/Research-Narratives.git"
+  },
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -32,10 +37,8 @@
     "chroma-js": "^2.4.2",
     "flowbite": "^1.7.0",
     "flowbite-svelte": "^0.38.5",
-    "intersection-observer": "^0.12.2",
     "maplibre-gl": "^3.0.1",
     "pdfobject": "^2.2.12",
-    "scrollama": "^3.2.0",
     "svelte": "^4.0.0",
     "svelte-collapsible": "^0.2.1",
     "svelte-file-dropzone": "^2.0.1",

@@ -125,13 +125,13 @@
       {/if}
     {/each}
   </section>
-  <section id="trial" class="w-screen p-5 text-left content-center mx-auto">
-    <h2 id="demo" class="text-4xl text-center py-10">
-      Check these sample stories out
-    </h2>
-    <section class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3">
+  <section id="trial" class="text-left">
+    <h2 id="demo" class="text-4xl text-center py-10">Some sample stories...</h2>
+    <section
+      class="grid grid-flow-row grid-cols-1 w-full mx-auto sm:grid-cols-3 sm:mx-0 sm:w-full md:w-5/6 md:mx-auto my-10"
+    >
       {#each sampleStories as { title, description, image, link, type }}
-        <Card class="p-0 bg-brown drop-shadow m-3" img={image}>
+        <Card class="p-0 bg-brown drop-shadow mx-2 my-2" img={image}>
           <h2 class="text-2xl text-black py-2">{title}</h2>
           <p>{description}</p>
           <Button class="bg-gray-500 my-4" size="xs" href={link}>View</Button>
@@ -164,6 +164,7 @@
   <div>This project is being developed under the Apache license</div>
   <div id="links">
     Email at adhavan[dot]sivaraj16[at]gmail[dot]com
+    <br />
     <a href="" target="_blank">Github</a>
   </div>
 </footer>

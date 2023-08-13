@@ -61,7 +61,10 @@
   autoclose
   outsideclose
 >
-  <p>Use this link to share your research map</p>
+  <p>
+    Use this link to share your research map. Use the same link to edit your
+    story.
+  </p>
   <Link to="/demo/?uuid={uuid}">Research map</Link>
 
   <p class="mt-1">Use this link to share/view your rendered story</p>
@@ -74,13 +77,5 @@
   class="px-2 py-1 rounded-md"
   on:click={handleSubmit}
 >
-  <ShareNodesSolid svgClass="dark mx-1" /> Share Map</Button
->
-<Button
-  color="dark"
-  size="xs"
-  class="px-2 py-1 rounded-md"
-  on:click={handleRenderClick}
->
-  <ShareAllSolid svgClass="dark mx-1" /> Render Data Story</Button
+  <ShareNodesSolid svgClass="dark mx-1" /> Save / Share</Button
 >

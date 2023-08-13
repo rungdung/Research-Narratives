@@ -176,6 +176,15 @@
     >
       Link
     </a>
+    <br />
+    This project is being released for public testing and feedback. Please file issues
+    on the Github repository. <br />
+    <Button
+      class="bg-gray-500 my-4"
+      size="xs"
+      href="https://github.com/rungdung/Research-Narratives/issues"
+      data-umami-event="open-github-issues">File an issue</Button
+    >
   </section>
 </section>
 
@@ -194,7 +203,9 @@
   <div id="links">
     Email at adhavan[dot]sivaraj16[at]gmail[dot]com
     <br />
-    <a href="" target="_blank">Github</a>
+    <a href="https://github.com/rungdung/research-narratives" target="_blank"
+      >Github</a
+    >
   </div>
 </footer>
 

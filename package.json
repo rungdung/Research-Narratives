@@ -39,7 +39,6 @@
     "flowbite-svelte": "^0.38.5",
     "maplibre-gl": "^3.0.1",
     "pdfobject": "^2.2.12",
-    "posthog-js": "^1.76.0",
     "svelte": "^4.0.0",
     "svelte-collapsible": "^0.2.1",
     "svelte-file-dropzone": "^2.0.1",

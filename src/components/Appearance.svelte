@@ -226,6 +226,7 @@
     size="sm"
     on:click={setChloropleth}
     disabled={!selectedBinCount}
+    data-umami-event="create-choropleth"
   >
     Create Choropleth</Button
   >

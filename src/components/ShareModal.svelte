@@ -75,6 +75,7 @@
   color="dark"
   size="xs"
   class="px-2 py-1 rounded-md"
+  data-umami-event="share-data-story"
   on:click={handleSubmit}
 >
   <ShareNodesSolid svgClass="dark mx-1" /> Save / Share</Button

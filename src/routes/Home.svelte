@@ -157,10 +157,17 @@
               data-umami-event="demo-open">Try out the tool</Button
             >
           {:else}
-            <Button class="bg-gray-500 my-4" size="xs" href={link}
-              >View Data Story</Button
+            <Button
+              class="bg-gray-500 my-4"
+              size="xs"
+              href={link}
+              data-umami-event="open-sample-data-story">View Data Story</Button
             >
-            <Button class="bg-gray-500 my-4" size="xs" href={researchMapLink}
+            <Button
+              class="bg-gray-500 my-4"
+              size="xs"
+              href={researchMapLink}
+              data-umami-event="open-sample-raw-mindmap"
               >View Raw Mind Map</Button
             >
           {/if}

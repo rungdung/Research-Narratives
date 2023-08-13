@@ -1,10 +1,14 @@
 import { renderData } from "./parentRenderer.mjs";
+import posthog from "posthog-js";
 
 export async function loadDataFromDB(supabase) {
   //get the uuid from URL
   let queryString = window.location.search;
   let urlParams = new URLSearchParams(queryString);
   let uuid = urlParams.get("uuid");
+
+  // Posthog for analytics
+  posthog.capture("loadDataFromDB", { uuid: uuid });
 
   if (uuid) {
     const { data, error } = await supabase

@@ -116,6 +116,14 @@
   <FileUploadModal />
 </main>
 
+<svelte:head>
+  <script
+    async
+    src="https://analytics.umami.is/script.js"
+    data-website-id="416db49f-8c79-4665-a76d-82c7dcf148dd"
+  ></script>
+</svelte:head>
+
 <style global>
   main {
     max-height: 100vh;

@@ -72,6 +72,7 @@
     on:click={() => {
       $fileUploadModal = true;
     }}
+    data-umami-event="add-data-source"
   >
     Add data sources
   </Button>

@@ -92,6 +92,7 @@
       color="dark"
       class="z-10 absolute bg-primary-50 text-black hover:text-white top-5 right-5 w-50"
       on:click={() => (hiddenResearchMap = false)}
+      data-umami-event="open-research-map"
     >
       <OpenBookSolid color="light" svgClass="mr-3" />Open research map</Button
     >

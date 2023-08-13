@@ -46,9 +46,6 @@
     { name: "fisherJenks" },
     { name: "exponentialBinSizes" },
     { name: "geometricInterval" },
-    { name: "unclassed" },
-    { name: "unique" },
-    { name: "manualInterval" },
   ];
 
   async function setChloropleth() {
@@ -114,12 +111,6 @@
         break;
       case "exponentialBinSizes":
         binned = await binMain.exponentialBinSizes();
-        break;
-      case "unclassed":
-        binned = await binMain.unclassed();
-        break;
-      case "unique":
-        binned = await binMain.unique();
         break;
     }
 
@@ -235,6 +226,7 @@
     size="sm"
     on:click={setChloropleth}
     disabled={!selectedBinCount}
+    data-umami-event="create-choropleth"
   >
     Create Choropleth</Button
   >

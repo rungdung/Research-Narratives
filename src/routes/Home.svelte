@@ -150,8 +150,11 @@
           <p>{description}</p>
 
           {#if type == "demo"}
-            <Button class="bg-gray-500 my-4" size="xs" href={link}
-              >Try out the tool</Button
+            <Button
+              class="bg-gray-500 my-4"
+              size="xs"
+              href={link}
+              data-umami-event="demo-open">Try out the tool</Button
             >
           {:else}
             <Button class="bg-gray-500 my-4" size="xs" href={link}

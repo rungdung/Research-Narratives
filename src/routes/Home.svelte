@@ -28,7 +28,7 @@
     {
       id: "rendered-stories",
       text: "Convert your mindmaps into interactive data stories",
-      visual: "./assets/renderedStory.webm",
+      visual: "./assets/RenderedStory.webm",
     },
     {
       id: "collaboration",
@@ -65,12 +65,12 @@
   ];
 </script>
 
-<section class="bg-primary-50 text-black">
+<section class="bg-primary-50 text-black ">
   <Navbar
     let:hidden
     let:toggle
-    class="bg-gradient-to-b from-primary-100 to-primary-50   py-5"
-    navDivClass="items-center px-6 py-10 "
+    class="bg-transparent   py-12"
+    navDivClass="items-center p-0"
   >
     <NavBrand href="/">
       <h1
@@ -81,14 +81,16 @@
       <br />
     </NavBrand>
     <p class="text-left md:w-1/3 w-full py-3 text-yellow-500">
-      A visual interface for multi-media and spatial data annotation. In alpha,
-      looking for contributors
+      A visual interface for multi-media and spatial data annotation. 
     </p>
-    <NavHamburger on:click={toggle} />
+
+    <!-- small menu -->
+   
+    <!-- <NavHamburger on:click={toggle} />
     <NavUl
       {hidden}
       activeClass=""
-      divClass="sm:w-1/2 text-left w-full md:block "
+      divClass="sm:w-1/2 text-left w-full md:block p-0"
     >
       <NavLi id="nav-menu1" class="cursor-pointer"
         ><Chevron aligned>Possibilities</Chevron></NavLi
@@ -112,107 +114,109 @@
           class="text-white hover:text-black">Create datastories</DropdownItem
         >
       </Dropdown>
-      <NavLi href="/#roadmap">Going forward</NavLi>
-      <NavLi href="/#demo">Alpha</NavLi>
-      <NavLi href="/#links">Contact</NavLi>
-    </NavUl>
+      <NavLi href="#roadmap">Going forward</NavLi>
+      <NavLi href="#demo">Alpha</NavLi>
+      <NavLi href="#links">Contact</NavLi>
+    </NavUl> -->
   </Navbar>
 
-  <section class="grid md:grid-cols-2 sm:grid-cols-2">
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
     {#each sequence as { id, text, visual }}
-      <section id="text" class="p-6 text-left m-3 max-w-prose sm:pt-10 sm:h-50">
-        <h2 {id} class="sm:text-4xl text-2xl align-middle">
-          {@html text}
-        </h2>
-      </section>
-
+      <div class="py-6 px-4">
+        <h2 class="text-2xl font-semibold mb-4 text-left max-w-md leading-tight">{@html text}</h2>
+      </div>
+  
       {#if visual}
-        <section
-          id="visual-content"
-          class="shadow-2xl object-contain shadow-black mx-5 sm:mx-1 sm:my-10"
-          in:fly={{ x: 100, duration: 800 }}
-        >
-          <video class=" md:object-cover" autoplay muted loop>
+        <div class="shadow-md mx-auto">
+          <video class="w-full h-auto object-cover rounded-lg" autoplay muted loop>
             <source src={visual} type="video/webm" />
           </video>
-        </section>
+        </div>
       {/if}
     {/each}
-  </section>
+  </div>
+  
   <section id="trial" class="text-left mx-3">
-    <h2 id="demo" class="text-4xl text-center py-10">Some sample stories...</h2>
+    <h2 id="demo" class="text-4xl text-center py-10">See what you can do</h2>
     <section
       class="grid grid-flow-row grid-cols-1 w-full mx-auto sm:grid-cols-3 sm:mx-0 sm:w-full md:w-5/6 md:mx-auto my-10"
     >
       {#each sampleStories as { title, description, image, researchMapLink, link, type }}
-        <Card class="p-0 bg-brown drop-shadow mx-2 my-2" img={image}>
-          <h2 class="text-2xl text-black py-2">{title}</h2>
-          <p>{description}</p>
-
+      <div class="card-container flex flex-col justify-between p-4 bg-primary-100 shadow-md rounded-md mx-2 my-2">
+        <img class="w-full h-60 object-cover rounded-t-md" src={image} alt="Card Image" />
+        <div class="p-4">
+          <h2 class="text-xl font-semibold text-gray-800 mb-2">{title}</h2>
+          <p class="text-gray-600">{description}</p>
+        </div>
+        <div class="flex justify-start p-4">
           {#if type == "demo"}
-            <Button
-              class="bg-gray-500 my-4"
-              size="xs"
-              href={link}
-              data-umami-event="demo-open">Try out the tool</Button
-            >
+            <a href={link}>
+              <button
+                class="bg-primary-500 text-white py-1 px-2 rounded hover:bg-primary-600 transition duration-300"
+                
+                data-umami-event="demo-open"
+              >
+                Try out the tool
+              </button>
+            </a>
           {:else}
-            <Button
-              class="bg-gray-500 my-4"
-              size="xs"
-              href={link}
-              data-umami-event="open-sample-data-story">View Data Story</Button
-            >
-            <Button
-              class="bg-gray-500 my-4"
-              size="xs"
-              href={researchMapLink}
-              data-umami-event="open-sample-raw-mindmap"
-              >View Raw Mind Map</Button
-            >
+            <div class="flex justify-between gap-3 items-start">
+              <a  href={link}>
+                <button
+                  class="bg-primary-500 text-white py-1 px-2 rounded hover:bg-primary-600 transition duration-300"
+                 
+                  data-umami-event="open-sample-data-story"
+                >
+                  View Data Story
+                </button>
+              </a>
+              <a   href={researchMapLink}>
+                <button
+                  class="bg-primary-500 text-white py-1 px-2 rounded hover:bg-primary-600 transition duration-300"
+                
+                  data-umami-event="open-sample-raw-mindmap"
+                >
+                  View Raw Mind Map
+                </button>
+              </a>
+            </div>
           {/if}
-        </Card>
+        </div>
+      </div>
+      
       {/each}
     </section>
   </section>
 
   <section id="roadmap" class="px-5">
-    The project is being tracked on a public Github Project here: <a
-      href="https://github.com/users/rungdung/projects/3/views/1"
-      target="_blank"
-    >
-      Link
+    <a  href="https://github.com/rungdung/research-narratives" target="_blank" >
+      <button type="button" class="text-white bg-[#24292F] hover:bg-[#24292F]/90 focus:ring-4 focus:outline-none focus:ring-[#24292F]/50 font-medium rounded-lg text-lg px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-gray-500 dark:hover:bg-[#050708]/30 mr-2 mb-2">
+        <svg class="w-10 h-10 mr-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+          <path fill-rule="evenodd" d="M10 .333A9.911 9.911 0 0 0 6.866 19.65c.5.092.678-.215.678-.477 0-.237-.01-1.017-.014-1.845-2.757.6-3.338-1.169-3.338-1.169a2.627 2.627 0 0 0-1.1-1.451c-.9-.615.07-.6.07-.6a2.084 2.084 0 0 1 1.518 1.021 2.11 2.11 0 0 0 2.884.823c.044-.503.268-.973.63-1.325-2.2-.25-4.516-1.1-4.516-4.9A3.832 3.832 0 0 1 4.7 7.068a3.56 3.56 0 0 1 .095-2.623s.832-.266 2.726 1.016a9.409 9.409 0 0 1 4.962 0c1.89-1.282 2.717-1.016 2.717-1.016.366.83.402 1.768.1 2.623a3.827 3.827 0 0 1 1.02 2.659c0 3.807-2.319 4.644-4.525 4.889a2.366 2.366 0 0 1 .673 1.834c0 1.326-.012 2.394-.012 2.72 0 .263.18.572.681.475A9.911 9.911 0 0 0 10 .333Z" clip-rule="evenodd"/>
+        </svg>
+        Issues? We're on Github
+      </button>
     </a>
-    <br />
-    This project is being released for public testing and feedback. Please file issues
-    on the Github repository. <br />
-    <Button
-      class="bg-gray-500 my-4"
-      size="xs"
-      href="https://github.com/rungdung/Research-Narratives/issues"
-      data-umami-event="open-github-issues">File an issue</Button
-    >
   </section>
 </section>
 
 <footer
-  class="w-screen bg-gradient-to-t from-primary-200 to-primary-50 text-black text-left px-10 py-40 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 sm:space-x-5 sm:space-y-0 space-y-10 pr-5"
+  class=" bg-transparent text-black text-left py-40 flex md:flex-row flex-col justify-between items-start"
 >
   <div>
-    This project is a proof of concept in development and requires active
-    contributors. If you share our vision or can contribute time and effort to
-    develop this, reach out to us on Github Issues. <br /> <br />This proof of
-    concept was developed as part of an internship at Urban Informatics Lab the
-    Indian Institute for Human Settlements, Bengaluru.
-  </div>
+<p class="max-w-xl">This project was developed during an internship with the Urban Informatics Lab, Indian Institute of Human Settlements, Bengaluru.
 
-  <div>This project is being developed under the Apache license</div>
+  <br/> <br/>If you align with our vision or can dedicate time and effort, please connect with us on <a  href="https://github.com/rungdung/research-narratives" target="_blank" >GitHub Issues.</a>
+
+</p>
+
+<br>
+</div>
+
+ 
   <div id="links">
     Email at adhavan[dot]sivaraj16[at]gmail[dot]com
-    <br />
-    <a href="https://github.com/rungdung/research-narratives" target="_blank"
-      >Github</a
-    >
+
   </div>
 </footer>
 

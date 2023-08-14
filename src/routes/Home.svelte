@@ -42,8 +42,8 @@
       description:
         "..., the data from 2007-2019 showcases how 'Hi-Tech' a land use introduced specially in the 2007 master plan to promote IT industries has become the new location for residential and commercial real estate in the city. ",
       image: "./assets/landuse-bengaluru-sample-thumbnail.jpg",
-      researchMapLink: "./demo/?uuid=4be2d2ce-8431-48d4-8ae7-c1a56177e98c",
-      link: "./demo/RenderedStory?uuid=4be2d2ce-8431-48d4-8ae7-c1a56177e98c",
+      researchMapLink: ".demo/?uuid=1cc66182-ccf3-469d-9c59-befc13e43f5b",
+      link: "./demo/RenderedStory?uuid=1cc66182-ccf3-469d-9c59-befc13e43f5b",
     },
     {
       title: "Geographical Patterns of Child Malnutrition in Karnataka",
@@ -141,6 +141,7 @@
   </section>
   <section id="trial" class="text-left mx-3">
     <h2 id="demo" class="text-4xl text-center py-10">Some sample stories...</h2>
+    <p class="text-center">Please use a desktop to view these stories.</p>
     <section
       class="grid grid-flow-row grid-cols-1 w-full mx-auto sm:grid-cols-3 sm:mx-0 sm:w-full md:w-5/6 md:mx-auto my-10"
     >

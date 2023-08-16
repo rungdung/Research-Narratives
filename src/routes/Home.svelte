@@ -171,7 +171,7 @@
                   window.open(link, "_blank");
                 }}
               >
-                Try out the tool
+                Try out the tool (Desktop only)
               </Button>
             {:else}
               <div class="flex justify-between gap-3 items-start">
@@ -184,7 +184,7 @@
                     window.open(link, "_blank");
                   }}
                 >
-                  View Data Story
+                  View Data Story (Desktop only)
                 </Button>
 
                 <Button
@@ -196,7 +196,7 @@
                     window.open(researchMapLink, "_blank");
                   }}
                 >
-                  View Raw Mind Map
+                  View Raw Mind Map (Desktop only)
                 </Button>
               </div>
             {/if}
@@ -218,7 +218,7 @@
 </section>
 
 <footer
-  class="bg-transparent text-black text-left p-10 sm:p-40 grid grid-cols-2"
+  class="bg-transparent text-black text-left p-10 sm:p-40 grid grid-cols-1 sm:grid-cols-2"
 >
   <div>
     This project was developed during an internship with the Urban Informatics
@@ -232,7 +232,7 @@
 
     <br />
   </div>
-  <div id="links" class="text-right">
+  <div id="links" class="py-2 sm:py-0 sm:text-right">
     Email at adhavan[dot]sivaraj16[at]gmail[dot]com
   </div>
 </footer>

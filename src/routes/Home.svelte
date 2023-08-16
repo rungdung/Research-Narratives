@@ -67,22 +67,22 @@
   ];
 </script>
 
-<section class="bg-primary-50 text-black w-screen px-2 sm:px-10">
+<section class="bg-primary-50 text-black px-2 sm:px-10 md:w-3/4 md:mx-auto">
   <Navbar
     let:hidden
     let:toggle
-    class="bg-transparent py-12"
+    class="bg-transparent py-20 "
     navDivClass="items-center p-0"
   >
-    <NavBrand href="/">
+    <NavBrand href="/" class="justify-center w-full">
       <h1
-        class="text-5xl w-1/3 text-left md:mx-0 font-semibold text-yellow-500"
+        class="text-5xl sm:w-1/3 text-center md:mx-0 font-semibold text-yellow-500"
       >
         Research Narratives
       </h1>
       <br />
     </NavBrand>
-    <p class="text-left md:w-1/3 py-3 text-yellow-500">
+    <p class="text-center py-3 text-yellow-500">
       A visual interface for multi-media and spatial data annotation.
     </p>
 
@@ -125,7 +125,9 @@
   <section class="grid grid-cols-1 sm:grid-cols-2 gap-12">
     {#each sequence as { id, text, visual }}
       <div class="py-6 px-4">
-        <h2 class="text-2xl font-semibold mb-4 text-left leading-tight">
+        <h2
+          class="text-2xl md:w-full font-semibold mb-4 text-left leading-tight"
+        >
           {@html text}
         </h2>
       </div>
@@ -143,7 +145,7 @@
   <section id="trial" class="text-left mx-3">
     <h2 id="demo" class="text-4xl text-center py-10">See what you can do</h2>
     <section
-      class="grid grid-flow-row grid-cols-1 w-full mx-auto sm:grid-cols-3 sm:mx-0 sm:w-full md:w-5/6 md:mx-auto my-10"
+      class="grid grid-flow-row grid-cols-1 w-full mx-auto sm:grid-cols-3 sm:mx-0 sm:w-full md:mx-auto my-10"
     >
       {#each sampleStories as { title, description, image, researchMapLink, link, type }}
         <div
@@ -154,11 +156,11 @@
             src={image}
             alt="Card thumbnail"
           />
-          <div class="p-4">
+          <div class="p-4 sm:px-1">
             <h2 class="text-xl font-semibold text-gray-800 mb-2">{title}</h2>
             <p class="text-gray-600">{description}</p>
           </div>
-          <div class="flex justify-start p-4">
+          <div class="flex justify-start p-4 sm:px-1">
             {#if type == "demo"}
               <Button
                 class="bg-primary-500 text-white py-1 px-2 rounded hover:bg-primary-600 transition duration-300"

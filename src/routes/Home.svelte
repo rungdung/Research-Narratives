@@ -218,7 +218,7 @@
 </section>
 
 <footer
-  class="bg-transparent text-black text-left p-10 sm:p-40 grid grid-cols-2 w-screen"
+  class="bg-transparent text-black text-left p-10 sm:p-40 grid grid-cols-2"
 >
   <div>
     This project was developed during an internship with the Urban Informatics

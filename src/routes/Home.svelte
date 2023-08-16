@@ -171,7 +171,7 @@
                   window.open(link, "_blank");
                 }}
               >
-                Try out the tool
+                Try out the tool (Desktop only)
               </Button>
             {:else}
               <div class="flex justify-between gap-3 items-start">
@@ -184,7 +184,7 @@
                     window.open(link, "_blank");
                   }}
                 >
-                  View Data Story
+                  View Data Story (Desktop only)
                 </Button>
 
                 <Button
@@ -196,7 +196,7 @@
                     window.open(researchMapLink, "_blank");
                   }}
                 >
-                  View Raw Mind Map
+                  View Raw Mind Map (Desktop only)
                 </Button>
               </div>
             {/if}

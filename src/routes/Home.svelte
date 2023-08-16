@@ -218,22 +218,23 @@
 </section>
 
 <footer
-  class=" bg-transparent text-black text-left p-10 sm:p-40 flex md:flex-row flex-col justify-between items-start w-screen"
+  class="bg-transparent text-black text-left p-10 sm:p-40 grid grid-cols-2 w-screen"
 >
   <div>
-    <p class="max-w-xl">
-      This project was developed during an internship with the Urban Informatics
-      Lab, Indian Institute of Human Settlements, Bengaluru.
+    This project was developed during an internship with the Urban Informatics
+    Lab, Indian Institute of Human Settlements, Bengaluru.
 
-      <br /> <br />If you align with our vision or can dedicate time and effort,
-      please connect with us on
-      <a href="https://github.com/rungdung/research-narratives" target="_blank"
-        >GitHub Issues.</a
-      >
-    </p>
+    <br /> <br />If you align with our vision or can dedicate time and effort,
+    please connect with us on
+    <a href="https://github.com/rungdung/research-narratives" target="_blank"
+      >GitHub Issues.</a
+    >
+
     <br />
   </div>
-  <div id="links">Email at adhavan[dot]sivaraj16[at]gmail[dot]com</div>
+  <div id="links" class="text-right">
+    Email at adhavan[dot]sivaraj16[at]gmail[dot]com
+  </div>
 </footer>
 
 <style>

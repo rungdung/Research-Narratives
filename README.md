@@ -1,6 +1,10 @@
 <h1 align="center">
+Research <br>
+Narratives
 
-Research Narratives
+[![Sitelink](https://img.shields.io/badge/Visit_Demo_Site-faebd7)](https://researchnarratives.netlify.app)
+[![Documentation](https://img.shields.io/badge/Documentation-In_Progress-yellow)](https://github.com/rungdung/Research-Narratives/wiki)
+[![Netlify Status](https://api.netlify.com/api/v1/badges/2ee03dd3-d8b4-4332-91c6-d915d9278723/deploy-status)](https://app.netlify.com/sites/researchnarratives/deploys) 
 
 </h1>
 
@@ -11,8 +15,6 @@ A web app to augment data analysis, visualization and storytelling through **dat
 <br>
 
 This _proof of concept_ has been developed as part of my internship at the [Urban Informatics Lab at IIHS, Bengaluru](https://iihs.co.in/urban-informatics-lab/)
-
-[Demo site build status: ![Netlify Status](https://api.netlify.com/api/v1/badges/2ee03dd3-d8b4-4332-91c6-d915d9278723/deploy-status)](https://app.netlify.com/sites/researchnarratives/deploys)
 
 </div>
 
@@ -145,7 +147,6 @@ Please create a discussion thread or email at adhavan[dot]sivaraj16+RN[at]gmail[
 
 ## How do I deploy this?
 
-- Supabase account and API keys
 - Set up a Supabase project and API keys
 - Set up a MapTiler account and API keys
 

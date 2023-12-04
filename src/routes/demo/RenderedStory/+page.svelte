@@ -1,13 +1,25 @@
 <script>
     import Map, { map } from "../Map.svelte";
-    import { narrativeNodes } from "../../../stores";
     import { zoomToFeature } from "../../../lib/utils/mapMovements.mjs";
     import { onMount } from "svelte";
-    import { uploadedSources } from "../../../stores";
     import { Button } from "flowbite-svelte";
     import { AngleLeftSolid, AngleRightSolid } from "flowbite-svelte-icons";
     import { fly } from "svelte/transition";
   
+    import { uploadedSources, connections, markupNodes, narrativeNodes, annotationNodes } from '../../../stores';
+
+    export let data;
+
+    if(data.data == undefined) {
+      data.data = {};
+    }else{
+      uploadedSources.set(data.data.sourceNodes);
+      connections.set(data.data.connections);
+      markupNodes.set(data.data.markupNodes);
+      narrativeNodes.set(data.data.narrativeNodes);
+      annotationNodes.set(data.data.annotationNodes);
+    }
+
     let steps,
       globalScrollIndex = 0;
   
@@ -176,7 +188,7 @@
         </div>
         <div class="sticky">
           <section id="map-container" bind:this={mapContainer}>
-            <Map />
+            <Map bind:uploadedSources={data.data.sourceNodes} />
           </section>
           <section class="image-container blur-lg">
             {#if globalScrollIndex < steps.length && steps[globalScrollIndex].narrativeData && steps[globalScrollIndex].narrativeData.images}

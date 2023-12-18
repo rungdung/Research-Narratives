@@ -10,7 +10,7 @@
 </script>
 
 <!-- Main content section -->
-<section class="max-w-screen-lg lg:mx-auto md:mx-5 mx-10">
+<section class="w-5/6 mx-auto">
 	<!-- Navigation component with the user's full name -->
 	<Nav user={user.full_name} />
 
@@ -20,7 +20,7 @@
 		<h2 id="title">
 			{#if page == 'profile'}
 				Welcome {user.full_name}!
-			{:else}
+			{:else if page == 'library'}
 				{title}
 			{/if}
 		</h2>
@@ -30,7 +30,7 @@
 			{#if page == 'profile'}
 				A library hosts many resources and mindmaps. Many people can access a library and edit and
 				upload resources.
-			{:else}
+			{:else if page == 'library'}
 				{description}
 			{/if}
 		</p>
@@ -38,7 +38,7 @@
 </section>
 
 <!-- Main content area -->
-<main class="my-10 mx-auto w-5/6">
+<main class="py-8 mx-auto w-5/6">
 	<slot />
 </main>
 

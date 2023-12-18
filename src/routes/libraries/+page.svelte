@@ -1,7 +1,7 @@
 <!-- src/routes/libraries/+page.svelte -->
 <script>
 	import { Card } from 'flowbite-svelte';
-	import CreateNewLib from './CreateNewLib.svelte';
+	import CreateNewLib from '$lib/CreateNewLib.svelte';
 
 	export let data;
 
@@ -11,9 +11,7 @@
 </script>
 
 <!-- Main content section -->
-<main
-	class="mx-auto w-5/6 items-center grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3 content-stretch"
->
+<main class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
 	<!-- Check if there are libraries to display -->
 	{#if libraries}
 		{#each libraries as library}

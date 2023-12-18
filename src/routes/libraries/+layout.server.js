@@ -6,6 +6,7 @@ export const load = async ({ url, locals: { supabase, getSession } }) => {
 
 	// Extract the 'id' parameter from the query parameters
 	const id = url.searchParams.get('id');
+	const mapid = url.searchParams.get('map_id');
 
 	// Redirect to the home page if the user is not authenticated
 	if (!session) {
@@ -33,6 +34,21 @@ export const load = async ({ url, locals: { supabase, getSession } }) => {
 		};
 	}
 
+	if (mapid) {
+		// get the research map
+		const { data: researchMap } = await supabase
+			.from('research_maps')
+			.select('*')
+			.eq('id', mapid)
+			.single();
+
+		return {
+			title: researchMap.title,
+			description: researchMap.description,
+			user: profile,
+			page: 'map'
+		};
+	}
 	// If 'id' parameter is not present, return data for the user's profile page
 	return { title: profile.full_name, description: '', user: profile, page: 'profile' };
 };

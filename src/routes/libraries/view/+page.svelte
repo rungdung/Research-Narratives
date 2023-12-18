@@ -2,18 +2,20 @@
 <script>
 	import { Card, Badge, Button, Tabs, TabItem } from 'flowbite-svelte';
 	import { PenSolid } from 'flowbite-svelte-icons';
-	import UploadNew from './UploadNew.svelte';
-	import EditResource from './EditResource.svelte';
+	import UploadNew from '$lib/UploadNewResource.svelte';
+	import EditResource from '$lib/EditResource.svelte';
+	import CreateNewResearchMap from '$lib/CreateNewResearchMap.svelte';
 
 	export let data;
 
 	// Destructure data object
-	let { session, supabase, profile, library } = data;
-	$: ({ session, supabase, profile, library } = data);
+	let { session, supabase, profile, library, researchMaps } = data;
+	$: ({ session, supabase, profile, library, researchMaps } = data);
 
 	// Local state for resource URL and modal visibility
 	let url = '';
 	let formModal = false;
+	let newResearchMapModal = false;
 	let editModal = false;
 </script>
 
@@ -81,5 +83,32 @@
 	</TabItem>
 
 	<!-- Placeholder tab for Mindmaps (currently empty) -->
-	<TabItem title="Mindmaps" />
+	<TabItem title="Research Maps">
+		<main
+			class="mx-auto items-center grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3 content-stretch"
+		>
+			{#each researchMaps as researchMap}
+				<Card
+					href="/libraries/research-map/?map_id={researchMap.id}"
+					class="bg-primary-100 drop-shadow-md opacity-80"
+				>
+					<h5 class="text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
+						{researchMap.title}
+					</h5>
+					<p class="font-normal text-gray-700 dark:text-gray-400">
+						{researchMap.description}
+					</p>
+				</Card>
+			{/each}
+
+			<!-- Card for creating a new research map when no resources are available -->
+			<Card class="bg-primary-100 drop-shadow-md h-full opacity-80">
+				<Button class="text-white" color="dark" on:click={() => (newResearchMapModal = true)}>
+					Create a new Research Map
+				</Button>
+			</Card>
+
+			<CreateNewResearchMap bind:newResearchMapModal />
+		</main>
+	</TabItem>
 </Tabs>

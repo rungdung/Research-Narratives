@@ -14,6 +14,19 @@ export const load = async ({ url, locals: { supabase, getSession } }) => {
 		throw redirect(303, '/');
 	}
 
+	// Check user's write permission for the library
+	const { data: permission } = await supabase
+		.from('permissions')
+		.select('read')
+		.eq('user_id', session.user.id)
+		.eq('library_id', libraryId)
+		.single();
+
+	// redirect to the home page if the user does not have permission
+	if (!permission) {
+		throw redirect(303, '/');
+	}
+
 	// Fetch user profile data
 	const { data: profile } = await supabase
 		.from('profiles')
@@ -28,7 +41,13 @@ export const load = async ({ url, locals: { supabase, getSession } }) => {
 		.eq('id', libraryId)
 		.single();
 
-	return { session, profile, library };
+	// Fetch all Research Maps associated with the library
+	const { data: researchMaps } = await supabase
+		.from('research_maps')
+		.select('*')
+		.eq('library_id', libraryId);
+
+	return { session, profile, library, researchMaps };
 };
 
 // Actions for the library view page
@@ -130,5 +149,38 @@ export const actions = {
 
 		// Return the library ID
 		return { libraryId };
+	},
+
+	// Action for creating a new Research Map
+	createResearchMap: async ({ request, locals: { supabase, getSession } }) => {
+		// Get user session
+		const session = await getSession();
+
+		// Get data from form
+		// Parse form data from the request
+		const formData = await request.formData();
+		const title = formData.get('title') as string;
+		const description = formData.get('description') as string;
+
+		// Check user's write permission for the library
+		const { data: permission } = await supabase
+			.from('permissions')
+			.select('write')
+			.eq('user_id', session.user.id)
+			.eq('library_id', libraryId)
+			.single();
+
+		// Proceed if the user has write permission
+		if (permission?.write === true) {
+			const id = crypto.randomUUID();
+			const { error } = await supabase.from('research_maps').insert({
+				id: id,
+				library_id: libraryId,
+				created_by: session?.user.id,
+				created_at: new Date(),
+				title: title,
+				description: description
+			});
+		}
 	}
 };

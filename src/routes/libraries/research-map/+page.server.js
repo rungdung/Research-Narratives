@@ -1,12 +1,13 @@
 // src/routes/libraries/+page.server.ts
 import { fail, redirect } from '@sveltejs/kit';
 
+let mapId;
 export const load = async ({ url, locals: { supabase, getSession } }) => {
 	// Get the user session
 	const session = await getSession();
 
 	// Extract the 'id' parameter from the query parameters
-	const id = url.searchParams.get('map_id');
+	mapId = url.searchParams.get('map_id');
 
 	// Redirect to the home page if the user is not authenticated
 	if (!session) {
@@ -24,7 +25,7 @@ export const load = async ({ url, locals: { supabase, getSession } }) => {
 	const { data: researchMap } = await supabase
 		.from('research_maps')
 		.select('*')
-		.eq('id', id)
+		.eq('id', mapId)
 		.single();
 
 	// Check user's write permission for the library
@@ -47,49 +48,40 @@ export const load = async ({ url, locals: { supabase, getSession } }) => {
 		.eq('id', researchMap.library_id)
 		.single();
 
-	// If 'id' parameter is present, fetch data for a specific library
-	if (id) {
-		// Fetch library data from the 'libraries' table based on the 'id'
-		const { data: researchMap } = await supabase
-			.from('research_maps')
-			.select('*')
-			.eq('id', id)
-			.single();
-
-		// // Return data for the library page
-		// return {
-		// 	title: library.name,
-		// 	description: library.description,
-		// 	user: profile,
-		// 	page: 'library'
-		// };
-	}
-
 	return { title: profile.full_name, description: '', researchMap, resources };
 };
 
 export const actions = {
 	// Action for creating a new library
-	updateResearchMap: async ({ url, request, locals: { supabase, getSession } }) => {
+	updateNarrativeSection: async ({ request, locals: { supabase, getSession } }) => {
 		// Parse form data from the request
-		// const formData = await request.formData();
-		// const name = formData.get('name') as string;
-		// const description = formData.get('description') as string;
-		// const uid = formData.get('id') as string;
-		// // Get the user session
-		// const session = await getSession();
-		// // Update mindmap
-		// // Handle errors during library and permissions creation
-		// if (error || error1) {
-		// 	return fail(500, {
-		// 		name,
-		// 		description
-		// 	});
-		// }
-		// // Return the created library details
-		// return {
-		// 	name,
-		// 	description
-		// };
+		const formData = await request.formData();
+		let narrativeSections = formData.get('narrative-sections');
+		narrativeSections = JSON.parse(narrativeSections);
+
+		// Get the user session
+		const session = await getSession();
+
+		// Update mindmap
+		console.log(narrativeSections);
+		console.log(mapId);
+
+		const { error } = await supabase
+			.from('research_maps')
+			.update({
+				narrative_sections: narrativeSections
+			})
+			.eq('id', mapId);
+
+		if (error) {
+			return fail(500, { error });
+		}
+	},
+	updateResearchMap: async ({ url, request, locals: { supabase, getSession } }) => {
+		// Get map id
+		// Extract the 'id' parameter from the query parameters
+		const id = url.searchParams.get('map_id');
+
+		// Parse form data from the request
 	}
 };

@@ -21,6 +21,10 @@ const config = {
 					500: '#de6043',
 					600: '#b84a34'
 				},
+				secondary: {
+					50: '#C5BAAF',
+					100: '#EBCFB2'
+				},
 				inputField: {
 					50: '#748382',
 					100: '#a4afae',

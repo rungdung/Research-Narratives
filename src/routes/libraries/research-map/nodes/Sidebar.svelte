@@ -1,7 +1,9 @@
 <script lang="ts">
+	import { Card } from 'flowbite-svelte';
 	export let resources;
 	export let title;
 	export let description;
+
 	// When box is dragged
 	const onDragStart = (event: DragEvent, nodeData: any) => {
 		if (!event.dataTransfer) {
@@ -12,35 +14,28 @@
 	};
 </script>
 
-<h3>{title}</h3>
-<p>{description}</p>
-<div class="label">You can drag these nodes to the pane below.</div>
-<div class="grid grid-flow-row-dense gap-0 grid-cols-1">
-	{#if resources}
-		{#each resources.resources.files as resource}
-			<div
-				class="input-node node col-span-1"
-				on:dragstart={(event) => onDragStart(event, resource)}
-				draggable={true}
-			>
-				<h5>{resource.title}</h5>
-				<p>{resource.description}</p>
-			</div>
-		{/each}
-	{/if}
-</div>
+<section class="h-full">
+	<div class="label py-3 text-black">
+		<h3 class="text-2xl">{title}</h3>
+		<p>{description}</p>
+		You can drag these nodes to the pane on the side.
+	</div>
+	<div class="grid grid-flow-row-dense gap-0 grid-cols-1 h-4/6 overflow-y-scroll">
+		{#if resources}
+			{#each resources.resources.files as resource}
+				<Card class="node col-span-1 p-0 m-1 bg-primary-300	">
+					<div class="node" on:dragstart={(event) => onDragStart(event, resource)} draggable={true}>
+						<h5>{resource.title}</h5>
+						<p>{resource.description}</p>
+					</div>
+				</Card>
+			{/each}
+		{/if}
+	</div>
+</section>
 
 <style>
-	.label {
-		margin: 1rem 0;
-		font-size: 0.9rem;
-		color: black;
-	}
-
 	.node {
-		margin: 0.5rem;
-		border: 1px solid #111;
-		padding: 0.5rem 1rem;
 		color: black;
 		font-weight: 700;
 		border-radius: 3px;

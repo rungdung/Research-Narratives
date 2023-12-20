@@ -62,10 +62,6 @@ export const actions = {
 		// Get the user session
 		const session = await getSession();
 
-		// Update mindmap
-		console.log(narrativeSections);
-		console.log(mapId);
-
 		const { error } = await supabase
 			.from('research_maps')
 			.update({
@@ -77,10 +73,29 @@ export const actions = {
 			return fail(500, { error });
 		}
 	},
-	updateResearchMap: async ({ url, request, locals: { supabase, getSession } }) => {
-		// Get map id
-		// Extract the 'id' parameter from the query parameters
-		const id = url.searchParams.get('map_id');
+	updateResearchMap: async ({ request, locals: { supabase, getSession } }) => {
+		// Parse form data from the request
+		const formData = await request.formData();
+		let nodes = formData.get('nodes');
+		let edges = formData.get('edges');
+		nodes = JSON.parse(nodes);
+		edges = JSON.parse(edges);
+
+		// Get the user session
+		const session = await getSession();
+
+		// Update mindmap
+		const { error } = await supabase
+			.from('research_maps')
+			.update({
+				nodes: nodes,
+				edges: edges
+			})
+			.eq('id', mapId);
+
+		if (error) {
+			return fail(500, { error });
+		}
 
 		// Parse form data from the request
 	}

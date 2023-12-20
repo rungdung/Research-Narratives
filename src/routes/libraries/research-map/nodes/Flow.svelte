@@ -1,11 +1,14 @@
 <script>
 	import { writable } from 'svelte/store';
+	import { enhance } from '$app/forms';
 	import {
 		SvelteFlow,
 		Controls,
 		Background,
 		BackgroundVariant,
 		MiniMap,
+		useNodes,
+		useEdges,
 		useSvelteFlow
 	} from '@xyflow/svelte';
 	import '@xyflow/svelte/dist/style.css';
@@ -13,18 +16,26 @@
 	import SourceNodes from './SourceNodes.svelte';
 	import ContextMenu from './ContextMenu.svelte';
 
-	let nodes = writable([]),
+	// Initial state of node to load
+	export let nodes = writable([]),
 		edges = writable([]);
+	export let dbformElement;
 
 	let menu, width, height;
+
+	// Get active nodes and edges from SvelteFlow internal store
+	let activeNodes = useNodes(),
+		activeEdges = useEdges(),
+		activeNodesJSON,
+		activeEdgesJSON;
+
+	$: activeNodesJSON = JSON.stringify($activeNodes);
+	$: activeEdgesJSON = JSON.stringify($activeEdges);
 
 	// Register custom nodes
 	const nodeTypes = {
 		sourceNode: SourceNodes
 	};
-
-	// Drag and Drop position conversion
-	const { screenToFlowPosition } = useSvelteFlow();
 
 	// Drag and drop nodes
 	const onDragOver = (event) => {
@@ -61,6 +72,9 @@
 		$nodes = $nodes;
 	};
 
+	// Drag and Drop position conversion
+	const { screenToFlowPosition } = useSvelteFlow();
+
 	// Context menu
 	function handleContextMenu({ detail: { event, node } }) {
 		// Prevent native context menu from showing
@@ -87,8 +101,8 @@
 
 <section id="flow" class="h-full" bind:clientWidth={width} bind:clientHeight={height}>
 	<SvelteFlow
-		{nodes}
-		{edges}
+		bind:nodes
+		bind:edges
 		{nodeTypes}
 		fitView
 		nodesDraggable={true}
@@ -110,14 +124,9 @@
 			/>
 		{/if}
 		<MiniMap />
+		<form bind:this={dbformElement} use:enhance action="?/updateResearchMap" method="post">
+			<input type="hidden" id="nodes" name="nodes" bind:value={activeNodesJSON} />
+			<input type="hidden" id="edges" name="edges" bind:value={activeEdgesJSON} />
+		</form>
 	</SvelteFlow>
 </section>
-
-<style>
-	/* main {
-		height: 100vh;
-		display: flex;
-		color: black;
-		flex-direction: column-reverse;
-	} */
-</style>

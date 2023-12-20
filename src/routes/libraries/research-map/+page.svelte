@@ -1,10 +1,11 @@
 <script>
 	import { SvelteFlowProvider } from '@xyflow/svelte';
 
-	import { writable } from 'svelte/store';
-	import { Modal } from 'flowbite-svelte';
 	import Flow from './nodes/Flow.svelte';
 	import WritingPanel from './nodes/WritingPanel.svelte';
+	import { Button } from 'flowbite-svelte';
+
+	import { writable } from 'svelte/store';
 
 	import Sidebar from './nodes/Sidebar.svelte';
 	import { activeDraggableNode, activeDraggableNodeModal } from './nodes/store';
@@ -14,13 +15,31 @@
 	// Destructure data object and set up reactivity
 	let { session, supabase, researchMap, resources } = data;
 	$: ({ session, supabase, researchMap, resources } = data);
+
+	// Destructure from researchMap
 	let narrativeSections = researchMap.narrative_sections;
 	let title = researchMap.title;
 	let description = researchMap.description;
+	let nodes, edges;
+
+	// Container to control style of research map
 	let researchMapSection;
 
+	// Form element to control saving to DB
+	let dbformElement;
+
+	// Load nodes and edges from DB
+	try {
+		nodes = writable(researchMap.nodes);
+		edges = writable(researchMap.edges);
+	} catch (e) {
+		nodes = writable([]);
+		edges = writable([]);
+		console.log(e);
+	}
+
+	// When modal is open, deactivate research map
 	const onModalLoad = () => {
-		//deactivate div
 		researchMapSection.style = 'opacity: 0.5; pointer-events: none';
 	};
 
@@ -49,6 +68,7 @@
 		<Sidebar {resources} {title} {description} />
 	</section>
 	<section class="col-span-3">
+		<!-- Modal to drag and drop into narrative section-->
 		{#if $activeDraggableNodeModal}
 			<!-- Overlay -->
 			<div
@@ -66,10 +86,14 @@
 				</div>
 			</div>
 		{/if}
+		<!-- Research Map -->
 		<div bind:this={researchMapSection} class="h-full w-full">
 			<SvelteFlowProvider>
-				<Flow />
+				<Flow {nodes} {edges} bind:dbformElement />
 			</SvelteFlowProvider>
+			<!-- Form Request Submit to update nodes and edges in database -->
+			<Button color="dark" type="submit" on:click={() => dbformElement.requestSubmit()}>Save</Button
+			>
 		</div>
 	</section>
 	<section class="col-span-1 bg-primary-100 py-1 px-3 overflow-y-hidden rounded-lg">

@@ -1,37 +1,37 @@
 <script>
 	import { SvelteFlowProvider } from '@xyflow/svelte';
 
-	import Flow from './nodes/Flow.svelte';
-	import WritingPanel from './nodes/WritingPanel.svelte';
+	import Flow from '$lib/research-map/Flow.svelte';
+	import WritingPanel from '$lib/research-map/WritingPanel.svelte';
 	import { Button } from 'flowbite-svelte';
 
 	import { writable } from 'svelte/store';
 
-	import Sidebar from './nodes/Sidebar.svelte';
-	import { activeDraggableNode, activeDraggableNodeModal } from './nodes/store';
+	import Sidebar from '$lib/research-map/Sidebar.svelte';
+	import { activeDraggableNode, activeDraggableNodeModal } from '$lib/research-map/store';
 
 	export let data;
 
 	// Destructure data object and set up reactivity
-	let { session, supabase, researchMap, resources } = data;
-	$: ({ session, supabase, researchMap, resources } = data);
+	let { session, supabase, narrative, resources } = data;
+	$: ({ session, supabase, narrative, resources } = data);
 
-	// Destructure from researchMap
-	let narrativeSections = researchMap.narrative_sections;
-	let title = researchMap.title;
-	let description = researchMap.description;
+	// Destructure from narrative
+	let narrativeSections = narrative.narrative_sections;
+	let title = narrative.title;
+	let description = narrative.description;
 	let nodes, edges;
 
 	// Container to control style of research map
-	let researchMapSection;
+	let narrativeSection;
 
 	// Form element to control saving to DB
 	let dbformElement;
 
 	// Load nodes and edges from DB
 	try {
-		nodes = writable(researchMap.nodes);
-		edges = writable(researchMap.edges);
+		nodes = writable(narrative.nodes);
+		edges = writable(narrative.edges);
 	} catch (e) {
 		nodes = writable([]);
 		edges = writable([]);
@@ -40,7 +40,7 @@
 
 	// When modal is open, deactivate research map
 	const onModalLoad = () => {
-		researchMapSection.style = 'opacity: 0.5; pointer-events: none';
+		narrativeSection.style = 'opacity: 0.5; pointer-events: none';
 	};
 
 	// When box is dragged
@@ -55,9 +55,10 @@
 	// When box is dropped
 	const onDragEnd = (event) => {
 		$activeDraggableNodeModal = false;
-		researchMapSection.style = 'opacity: 1; pointer-events: all';
+		narrativeSection.style = 'opacity: 1; pointer-events: all';
 	};
 
+	// When drag Modal is triggered by button click from a node
 	$: if ($activeDraggableNodeModal == true) {
 		onModalLoad();
 	}
@@ -87,7 +88,10 @@
 			</div>
 		{/if}
 		<!-- Research Map -->
-		<div bind:this={researchMapSection} class="h-full w-full">
+		<div bind:this={narrativeSection} class="h-full w-full">
+			<p class="text-black absolute p-2 px-4 max-w-prose">
+				Use this whiteboard to annotate and take notes on your resources
+			</p>
 			<SvelteFlowProvider>
 				<Flow {nodes} {edges} bind:dbformElement />
 			</SvelteFlowProvider>

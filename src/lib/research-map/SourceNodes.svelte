@@ -10,13 +10,12 @@
 	// Destructure data object and set up reactivity
 	let { title, description, resource } = data;
 	$: ({ title, description, resource } = data);
-	console.log(resource);
 </script>
 
 <div>
 	<Card class="w-40 p-0 text-black bg-primary-300">
 		<Handle type="target" position={Position.Left} style="background: #555;" {isConnectable} />
-		<h5>{title}</h5>
+		<h5 class="max-w- leading-tight z-30">{title}</h5>
 		<p class="text-xs pt-2">{description}</p>
 		<Handle
 			type="source"
@@ -37,9 +36,8 @@
 			size="xs"
 			color="dark"
 			class="transform translate-x-1/2 p-1 px-0 m-"
-			on:click={() => (
-				($activeDraggableNodeModal = true), ($activeDraggableNode = resource), console.log(resource)
-			)}>Add to writing section</Button
+			on:click={() => (($activeDraggableNodeModal = true), ($activeDraggableNode = resource))}
+			>Add to writing section</Button
 		>
 	</Card>
 </div>

@@ -22,8 +22,8 @@ export const load = async ({ url, locals: { supabase, getSession } }) => {
 		.single();
 
 	// get the research map
-	const { data: researchMap } = await supabase
-		.from('research_maps')
+	const { data: narrative } = await supabase
+		.from('narratives')
 		.select('*')
 		.eq('id', mapId)
 		.single();
@@ -33,7 +33,7 @@ export const load = async ({ url, locals: { supabase, getSession } }) => {
 		.from('permissions')
 		.select('read')
 		.eq('user_id', session.user.id)
-		.eq('library_id', researchMap.library_id)
+		.eq('library_id', narrative.library_id)
 		.single();
 
 	// redirect to the home page if the user does not have permission
@@ -45,10 +45,10 @@ export const load = async ({ url, locals: { supabase, getSession } }) => {
 	const { data: resources } = await supabase
 		.from('libraries')
 		.select('resources')
-		.eq('id', researchMap.library_id)
+		.eq('id', narrative.library_id)
 		.single();
 
-	return { title: profile.full_name, description: '', researchMap, resources };
+	return { title: profile.full_name, description: '', narrative, resources };
 };
 
 export const actions = {
@@ -63,7 +63,7 @@ export const actions = {
 		const session = await getSession();
 
 		const { error } = await supabase
-			.from('research_maps')
+			.from('narratives')
 			.update({
 				narrative_sections: narrativeSections
 			})
@@ -86,7 +86,7 @@ export const actions = {
 
 		// Update mindmap
 		const { error } = await supabase
-			.from('research_maps')
+			.from('narratives')
 			.update({
 				nodes: nodes,
 				edges: edges

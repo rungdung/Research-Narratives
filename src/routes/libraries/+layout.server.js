@@ -36,15 +36,15 @@ export const load = async ({ url, locals: { supabase, getSession } }) => {
 
 	if (mapid) {
 		// get the research map
-		const { data: researchMap } = await supabase
-			.from('research_maps')
+		const { data: narrative } = await supabase
+			.from('narratives')
 			.select('*')
 			.eq('id', mapid)
 			.single();
 
 		return {
-			title: researchMap.title,
-			description: researchMap.description,
+			title: narrative.title,
+			description: narrative.description,
 			user: profile,
 			page: 'map'
 		};

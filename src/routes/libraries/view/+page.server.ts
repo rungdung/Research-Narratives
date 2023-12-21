@@ -42,12 +42,12 @@ export const load = async ({ url, locals: { supabase, getSession } }) => {
 		.single();
 
 	// Fetch all Research Maps associated with the library
-	const { data: researchMaps } = await supabase
-		.from('research_maps')
+	const { data: narratives } = await supabase
+		.from('narratives')
 		.select('*')
 		.eq('library_id', libraryId);
 
-	return { session, profile, library, researchMaps };
+	return { session, profile, library, narratives };
 };
 
 // Actions for the library view page

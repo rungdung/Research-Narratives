@@ -9,13 +9,13 @@
 	export let data;
 
 	// Destructure data object
-	let { session, supabase, profile, library, researchMaps } = data;
-	$: ({ session, supabase, profile, library, researchMaps } = data);
+	let { session, supabase, profile, library, narratives } = data;
+	$: ({ session, supabase, profile, library, narratives } = data);
 
 	// Local state for resource URL and modal visibility
 	let url = '';
 	let formModal = false;
-	let newResearchMapModal = false;
+	let newNarrativeModal = false;
 	let editModal = false;
 </script>
 
@@ -83,32 +83,32 @@
 	</TabItem>
 
 	<!-- Placeholder tab for Mindmaps (currently empty) -->
-	<TabItem title="Research Maps">
+	<TabItem title="Narratives">
 		<main
 			class="mx-auto items-center grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3 content-stretch"
 		>
-			{#each researchMaps as researchMap}
+			{#each narratives as narrative}
 				<Card
-					href="/libraries/research-map/?map_id={researchMap.id}"
+					href="/libraries/narratives/?map_id={narrative.id}"
 					class="bg-primary-100 drop-shadow-md opacity-80"
 				>
 					<h5 class="text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
-						{researchMap.title}
+						{narrative.title}
 					</h5>
 					<p class="font-normal text-gray-700 dark:text-gray-400">
-						{researchMap.description}
+						{narrative.description}
 					</p>
 				</Card>
 			{/each}
 
 			<!-- Card for creating a new research map when no resources are available -->
 			<Card class="bg-primary-100 drop-shadow-md h-full opacity-80">
-				<Button class="text-white" color="dark" on:click={() => (newResearchMapModal = true)}>
+				<Button class="text-white" color="dark" on:click={() => (newNarrativeModal = true)}>
 					Create a new Research Map
 				</Button>
 			</Card>
 
-			<CreateNewResearchMap bind:newResearchMapModal />
+			<CreateNewResearchMap bind:newNarrativeModal />
 		</main>
 	</TabItem>
 </Tabs>

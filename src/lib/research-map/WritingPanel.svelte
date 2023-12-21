@@ -43,7 +43,7 @@
 	<div class="grid grid-flow-row-dense gap-2 my-5 grid-cols-1 h-5/6 overflow-y-scroll">
 		{#if narrativeSections}
 			{#each narrativeSections as section}
-				<WritingNodes {section} />
+				<WritingNodes bind:section />
 			{/each}
 		{/if}
 		<Card class="node text-black bg-slate-700">

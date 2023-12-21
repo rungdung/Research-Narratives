@@ -1,7 +1,8 @@
 <script>
-	import { Card, Input, Textarea } from 'flowbite-svelte';
+	import { Card, Input, Textarea, Label } from 'flowbite-svelte';
 	export let section;
 
+	console.log(section);
 	// Drag and drop nodes
 	const onDragOver = (event) => {
 		event.preventDefault();
@@ -10,17 +11,20 @@
 		}
 	};
 
-	// Data transfer from nodes dropped into the pane
-	let dataTransferred;
-	let title;
+	// placeholder if there is no display obj attached
+	if (!section.displayObj) {
+		section.displayObj = {
+			title: ''
+		};
+	}
 
+	// When display obj is dropped into card
 	const onDrop = (event) => {
 		event.preventDefault();
 		if (!event.dataTransfer) {
 			return null;
 		}
-		dataTransferred = JSON.parse(event.dataTransfer.getData('application/svelteflow'));
-		title = dataTransferred.title;
+		section.displayObj = JSON.parse(event.dataTransfer.getData('application/svelteflow'));
 	};
 </script>
 
@@ -28,6 +32,12 @@
 	<div on:dragover={onDragOver} on:drop={onDrop}>
 		<Input type="text" bind:value={section.title} />
 		<Textarea type="text" bind:value={section.bodytext} />
-		<Input type="text" bind:value={title} />
+		<Input
+			class="bg-primary-200 p-1"
+			type="text"
+			placeholder="Drag and drop an annotated obj here"
+			name="displayObj"
+			bind:value={section.displayObj.title}
+		/>
 	</div>
 </Card>

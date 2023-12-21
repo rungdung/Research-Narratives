@@ -6,8 +6,8 @@
 
 	// Local instance of narrative sections
 	export let narrativeSections;
+	let narrativeSectionsJSON;
 	$: narrativeSections = narrativeSections;
-	let narrativeSectionsJSON = JSON.stringify(narrativeSections);
 	$: narrativeSectionsJSON = JSON.stringify(narrativeSections);
 
 	// formBinding
@@ -28,7 +28,10 @@
 
 		newSection = {
 			title: '',
-			bodytext: ''
+			bodytext: '',
+			displayObj: {
+				title: ''
+			}
 		};
 
 		setTimeout(() => {

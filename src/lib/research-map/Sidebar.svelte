@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Card } from 'flowbite-svelte';
+	import { Card, Badge } from 'flowbite-svelte';
 	export let resources;
 	export let title;
 	export let description;
@@ -27,6 +27,7 @@
 					<div class="node" on:dragstart={(event) => onDragStart(event, resource)} draggable={true}>
 						<h5>{resource.title}</h5>
 						<p>{resource.description}</p>
+						<Badge size="xs" class="m-2">{resource.type}</Badge>
 					</div>
 				</Card>
 			{/each}

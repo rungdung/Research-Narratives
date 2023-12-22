@@ -1,8 +1,8 @@
 <script lang="ts">
 	import { Handle, Position } from '@xyflow/svelte';
-	import { Card, Button } from 'flowbite-svelte';
+	import { Card, Button, Badge } from 'flowbite-svelte';
 
-	import { activeDraggableNode, activeDraggableNodeModal } from './store';
+	import { activeDraggableNode, activeDraggableNodeModal } from '../store';
 
 	export let data;
 	export let isConnectable;
@@ -15,8 +15,9 @@
 <div>
 	<Card class="w-40 p-0 text-black bg-primary-300">
 		<Handle type="target" position={Position.Left} style="background: #555;" {isConnectable} />
-		<h5 class="max-w- leading-tight z-30">{title}</h5>
+		<h5 class="max-w-prose leading-tight z-30">{title}</h5>
 		<p class="text-xs pt-2">{description}</p>
+		<Badge size="xs" class="m-2">{resource.type}</Badge>
 		<Handle
 			type="source"
 			position={Position.Right}
@@ -32,31 +33,27 @@
 			style="bottom: 10px; top: auto; background: #555;"
 			{isConnectable}
 		/>
-		<Button
-			size="xs"
-			color="dark"
-			class="transform translate-x-1/2 p-1 px-0 m-"
-			on:click={() => (($activeDraggableNodeModal = true), ($activeDraggableNode = resource))}
-			>Add to writing section</Button
-		>
+		<div class="">
+			<Button
+				size="xs"
+				color="dark"
+				class="transform translate-x-1/2 p-1 px-0 "
+				on:click={() => (($activeDraggableNodeModal = true), ($activeDraggableNode = resource))}
+				>Add to writing section</Button
+			>
+		</div>
 	</Card>
 </div>
 
 <style>
-	:global(.svelte-flow__node-selectorNode) {
-		font-size: 12px;
-		background: #eee;
-		border: 1px solid #555;
-		border-radius: 5px;
-		text-align: center;
+	:global(.svelte-flow .svelte-flow__edge path, .svelte-flow__connectionline path) {
+		stroke-width: 4;
 	}
 
-	.dragger {
-		color: black;
-		font-weight: 700;
+	:global(.svelte-flow .svelte-flow__handle) {
+		width: 15px;
+		height: 14px;
 		border-radius: 3px;
-		cursor: grab;
-		width: auto;
-		height: fit-content;
+		background-color: #784be8;
 	}
 </style>

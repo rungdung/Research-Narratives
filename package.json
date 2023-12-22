@@ -37,7 +37,7 @@
 		"@turf/turf": "^6.5.0",
 		"@types/chroma-js": "^2.4.0",
 		"@vincjo/datatables": "^1.12.7",
-		"@xyflow/svelte": "^0.0.28",
+		"@xyflow/svelte": "^0.0.29",
 		"binguru": "^1.0.0-alpha.16.0",
 		"chroma-js": "^2.4.2",
 		"flowbite": "^1.7.0",

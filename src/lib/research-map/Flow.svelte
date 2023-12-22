@@ -13,7 +13,9 @@
 	} from '@xyflow/svelte';
 	import '@xyflow/svelte/dist/style.css';
 
-	import SourceNodes from './SourceNodes.svelte';
+	import SourceNodes from './node-types/SourceNodes.svelte';
+	import TextAnnotateNode from './node-types/TextAnnotateNode.svelte';
+	import SpatialAnnotateNode from './node-types/SpatialAnnotateNode.svelte';
 	import ContextMenu from './ContextMenu.svelte';
 
 	// Initial state of node to load
@@ -32,9 +34,14 @@
 	$: activeNodesJSON = JSON.stringify($activeNodes);
 	$: activeEdgesJSON = JSON.stringify($activeEdges);
 
+	// To detect new node creation handle drags
+	let connectingNodeId;
+
 	// Register custom nodes
 	const nodeTypes = {
-		sourceNode: SourceNodes
+		sourceNode: SourceNodes,
+		textAnnotateNode: TextAnnotateNode,
+		spatialAnnotateNode: SpatialAnnotateNode
 	};
 
 	// Drag and drop nodes
@@ -89,13 +96,57 @@
 			right: event.clientX >= width - 200 ? width - event.clientX : undefined,
 			bottom: event.clientY >= height - 200 ? height - event.clientY : undefined
 		};
-
-		console.log(menu, event.clientX, event.clientY, width, height);
 	}
 
 	// Close the context menu if it's open whenever the window is clicked.
 	function handlePaneClick() {
 		menu = null;
+	}
+
+	// Create a new annotation node when the user drags a node handle
+	function handleConnectEnd(event) {
+		if (connectingNodeId === null) return;
+
+		// Get data of the dragged node
+		const node = $nodes.find((n) => n.id === connectingNodeId);
+		let nodeType;
+
+		// Depending on the resource data type, provide different annotation nodes
+		switch (node.data.resource.type) {
+			case 'pdf':
+				nodeType = 'textAnnotateNode';
+				break;
+			case 'gpkg' || 'geojson':
+				nodeType = 'spatialAnnotateNode';
+				break;
+		}
+
+		// See if connection landed inside the flow pane
+		const targetIsPane = event.target?.classList.contains('svelte-flow__pane');
+		if (targetIsPane) {
+			const id = `${Math.random()}`;
+			const newNode = {
+				id,
+				data: { title: 'test', description: '' },
+				type: nodeType,
+				// project the screen coordinates to pane coordinates
+				position: screenToFlowPosition({
+					x: event.clientX,
+					y: event.clientY
+				}),
+				// set the origin of the new node so it is centered
+				origin: [0.5, 0.0]
+			};
+			$nodes.push(newNode);
+			$edges.push({
+				source: connectingNodeId,
+				target: id,
+				id: `${connectingNodeId}--${id}`
+			});
+
+			$nodes = $nodes;
+			$edges = $edges;
+		}
 	}
 </script>
 
@@ -110,9 +161,15 @@
 		on:drop={onDrop}
 		on:nodecontextmenu={handleContextMenu}
 		on:paneclick={handlePaneClick}
+		fitViewOptions={{ padding: 2 }}
+		onconnectstart={(_, { nodeId }) => {
+			// Memorize the nodeId you start draggin a connection line from a node
+			connectingNodeId = nodeId;
+		}}
+		onconnectend={handleConnectEnd}
 	>
 		<Controls />
-		<Background variant={BackgroundVariant.Dots} />
+		<Background bgColor={'#faebd7'} patternClass={BackgroundVariant.Dots} />
 		{#if menu}
 			<ContextMenu
 				onClick={handlePaneClick}

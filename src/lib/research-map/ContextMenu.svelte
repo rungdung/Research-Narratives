@@ -31,8 +31,6 @@
 		$nodes = $nodes.filter((node) => node.id !== id);
 		$edges = $edges.filter((edge) => edge.source !== id && edge.target !== id);
 	}
-
-	function addToNarrativeSection() {}
 </script>
 
 <div
@@ -45,7 +43,6 @@
 	</p>
 	<button on:click={duplicateNode}>duplicate</button>
 	<button on:click={deleteNode}>delete</button>
-	<button on:click={addToNarrativeSection}>Add to Narrative Section</button>
 </div>
 
 <style>

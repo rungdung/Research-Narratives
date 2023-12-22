@@ -41,7 +41,6 @@ export const load = async ({ url, locals: { supabase, getSession } }) => {
 			.select('*')
 			.eq('id', mapid)
 			.single();
-
 		return {
 			title: narrative.title,
 			description: narrative.description,

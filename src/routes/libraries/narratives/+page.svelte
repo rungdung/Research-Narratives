@@ -29,13 +29,11 @@
 	let dbformElement;
 
 	// Load nodes and edges from DB
-	try {
-		nodes = writable(narrative.nodes);
-		edges = writable(narrative.edges);
-	} catch (e) {
+	if (narrative.nodes == null) {
 		nodes = writable([]);
+	}
+	if (narrative.edges == null) {
 		edges = writable([]);
-		console.log(e);
 	}
 
 	// When modal is open, deactivate research map

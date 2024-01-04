@@ -19,8 +19,7 @@
 	import ContextMenu from './ContextMenu.svelte';
 
 	// Initial state of node to load
-	export let nodes = writable([]),
-		edges = writable([]);
+	export let nodes, edges;
 	export let dbformElement;
 
 	let menu, width, height;

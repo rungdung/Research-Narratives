@@ -173,7 +173,7 @@ export const actions = {
 		// Proceed if the user has write permission
 		if (permission?.write === true) {
 			const id = crypto.randomUUID();
-			const { error } = await supabase.from('research_maps').insert({
+			const { error } = await supabase.from('narratives').insert({
 				id: id,
 				library_id: libraryId,
 				created_by: session?.user.id,

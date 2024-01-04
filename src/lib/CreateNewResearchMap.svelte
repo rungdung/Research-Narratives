@@ -1,18 +1,19 @@
 <!-- src/routes/libraries/view/CreateNewResearchMap.svelte -->
 <script>
 	import { Modal, Label, Input, Button } from 'flowbite-svelte';
-	import { Dropdown, DropdownItem, Checkbox, Search } from 'flowbite-svelte';
 	import { enhance } from '$app/forms';
 
 	// External props for controlling the modal and passing resource data
-	export let newResearchMapModal;
+	export let newNarrativeModal;
 
 	// Local state for form and resource index
 	let createNewForm;
+
+	console.log(newNarrativeModal);
 </script>
 
 <!-- Modal for editing resource -->
-<Modal bind:open={newResearchMapModal} size="xs" autoclose={true} outsideclose class="w-full">
+<Modal bind:open={newNarrativeModal} size="xs" autoclose={true} outsideclose class="w-full">
 	<!-- Form for updating resource information -->
 	<form
 		class="form-widget grid gap-y-5"
@@ -29,7 +30,7 @@
 
 		<!-- Button for triggering form submission -->
 		<div>
-			<Button color="dark" on:click={() => createNewForm.requestSubmit()}>Update</Button>
+			<Button color="dark" on:click={() => createNewForm.requestSubmit()}>Create</Button>
 		</div>
 	</form>
 </Modal>

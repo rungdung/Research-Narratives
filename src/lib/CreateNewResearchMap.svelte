@@ -8,8 +8,6 @@
 
 	// Local state for form and resource index
 	let createNewForm;
-
-	console.log(newNarrativeModal);
 </script>
 
 <!-- Modal for editing resource -->

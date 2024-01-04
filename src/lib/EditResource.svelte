@@ -14,8 +14,6 @@
 	// Index of resource in resources object
 	const index = resources.files.findIndex((resource) => resource.id === resourceId);
 
-	console.log(index, resources);
-
 	// Convert resources object to JSON for form submission
 	$: resourcesJSON = JSON.stringify(resources);
 </script>

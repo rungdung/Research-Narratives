@@ -31,9 +31,13 @@
 	// Load nodes and edges from DB
 	if (narrative.nodes == null) {
 		nodes = writable([]);
+	} else {
+		nodes = writable(narrative.nodes);
 	}
 	if (narrative.edges == null) {
 		edges = writable([]);
+	} else {
+		edges = writable(narrative.edges);
 	}
 
 	// When modal is open, deactivate research map

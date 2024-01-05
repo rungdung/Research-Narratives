@@ -54,7 +54,7 @@ export const actions = {
 			created_by: session?.user.id,
 			created_at: new Date(),
 			name: name,
-			resources: { files: [] },
+			resources: [],
 			description: description
 		});
 

@@ -34,6 +34,13 @@ export const load = async ({ url, locals: { supabase, getSession } }) => {
 		.eq('id', session.user.id)
 		.single();
 
+	// fetch details of each resource as array
+	const { data: resources } = await supabase
+		.from('resources')
+		.select('*')
+		.eq('library_id', libraryId)
+		.order('created_at', { ascending: false });
+
 	// Fetch details of the specified library
 	const { data: library } = await supabase
 		.from('libraries')
@@ -47,7 +54,7 @@ export const load = async ({ url, locals: { supabase, getSession } }) => {
 		.select('*')
 		.eq('library_id', libraryId);
 
-	return { session, profile, library, narratives };
+	return { session, profile, library, narratives, resources };
 };
 
 // Actions for the library view page
@@ -63,9 +70,6 @@ export const actions = {
 
 		// Get user session
 		const session = await getSession();
-
-		// Generate a unique ID for the new resource
-		const id = crypto.randomUUID();
 
 		// Check user's write permission for the library
 		const { data: permission } = await supabase
@@ -84,23 +88,36 @@ export const actions = {
 				.eq('id', libraryId)
 				.single();
 
-			// Append the new resource to the resources array
-			resources.resources.files.push({
+			// Generate a unique ID for the new resource
+			const id = crypto.randomUUID();
+
+			// Create the new resource
+			const { error: error1 } = await supabase.from('resources').insert({
 				id: id,
 				url: resourceUrl,
 				title: title,
 				source: source,
 				description: description,
-				type: resourceUrl.split('.').pop()
+				type: resourceUrl.split('.').pop(),
+				library_id: libraryId,
+				created_at: new Date()
 			});
 
-			// Update the resources of the library
+			if (error1) {
+				return fail(500, {
+					resourceUrl
+				});
+			}
+
+			// Append the new resource id to the resources array of the library
+			resources.resources.push({
+				id: id
+			});
 			const { error } = await supabase
 				.from('libraries')
 				.update({ resources: resources.resources })
 				.eq('id', libraryId);
 
-			// Handle errors during resource creation
 			if (error) {
 				return fail(500, {
 					resourceUrl
@@ -119,7 +136,10 @@ export const actions = {
 
 		// Parse form data from the request
 		const formData = await request.formData();
-		const updatedResources = JSON.parse(formData.get('resources') as string) as any;
+		const id = formData.get('id') as string;
+		const title = formData.get('title') as string;
+		const description = formData.get('description') as string;
+		const source = formData.get('source') as string;
 
 		// Check user's update permission for the library
 		const { data: permission } = await supabase
@@ -133,11 +153,13 @@ export const actions = {
 		if (permission?.update === true) {
 			// Update the resources of the library with the provided data
 			const { error } = await supabase
-				.from('libraries')
+				.from('resources')
 				.update({
-					resources: updatedResources
+					title: title,
+					description: description,
+					source: source
 				})
-				.eq('id', libraryId);
+				.eq('id', id);
 
 			// Handle errors during resource update
 			if (error) {

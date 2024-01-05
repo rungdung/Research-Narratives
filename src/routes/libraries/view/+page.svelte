@@ -9,8 +9,8 @@
 	export let data;
 
 	// Destructure data object
-	let { session, supabase, profile, library, narratives } = data;
-	$: ({ session, supabase, profile, library, narratives } = data);
+	let { session, supabase, profile, library, narratives, resources } = data;
+	$: ({ session, supabase, profile, library, narratives, resources } = data);
 
 	// Local state for resource URL and modal visibility
 	let url = '';
@@ -30,8 +30,8 @@
 		<main
 			class="mx-auto items-center grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3 content-stretch"
 		>
-			{#if library.resources}
-				{#each library.resources.files as resource}
+			{#if resources}
+				{#each resources as resource}
 					<!-- Card for displaying resource information -->
 					<Card target="_blank" class="bg-primary-100 drop-shadow-md opacity-80 h-full">
 						<h5 class="text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
@@ -56,7 +56,7 @@
 						</section>
 					</Card>
 					<!-- EditResource component for editing the resource -->
-					<EditResource bind:editModal resources={library.resources} resourceId={resource.id} />
+					<EditResource bind:editModal {resource} />
 				{/each}
 
 				<!-- Card for creating a new resource -->

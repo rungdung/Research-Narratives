@@ -43,10 +43,9 @@ export const load = async ({ url, locals: { supabase, getSession } }) => {
 
 	// get resources of the library
 	const { data: resources } = await supabase
-		.from('libraries')
-		.select('resources')
-		.eq('id', narrative.library_id)
-		.single();
+		.from('resources')
+		.select('*')
+		.eq('library_id', narrative.library_id);
 
 	return { title: profile.full_name, description: '', narrative, resources };
 };

@@ -5,17 +5,17 @@
 	import { activeDraggableNode, activeDraggableNodeModal } from '../store';
 
 	export let data;
-	export let isConnectable;
+
 	let quote;
 
 	// Destructure data object and set up reactivity
-	let { title, description } = data;
-	$: ({ title, description } = data);
+	let { title, description, resource } = data;
+	$: ({ title, description, resource } = data);
 </script>
 
 <div>
 	<Card class="w-40 p-0 text-black gap-2 bg-secondary-50">
-		<Handle type="target" position={Position.Left} style="background: #555;" {isConnectable} />
+		<Handle type="target" position={Position.Left} style="background: #555;" />
 		<h5 class="max-w-prose leading-tight z-30">Annotates {title}</h5>
 
 		<Textarea class="max-w-prose leading-tight z-30" bind:value={description} />
@@ -24,7 +24,6 @@
 			position={Position.Right}
 			id="a"
 			style="top: 10px; background: #555; size:10px;"
-			{isConnectable}
 		/>
 
 		<Handle
@@ -32,14 +31,14 @@
 			position={Position.Right}
 			id="b"
 			style="bottom: 10px; top: auto; background: #555;"
-			{isConnectable}
 		/>
 		<div class="">
 			<Button
 				size="xs"
 				color="dark"
 				class="transform translate-x-1/2 p-1 px-0 "
-				on:click={() => console.log('done')}>Spatial filter and annotate</Button
+				href="/libraries/narratives/spatial-annotate/?resource_id={resource.id}"
+				>Spatial filter and annotate</Button
 			>
 			<Button
 				size="xs"

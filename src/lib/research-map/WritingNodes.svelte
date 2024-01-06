@@ -2,7 +2,6 @@
 	import { Card, Input, Textarea, Label } from 'flowbite-svelte';
 	export let section;
 
-	console.log(section);
 	// Drag and drop nodes
 	const onDragOver = (event) => {
 		event.preventDefault();

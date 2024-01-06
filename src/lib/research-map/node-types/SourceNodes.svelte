@@ -5,7 +5,6 @@
 	import { activeDraggableNode, activeDraggableNodeModal } from '../store';
 
 	export let data;
-	export let isConnectable;
 
 	// Destructure data object and set up reactivity
 	let { title, description, resource } = data;
@@ -14,7 +13,7 @@
 
 <div>
 	<Card class="w-40 p-0 text-black bg-primary-300">
-		<Handle type="target" position={Position.Left} style="background: #555;" {isConnectable} />
+		<Handle type="target" position={Position.Left} style="background: #555;" />
 		<h5 class="max-w-prose leading-tight z-30">{title}</h5>
 		<p class="text-xs pt-2">{description}</p>
 		<Badge size="xs" class="m-2">{resource.type}</Badge>
@@ -23,7 +22,6 @@
 			position={Position.Right}
 			id="a"
 			style="top: 10px; background: #555; size:10px;"
-			{isConnectable}
 		/>
 
 		<Handle
@@ -31,7 +29,6 @@
 			position={Position.Right}
 			id="b"
 			style="bottom: 10px; top: auto; background: #555;"
-			{isConnectable}
 		/>
 		<div class="">
 			<Button

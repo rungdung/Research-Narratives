@@ -1,13 +1,14 @@
 <script>
+	import { writable } from 'svelte/store';
+
 	import { SvelteFlowProvider } from '@xyflow/svelte';
 
 	import Flow from '$lib/research-map/Flow.svelte';
 	import WritingPanel from '$lib/research-map/WritingPanel.svelte';
-	import { Button } from 'flowbite-svelte';
-
-	import { writable } from 'svelte/store';
-
 	import Sidebar from '$lib/research-map/Sidebar.svelte';
+
+	import { Button, AccordionItem, Accordion } from 'flowbite-svelte';
+
 	import { activeDraggableNode, activeDraggableNodeModal } from '$lib/research-map/store';
 
 	export let data;
@@ -67,10 +68,21 @@
 </script>
 
 <section class="grid grid-flow-row grid-cols-5 h-[70vh]">
-	<section id="sidebar" class="col-span-1 bg-primary-100 py-1 px-3 overflow-y-hidden rounded-lg">
-		<Sidebar {resources} {title} {description} />
-	</section>
-	<section class="col-span-3">
+	<section class="col-span-4 relative">
+		<!-- Button on the side -->
+		<section class="absolute top-0 left-0 z-50 m-5">
+			<Accordion defaultClass="bg-primary-100">
+				<AccordionItem defaultClass="bg-primary-300">
+					<span slot="header">Add resources</span>
+					<Sidebar {resources} {title} {description} />
+				</AccordionItem>
+			</Accordion>
+			<Button
+				class="bg-primary-300 w-full"
+				type="submit"
+				on:click={() => dbformElement.requestSubmit()}>Save</Button
+			>
+		</section>
 		<!-- Modal to drag and drop into narrative section-->
 		{#if $activeDraggableNodeModal}
 			<!-- Overlay -->
@@ -90,7 +102,7 @@
 			</div>
 		{/if}
 		<!-- Research Map -->
-		<div bind:this={narrativeSection} class="h-full w-full">
+		<div bind:this={narrativeSection} class="h-full w-full px-2 mb-2 rounded-lg">
 			<p class="text-black absolute p-2 px-4 max-w-prose">
 				Use this whiteboard to annotate and take notes on your resources
 			</p>
@@ -98,8 +110,6 @@
 				<Flow {nodes} {edges} bind:dbformElement />
 			</SvelteFlowProvider>
 			<!-- Form Request Submit to update nodes and edges in database -->
-			<Button color="dark" type="submit" on:click={() => dbformElement.requestSubmit()}>Save</Button
-			>
 		</div>
 	</section>
 	<section class="col-span-1 bg-primary-100 py-1 px-3 overflow-y-hidden rounded-lg">

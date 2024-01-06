@@ -3,7 +3,7 @@
 	export let resources;
 	export let title;
 	export let description;
-	console.log(resources, title, description);
+
 	// When box is dragged
 	const onDragStart = (event: DragEvent, nodeData: any) => {
 		if (!event.dataTransfer) {
@@ -14,16 +14,16 @@
 	};
 </script>
 
-<section class="h-full">
+<section class="h-full w-[10vw]">
 	<div class="label py-3 text-black">
-		<h3 class="text-2xl">{title}</h3>
-		<p>{description}</p>
+		<!-- <h3 class="text-2xl">{title}</h3>
+		<p>{description}</p> -->
 		You can drag these nodes to the pane on the side.
 	</div>
 	<div class="grid grid-flow-row-dense gap-0 grid-cols-1 h-4/6 overflow-y-scroll">
 		{#if resources}
 			{#each resources as resource}
-				<Card class="node col-span-1 p-0 m-1 bg-primary-300	">
+				<Card class="node col-span-1 p-0 m-1  bg-primary-300	">
 					<div class="node" on:dragstart={(event) => onDragStart(event, resource)} draggable={true}>
 						<h5>{resource.title}</h5>
 						<p>{resource.description}</p>
@@ -41,7 +41,6 @@
 		font-weight: 700;
 		border-radius: 3px;
 		cursor: grab;
-		width: auto;
 		height: fit-content;
 	}
 </style>

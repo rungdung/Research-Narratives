@@ -115,7 +115,8 @@
 			case 'pdf':
 				nodeType = 'textAnnotateNode';
 				break;
-			case 'gpkg' || 'geojson':
+			case 'gpkg':
+			case 'geojson':
 				nodeType = 'spatialAnnotateNode';
 				break;
 		}

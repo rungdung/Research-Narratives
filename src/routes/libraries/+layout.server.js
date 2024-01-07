@@ -7,6 +7,7 @@ export const load = async ({ url, locals: { supabase, getSession } }) => {
 	// Extract the 'id' parameter from the query parameters
 	const id = url.searchParams.get('id');
 	const mapid = url.searchParams.get('map_id');
+	const editResourceId = url.searchParams.get('resource_id');
 
 	// Redirect to the home page if the user is not authenticated
 	if (!session) {
@@ -32,9 +33,7 @@ export const load = async ({ url, locals: { supabase, getSession } }) => {
 			user: profile,
 			page: 'library'
 		};
-	}
-
-	if (mapid) {
+	} else if (mapid) {
 		// get the research map
 		const { data: narrative } = await supabase
 			.from('narratives')
@@ -46,6 +45,13 @@ export const load = async ({ url, locals: { supabase, getSession } }) => {
 			description: narrative.description,
 			user: profile,
 			page: 'map'
+		};
+	} else if (editResourceId) {
+		return {
+			title: '',
+			description: '',
+			user: profile,
+			page: 'resourceAnnotate'
 		};
 	}
 	// If 'id' parameter is not present, return data for the user's profile page

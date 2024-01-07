@@ -127,7 +127,7 @@
 			const id = `${Math.random()}`;
 			const newNode = {
 				id,
-				data: { title: 'test', description: '' },
+				data: { title: 'test', description: '', resource: node.data.resource },
 				type: nodeType,
 				// project the screen coordinates to pane coordinates
 				position: screenToFlowPosition({

@@ -12,7 +12,7 @@
 		"format": "prettier --plugin-search-dir . --write ."
 	},
 	"devDependencies": {
-		"@sveltejs/adapter-auto": "^2.0.0",
+		"@sveltejs/adapter-auto": "^2.1.1",
 		"@sveltejs/kit": "^1.20.4",
 		"autoprefixer": "^10.4.16",
 		"eslint": "^8.28.0",
@@ -43,7 +43,7 @@
 		"flowbite": "^1.7.0",
 		"flowbite-svelte": "^0.38.5",
 		"flowbite-svelte-icons": "^0.4.4",
-		"maplibre-gl": "^3.0.1",
+		"maplibre-gl": "^3.6.2",
 		"pdfobject": "^2.2.12",
 		"svelte": "^4.0.0",
 		"svelte-collapsible": "^0.2.1",

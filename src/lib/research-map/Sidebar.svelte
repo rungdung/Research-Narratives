@@ -14,26 +14,19 @@
 	};
 </script>
 
-<section class="h-full w-[10vw]">
-	<div class="label py-3 text-black">
-		<!-- <h3 class="text-2xl">{title}</h3>
-		<p>{description}</p> -->
-		You can drag these nodes to the pane on the side.
-	</div>
-	<div class="grid grid-flow-row-dense gap-0 grid-cols-1 h-4/6 overflow-y-scroll">
-		{#if resources}
-			{#each resources as resource}
-				<Card class="node col-span-1 p-0 m-1  bg-primary-300	">
-					<div class="node" on:dragstart={(event) => onDragStart(event, resource)} draggable={true}>
-						<h5>{resource.title}</h5>
-						<p>{resource.description}</p>
-						<Badge size="xs" class="m-2">{resource.type}</Badge>
-					</div>
-				</Card>
-			{/each}
-		{/if}
-	</div>
-</section>
+<div class="grid grid-flow-row-dense gap-0 grid-cols-1 p-0">
+	{#if resources}
+		{#each resources as resource}
+			<Card class="node col-span-1 p-0 m-1  bg-primary-300	">
+				<div class="node" on:dragstart={(event) => onDragStart(event, resource)} draggable={true}>
+					<h5>{resource.title}</h5>
+					<p>{resource.description}</p>
+					<Badge size="xs" class="m-2">{resource.type}</Badge>
+				</div>
+			</Card>
+		{/each}
+	{/if}
+</div>
 
 <style>
 	.node {

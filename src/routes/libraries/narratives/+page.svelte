@@ -68,17 +68,18 @@
 </script>
 
 <section class="grid grid-flow-row grid-cols-5 h-[70vh]">
-	<section class="col-span-4 relative">
+	<section class="col-span-4 relative h-full">
 		<!-- Button on the side -->
-		<section class="absolute top-0 left-0 z-50 m-5">
-			<Accordion defaultClass="bg-primary-100">
-				<AccordionItem defaultClass="bg-primary-300">
+		<section class="absolute top-0 left-0 z-50 m-5 h-full w-30">
+			<Accordion defaultClass="bg-primary-100 w-full max-h-80 overflow-y-auto">
+				<AccordionItem defaultClass="bg-primary-300 h-20 w-full">
 					<span slot="header">Add resources</span>
 					<Sidebar {resources} {title} {description} />
 				</AccordionItem>
 			</Accordion>
+
 			<Button
-				class="bg-primary-300 w-full"
+				class="bg-primary-300 w-full my-1"
 				type="submit"
 				on:click={() => dbformElement.requestSubmit()}>Save</Button
 			>

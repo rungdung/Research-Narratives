@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { Handle, Position } from '@xyflow/svelte';
 	import { Card, Button, Badge } from 'flowbite-svelte';
+	import { supabase } from '$lib/supabaseClient.js';
 
 	import { activeDraggableNode, activeDraggableNodeModal } from '../store';
 
@@ -9,6 +10,25 @@
 	// Destructure data object and set up reactivity
 	let { title, description, resource } = data;
 	$: ({ title, description, resource } = data);
+
+	let preview;
+
+	// Get preview
+	const downloadResource = async (path) => {
+		try {
+			const { data, error } = await supabase.storage.from('resources').download(path);
+
+			if (error) {
+				throw error;
+			}
+
+			return URL.createObjectURL(data);
+		} catch (error) {
+			if (error instanceof Error) {
+				console.log('Error downloading image: ', error.message);
+			}
+		}
+	};
 </script>
 
 <div>
@@ -16,6 +36,13 @@
 		<Handle type="target" position={Position.Left} style="background: #555;" />
 		<h5 class="max-w-prose leading-tight z-30">{title}</h5>
 		<p class="text-xs pt-2">{description}</p>
+		{#if resource.type == 'jpg' || resource.type == 'png' || resource.type == 'jpeg'}
+			{#await (preview = downloadResource(resource.url))}
+				Loading...
+			{:then preview}
+				<img src={preview} alt="preview" class="w-40 h-40" />
+			{/await}
+		{/if}
 		<Badge size="xs" class="m-2">{resource.type}</Badge>
 		<Handle
 			type="source"

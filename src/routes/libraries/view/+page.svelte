@@ -16,7 +16,6 @@
 	let url = '';
 	let formModal = false;
 	let newNarrativeModal = false;
-	let editModal = false;
 </script>
 
 <!-- Tabs component for organizing content -->
@@ -45,18 +44,10 @@
 							<!-- Badge for displaying resource type -->
 							<Badge color="purple">{resource.type}</Badge>
 							<!-- Button for opening the edit modal -->
-							<Button
-								size="xs"
-								class="text-white px-2 absolute right-0 py-0 mx-5 rounded-none"
-								color="transparent"
-								on:click={() => (editModal = true)}
-							>
-								<PenSolid color="black" />
-							</Button>
+							<EditResource editModal={true} {resource} />
 						</section>
 					</Card>
 					<!-- EditResource component for editing the resource -->
-					<EditResource bind:editModal {resource} />
 				{/each}
 
 				<!-- Card for creating a new resource -->

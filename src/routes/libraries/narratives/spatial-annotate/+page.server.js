@@ -1,12 +1,9 @@
-let resourceId = '';
-let libraryId = '';
-
-export const load = async ({ url, locals: { supabase, getSession } }) => {
+export const load = async ({ cookies, url, locals: { supabase, getSession } }) => {
 	// Get the user session
 	const session = await getSession();
 
 	// Extract the 'id' parameter from the query parameters
-	resourceId = url.searchParams.get('resource_id');
+	const resourceId = url.searchParams.get('resource_id');
 
 	// Redirect to the home page if the user is not authenticated
 	if (!session) {
@@ -20,7 +17,11 @@ export const load = async ({ url, locals: { supabase, getSession } }) => {
 		.eq('id', resourceId)
 		.single();
 
-	libraryId = resource.library_id;
+	const libraryId = resource.library_id;
+
+	// set cookies for actions to load from
+	cookies.set('libraryId', libraryId, { path: '/' });
+	cookies.set('resourceId', resourceId, { path: '/' });
 
 	// Possibly perform datatype conversions, optimizations here.
 	return { resource, attributes: resource.attributes };
@@ -28,9 +29,11 @@ export const load = async ({ url, locals: { supabase, getSession } }) => {
 
 export const actions = {
 	// Action for creating a new library
-	saveAnnotation: async ({ request, locals: { supabase, getSession } }) => {
+	saveAnnotation: async ({ cookies, request, locals: { supabase, getSession } }) => {
 		// Get user session
 		const session = await getSession();
+		const resourceId = cookies.get('resourceId');
+		const libraryId = cookies.get('libraryId');
 
 		// Parse form data from the request
 		const formData = await request.formData();

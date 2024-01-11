@@ -1,13 +1,13 @@
 // src/routes/libraries/view/+page.server.ts
 import { fail, redirect } from '@sveltejs/kit';
 
-// Global Library ID to access
-let libraryId = '';
-
-export const load = async ({ url, locals: { supabase, getSession } }) => {
+export const load = async ({ cookies, url, locals: { supabase, getSession } }) => {
 	// Get user session and library ID from the URL
 	const session = await getSession();
-	libraryId = url.searchParams.get('id');
+	const libraryId = url.searchParams.get('id');
+
+	// Set cookie
+	cookies.set('libraryId', libraryId, { path: '/' });
 
 	// Redirect to the home page if the user is not authenticated
 	if (!session) {
@@ -60,7 +60,7 @@ export const load = async ({ url, locals: { supabase, getSession } }) => {
 // Actions for the library view page
 export const actions = {
 	// Action for creating a new resource within the library
-	createResource: async ({ request, locals: { supabase, getSession } }) => {
+	createResource: async ({ cookies, request, locals: { supabase, getSession } }) => {
 		// Parse form data from the request
 		const formData = await request.formData();
 		const resourceUrl = formData.get('url') as string;
@@ -68,6 +68,9 @@ export const actions = {
 		const title = formData.get('title') as string;
 		const description = formData.get('description') as string;
 		const attributes = formData.get('attributes') as string;
+
+		// Get library id from cookie
+		const libraryId = cookies.get('libraryId');
 
 		// Get user session
 		const session = await getSession();
@@ -132,7 +135,7 @@ export const actions = {
 	},
 
 	// Action for updating resources within the library
-	updateResource: async ({ request, locals: { supabase, getSession } }) => {
+	updateResource: async ({ cookies, request, locals: { supabase, getSession } }) => {
 		// Get user session
 		const session = await getSession();
 
@@ -142,6 +145,9 @@ export const actions = {
 		const title = formData.get('title') as string;
 		const description = formData.get('description') as string;
 		const source = formData.get('source') as string;
+
+		// Get library id from cookie
+		const libraryId = cookies.get('libraryId');
 
 		// Check user's update permission for the library
 		const { data: permission } = await supabase
@@ -176,9 +182,12 @@ export const actions = {
 	},
 
 	// Action for creating a new Research Map
-	createResearchMap: async ({ request, locals: { supabase, getSession } }) => {
+	createResearchMap: async ({ cookies, request, locals: { supabase, getSession } }) => {
 		// Get user session
 		const session = await getSession();
+
+		// Get library id from cookie
+		const libraryId = cookies.get('libraryId');
 
 		// Get data from form
 		// Parse form data from the request

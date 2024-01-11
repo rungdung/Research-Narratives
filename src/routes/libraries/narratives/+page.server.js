@@ -1,13 +1,13 @@
 // src/routes/libraries/+page.server.ts
 import { fail, redirect } from '@sveltejs/kit';
 
-let mapId;
-export const load = async ({ url, locals: { supabase, getSession } }) => {
+export const load = async ({ cookies, url, locals: { supabase, getSession } }) => {
 	// Get the user session
 	const session = await getSession();
 
 	// Extract the 'id' parameter from the query parameters
-	mapId = url.searchParams.get('map_id');
+	const mapId = url.searchParams.get('map_id');
+	cookies.set('mapId', mapId, { path: '/' });
 
 	// Redirect to the home page if the user is not authenticated
 	if (!session) {
@@ -52,11 +52,14 @@ export const load = async ({ url, locals: { supabase, getSession } }) => {
 
 export const actions = {
 	// Action for creating a new library
-	updateNarrativeSection: async ({ request, locals: { supabase, getSession } }) => {
+	updateNarrativeSection: async ({ cookies, request, locals: { supabase, getSession } }) => {
 		// Parse form data from the request
 		const formData = await request.formData();
 		let narrativeSections = formData.get('narrative-sections');
 		narrativeSections = JSON.parse(narrativeSections);
+
+		// get mapid from cookie
+		cookies.get('mapId');
 
 		// Get the user session
 		const session = await getSession();
@@ -72,13 +75,14 @@ export const actions = {
 			return fail(500, { error });
 		}
 	},
-	updateResearchMap: async ({ request, locals: { supabase, getSession } }) => {
+	updateResearchMap: async ({ cookies, request, locals: { supabase, getSession } }) => {
 		// Parse form data from the request
 		const formData = await request.formData();
-		let nodes = formData.get('nodes');
-		let edges = formData.get('edges');
-		nodes = JSON.parse(nodes);
-		edges = JSON.parse(edges);
+		let nodes = JSON.parse(formData.get('nodes'));
+		let edges = JSON.parse(formData.get('edges'));
+
+		// get mapid from cookie
+		const mapId = cookies.get('mapId');
 
 		// Get the user session
 		const session = await getSession();

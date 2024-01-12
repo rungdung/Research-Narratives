@@ -3,14 +3,14 @@
 	import 'maplibre-gl/dist/maplibre-gl.css';
 	import { onMount } from 'svelte';
 	import { PUBLIC_MAPTILER_KEY } from '$env/static/public';
-	import { supabase } from '$lib/supabaseClient.js';
+
 	import Filter from '$lib/research-map/spatial-annotate/Filter.svelte';
 
 	export let data;
 	let resource, map, attributes, filterExpression, appearanceExpression, mapContainer;
 
 	// Destructuring data to get the resource
-	$: ({ resource, attributes } = data);
+	$: ({ resource, attributes, supabase } = data);
 
 	// $: filterExpression = resource.filter;
 	// $: appearanceExpression = resource.appearance;

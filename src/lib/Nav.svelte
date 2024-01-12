@@ -26,16 +26,12 @@
     The NavUl component containing the list of navigation links.
   -->
 	<NavUl>
-		<!-- Static link to the "Libraries" page -->
-		<NavLi href="/libraries">Libraries</NavLi>
-
 		<!-- Conditional rendering based on whether a user is authenticated -->
 		{#if user}
+			<!-- Static link to the "Libraries" page -->
+			<NavLi href="/libraries">Libraries</NavLi>
 			<!-- Display the user's name with a link to the account page if authenticated -->
 			<NavLi href="/account">{user}</NavLi>
-		{:else}
-			<!-- Display a "Login" link if the user is not authenticated -->
-			<NavLi href="/login">Login</NavLi>
 		{/if}
 	</NavUl>
 </Navbar>

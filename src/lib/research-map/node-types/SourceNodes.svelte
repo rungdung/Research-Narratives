@@ -32,7 +32,7 @@
 </script>
 
 <div>
-	<Card class="w-40 p-0 text-black bg-primary-300">
+	<Card class="w-60 p-0 text-black bg-primary-300">
 		<Handle type="target" position={Position.Left} style="background: #555;" />
 		<h5 class="max-w-prose leading-tight z-30">{title}</h5>
 		<p class="text-xs pt-2">{description}</p>
@@ -40,7 +40,7 @@
 			{#await (preview = downloadResource(resource.url))}
 				Loading...
 			{:then preview}
-				<img src={preview} alt="preview" class="w-40 h-40" />
+				<img src={preview} alt="preview" class="w-60 object-contain" />
 			{/await}
 		{/if}
 		<Badge size="xs" class="m-2">{resource.type}</Badge>

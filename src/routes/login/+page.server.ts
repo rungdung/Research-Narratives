@@ -8,7 +8,7 @@ export const load: PageServerLoad = async ({ url, locals: { getSession } }) => {
 
 	// If the user is already logged in, redirect them to the account page
 	if (session) {
-		throw redirect(303, '/account');
+		throw redirect(303, '/libraries');
 	}
 
 	// If the user is not logged in, return the URL origin (e.g., the login page)

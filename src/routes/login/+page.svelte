@@ -13,14 +13,14 @@
 </svelte:head>
 
 <!-- Main section of the login/register page -->
-<section class="max-w-screen-lg mx-auto">
+<section class="max-w-screen-lg mx-auto h-screen">
 	<!-- Include the navigation component -->
 	<Nav />
 
-	<div class="h-screen flex flex-col items-center justify-center p-10">
+	<section class="w-1/4 mx-auto py-10">
 		<!-- Page title and description -->
-		<h3 id="title">Login / Register</h3>
-		<p class="text-black pb-4">
+		<h3 class="text-yellow-500 text-3xl">Login / Register</h3>
+		<p class="text-yellow-500 pb-4">
 			Enter your email to receive a sign-in link. You will not require a password to sign in.
 		</p>
 
@@ -33,17 +33,14 @@
 				showLinks={false}
 				appearance={{
 					theme: ThemeMinimal, // Use the Supabase theme for the Auth component
-					style: { input: 'color: black' } // Apply custom styles, e.g., black text color
+					style: {
+						input: 'color: black; padding: 10px 20px; border-radius: 5px; border: 1px solid #ccc;',
+						label: 'color: black',
+						button:
+							'background-color: #efb49a; color: black; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer;'
+					} // Apply custom styles, e.g., black text color
 				}}
 			/>
 		</div>
-	</div>
+	</section>
 </section>
-
-<!-- Custom styles for the page -->
-<style>
-	#title {
-		color: black;
-		font-size: 2em;
-	}
-</style>

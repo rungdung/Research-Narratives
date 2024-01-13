@@ -1,5 +1,4 @@
 <script>
-	import { writable } from 'svelte/store';
 	import { enhance } from '$app/forms';
 	import {
 		SvelteFlow,
@@ -16,6 +15,7 @@
 	import SourceNodes from './node-types/SourceNodes.svelte';
 	import TextAnnotateNode from './node-types/TextAnnotateNode.svelte';
 	import SpatialAnnotateNode from './node-types/SpatialAnnotateNode.svelte';
+	import DocumentAnnotateNode from './node-types/DocumentAnnotateNode.svelte';
 	import ContextMenu from './ContextMenu.svelte';
 
 	// Initial state of node to load
@@ -40,7 +40,8 @@
 	const nodeTypes = {
 		sourceNode: SourceNodes,
 		textAnnotateNode: TextAnnotateNode,
-		spatialAnnotateNode: SpatialAnnotateNode
+		spatialAnnotateNode: SpatialAnnotateNode,
+		documentAnnotateNode: DocumentAnnotateNode
 	};
 
 	// Drag and drop nodes
@@ -108,16 +109,18 @@
 
 		// Get data of the dragged node
 		const node = $nodes.find((n) => n.id === connectingNodeId);
-		let nodeType;
+		let nodeType = 'textAnnotateNode';
+
+		console.log('node', node);
 
 		// Depending on the resource data type, provide different annotation nodes
 		switch (node.data.resource.type) {
-			case 'pdf':
-				nodeType = 'textAnnotateNode';
-				break;
 			case 'gpkg':
 			case 'geojson':
 				nodeType = 'spatialAnnotateNode';
+				break;
+			case 'pdf':
+				nodeType = 'documentAnnotateNode';
 				break;
 		}
 
@@ -127,7 +130,7 @@
 			const id = `${Math.random()}`;
 			const newNode = {
 				id,
-				data: { title: 'test', description: '', resource: node.data.resource },
+				data: { title: node.data.title, description: '', resource: node.data.resource },
 				type: nodeType,
 				// project the screen coordinates to pane coordinates
 				position: screenToFlowPosition({
@@ -147,6 +150,22 @@
 			$nodes = $nodes;
 			$edges = $edges;
 		}
+	}
+
+	const { getIntersectingNodes } = useSvelteFlow();
+
+	// if node dragged is intersecting a 'group'node, make the group the parent
+	function onNodeDrag({ detail: { node } }) {
+		const intersectingNode = getIntersectingNodes(node)[0];
+		const movedNode = node;
+
+		if ((intersectingNode.type = 'group')) {
+			$nodes[$nodes.findIndex((n) => n.id === movedNode.id)].parentNode = intersectingNode.id;
+		} else if ((movedNode.type = 'group')) {
+			console.log('moved node', movedNode.id);
+			$nodes[$nodes.findIndex((n) => n.id === intersectingNode.id)].parentNode = null;
+		}
+		$nodes = $nodes;
 	}
 </script>
 
@@ -168,7 +187,7 @@
 		}}
 		onconnectend={handleConnectEnd}
 	>
-		<Controls />
+		<Controls position={'top-right'} />
 		<Background bgColor={'#f5d0b9'} patternClass={BackgroundVariant.Dots} size={2} />
 		{#if menu}
 			<ContextMenu
@@ -187,6 +206,7 @@
 		</form>
 	</SvelteFlow>
 </section>
+
 <style>
 	:global(.svelte-flow__controls-button) {
 		background-color: #f5d0b9;

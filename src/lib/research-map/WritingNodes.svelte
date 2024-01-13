@@ -29,8 +29,13 @@
 
 <Card class="node bg-secondary-50 gap-y-2">
 	<div on:dragover={onDragOver} on:drop={onDrop}>
-		<Input type="text" bind:value={section.title} />
-		<Textarea type="text" bind:value={section.bodytext} />
+		<Input
+			type="text"
+			class="text-black"
+			placeholder="What is the title of this section"
+			bind:value={section.title}
+		/>
+		<Textarea type="text" class="text-black" placeholder="Bodytext" bind:value={section.bodytext} />
 		<Input
 			class="bg-primary-200 p-1"
 			type="text"

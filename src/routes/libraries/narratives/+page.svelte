@@ -41,11 +41,6 @@
 		edges = writable(narrative.edges);
 	}
 
-	// When modal is open, deactivate research map
-	const onModalLoad = () => {
-		narrativeSection.style = 'opacity: 0.5; pointer-events: none';
-	};
-
 	// When box is dragged
 	const onDragStart = (event, nodeData) => {
 		if (!event.dataTransfer) {
@@ -62,8 +57,9 @@
 	};
 
 	// When drag Modal is triggered by button click from a node
+	// Deactivate narrative section and activate drag modal
 	$: if ($activeDraggableNodeModal == true) {
-		onModalLoad();
+		narrativeSection.style = 'opacity: 0.5; pointer-events: none';
 	}
 </script>
 
@@ -108,7 +104,7 @@
 				Use this whiteboard to annotate and take notes on your resources
 			</p>
 			<SvelteFlowProvider>
-				<Flow {nodes} {edges} bind:dbformElement />
+				<Flow bind:nodes bind:edges bind:dbformElement />
 			</SvelteFlowProvider>
 			<!-- Form Request Submit to update nodes and edges in database -->
 		</div>

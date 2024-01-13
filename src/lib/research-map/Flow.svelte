@@ -109,11 +109,9 @@
 
 		// Get data of the dragged node
 		const node = $nodes.find((n) => n.id === connectingNodeId);
-		let nodeType = 'textAnnotateNode';
-
-		console.log('node', node);
 
 		// Depending on the resource data type, provide different annotation nodes
+		let nodeType = 'textAnnotateNode';
 		switch (node.data.resource.type) {
 			case 'gpkg':
 			case 'geojson':
@@ -130,7 +128,11 @@
 			const id = `${Math.random()}`;
 			const newNode = {
 				id,
-				data: { title: node.data.title, description: '', resource: node.data.resource },
+				data: {
+					title: node.data.title,
+					description: 'test',
+					resource: node.data.resource
+				},
 				type: nodeType,
 				// project the screen coordinates to pane coordinates
 				position: screenToFlowPosition({

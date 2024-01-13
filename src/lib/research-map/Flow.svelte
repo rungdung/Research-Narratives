@@ -169,7 +169,7 @@
 		onconnectend={handleConnectEnd}
 	>
 		<Controls />
-		<Background bgColor={'#faebd7'} patternClass={BackgroundVariant.Dots} />
+		<Background bgColor={'#f5d0b9'} patternClass={BackgroundVariant.Dots} size={2} />
 		{#if menu}
 			<ContextMenu
 				onClick={handlePaneClick}

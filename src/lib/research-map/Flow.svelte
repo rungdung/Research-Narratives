@@ -153,22 +153,6 @@
 			$edges = $edges;
 		}
 	}
-
-	const { getIntersectingNodes } = useSvelteFlow();
-
-	// if node dragged is intersecting a 'group'node, make the group the parent
-	function onNodeDrag({ detail: { node } }) {
-		const intersectingNode = getIntersectingNodes(node)[0];
-		const movedNode = node;
-
-		if ((intersectingNode.type = 'group')) {
-			$nodes[$nodes.findIndex((n) => n.id === movedNode.id)].parentNode = intersectingNode.id;
-		} else if ((movedNode.type = 'group')) {
-			console.log('moved node', movedNode.id);
-			$nodes[$nodes.findIndex((n) => n.id === intersectingNode.id)].parentNode = null;
-		}
-		$nodes = $nodes;
-	}
 </script>
 
 <section id="flow" class="h-full" bind:clientWidth={width} bind:clientHeight={height}>

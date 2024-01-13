@@ -59,7 +59,7 @@ export const actions = {
 		narrativeSections = JSON.parse(narrativeSections);
 
 		// get mapid from cookie
-		cookies.get('mapId');
+		const mapId = cookies.get('mapId');
 
 		// Get the user session
 		const session = await getSession();

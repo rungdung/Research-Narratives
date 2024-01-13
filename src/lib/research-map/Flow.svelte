@@ -187,3 +187,8 @@
 		</form>
 	</SvelteFlow>
 </section>
+<style>
+	:global(.svelte-flow__controls-button) {
+		background-color: #f5d0b9;
+	}
+</style>

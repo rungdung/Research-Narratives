@@ -8,8 +8,10 @@
 	import Sidebar from '$lib/research-map/Sidebar.svelte';
 
 	import { Button, AccordionItem, Accordion } from 'flowbite-svelte';
+	import { DownloadSolid, HomeSolid } from 'flowbite-svelte-icons';
 
 	import { activeDraggableNode, activeDraggableNodeModal } from '$lib/research-map/store';
+	import Nav from '$lib/Nav.svelte';
 
 	export let data;
 
@@ -63,10 +65,11 @@
 	}
 </script>
 
-<section class="grid grid-flow-row grid-cols-5 h-[70vh]">
-	<section class="col-span-4 relative h-full">
+<section class="grid grid-flow-row grid-cols-5 h-screen overflow-hidden">
+	<section class="col-span-4 relative">
 		<!-- Button on the side -->
-		<section class="absolute top-0 left-0 z-50 m-5 h-full w-30">
+		<section class="absolute top-0 left-0 z-50 m-5 w-30">
+			<Nav />
 			<Accordion defaultClass="bg-primary-100 w-full max-h-80 overflow-y-auto">
 				<AccordionItem defaultClass="bg-primary-300 h-20 w-full">
 					<span slot="header">Add resources</span>
@@ -77,7 +80,10 @@
 			<Button
 				class="bg-primary-300 w-full my-1"
 				type="submit"
-				on:click={() => dbformElement.requestSubmit()}>Save</Button
+				on:click={() => dbformElement.requestSubmit()}><DownloadSolid /></Button
+			>
+			<Button class="bg-primary-300 w-full my-1" type="submit" on:click={() => history.back()}
+				><HomeSolid /></Button
 			>
 		</section>
 		<!-- Modal to drag and drop into narrative section-->
@@ -100,9 +106,6 @@
 		{/if}
 		<!-- Research Map -->
 		<div bind:this={narrativeSection} class="h-full w-full px-2 mb-2 rounded-lg">
-			<p class="text-black absolute p-2 px-4 max-w-prose">
-				Use this whiteboard to annotate and take notes on your resources
-			</p>
 			<SvelteFlowProvider>
 				<Flow bind:nodes bind:edges bind:dbformElement />
 			</SvelteFlowProvider>

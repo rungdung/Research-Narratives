@@ -5,12 +5,13 @@
 	import UploadNew from '$lib/UploadNewResource.svelte';
 	import EditResource from '$lib/EditResource.svelte';
 	import CreateNewResearchMap from '$lib/CreateNewResearchMap.svelte';
+	import Nav from '$lib/Nav.svelte';
 
 	export let data;
 
 	// Destructure data object
-	let { session, supabase, profile, library, narratives, resources } = data;
-	$: ({ session, supabase, profile, library, narratives, resources } = data);
+	let { session, supabase, profile, library, narratives, resources, user, description } = data;
+	$: ({ session, supabase, profile, library, narratives, resources, user, description } = data);
 
 	// Local state for resource URL and modal visibility
 	let url = '';
@@ -18,88 +19,98 @@
 	let newNarrativeModal = false;
 </script>
 
-<!-- Tabs component for organizing content -->
-<Tabs class="" contentClass="bg-transparent p-5">
-	<!-- Divider between tabs -->
-	<hr slot="divider" class="my-2 mx-auto bg-yellow-500 h-1" />
+<main class="w-5/6 mx-auto">
+	<section class="">
+		<Nav user={user.full_name} />
+		<div class="text-black my-10">
+			<h2 class="text-4xl">Welcome {user.full_name}!</h2>
+			A library hosts many resources and mindmaps. Many people can access a library and edit and upload
+			resources.
+		</div>
+	</section>
+	<!-- Tabs component for organizing content -->
+	<Tabs class="" contentClass="bg-transparent p-5">
+		<!-- Divider between tabs -->
+		<hr slot="divider" class="my-2 mx-auto bg-yellow-500 h-1" />
 
-	<!-- Resources tab -->
-	<TabItem open title="Resources">
-		<!-- Main content grid for displaying resources -->
-		<main
-			class="mx-auto items-center grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3 content-stretch"
-		>
-			{#if resources}
-				{#each resources as resource}
-					<!-- Card for displaying resource information -->
-					<Card target="_blank" class="bg-primary-100 drop-shadow-md opacity-80 h-full">
+		<!-- Resources tab -->
+		<TabItem open title="Resources">
+			<!-- Main content grid for displaying resources -->
+			<main
+				class="mx-auto items-center grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3 content-stretch"
+			>
+				{#if resources}
+					{#each resources as resource}
+						<!-- Card for displaying resource information -->
+						<Card target="_blank" class="bg-primary-100 drop-shadow-md opacity-80 h-full">
+							<h5 class="text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
+								{resource.title}
+							</h5>
+							<p class="font-normal text-gray-700 dark:text-gray-400">
+								{resource.description}
+							</p>
+							<small class="text-gray-500 dark:text-gray-400">{resource.source}</small>
+							<section id="meta">
+								<!-- Badge for displaying resource type -->
+								<Badge color="purple">{resource.type}</Badge>
+								<!-- Button for opening the edit modal -->
+								<EditResource editModal={true} {resource} />
+							</section>
+						</Card>
+						<!-- EditResource component for editing the resource -->
+					{/each}
+
+					<!-- Card for creating a new resource -->
+					<Card class="bg-primary-100 drop-shadow-md h-full opacity-80">
+						<Button class="text-white h-full bg-yellow-800" on:click={() => (formModal = true)}>
+							Create a new resource
+						</Button>
+					</Card>
+
+					<!-- UploadNew component for handling resource upload -->
+					<UploadNew {supabase} bind:url bind:formModal />
+				{:else}
+					<!-- Card for creating a new resource when no resources are available -->
+					<Card class="bg-primary-100 drop-shadow-md h-full opacity-80">
+						<Button class="text-white" color="dark" on:click={() => (formModal = true)}>
+							Create a new resource
+						</Button>
+					</Card>
+
+					<!-- UploadNew component for handling resource upload -->
+					<UploadNew {supabase} bind:url bind:formModal />
+				{/if}
+			</main>
+		</TabItem>
+
+		<!-- Placeholder tab for Mindmaps  -->
+		<TabItem title="Narratives">
+			<main
+				class="mx-auto items-center grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3 content-stretch"
+			>
+				{#each narratives as narrative}
+					<Card
+						href="/libraries/narratives/?map_id={narrative.id}"
+						class="bg-primary-100 drop-shadow-md h-full  opacity-80"
+					>
 						<h5 class="text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
-							{resource.title}
+							{narrative.title}
 						</h5>
 						<p class="font-normal text-gray-700 dark:text-gray-400">
-							{resource.description}
+							{narrative.description}
 						</p>
-						<small class="text-gray-500 dark:text-gray-400">{resource.source}</small>
-						<section id="meta">
-							<!-- Badge for displaying resource type -->
-							<Badge color="purple">{resource.type}</Badge>
-							<!-- Button for opening the edit modal -->
-							<EditResource editModal={true} {resource} />
-						</section>
 					</Card>
-					<!-- EditResource component for editing the resource -->
 				{/each}
 
-				<!-- Card for creating a new resource -->
+				<!-- Card for creating a new research map when no resources are available -->
 				<Card class="bg-primary-100 drop-shadow-md h-full opacity-80">
-					<Button class="text-white h-full bg-yellow-800" on:click={() => (formModal = true)}>
-						Create a new resource
+					<Button class="text-white" color="dark" on:click={() => (newNarrativeModal = true)}>
+						Create a new Research Map
 					</Button>
 				</Card>
 
-				<!-- UploadNew component for handling resource upload -->
-				<UploadNew {supabase} bind:url bind:formModal />
-			{:else}
-				<!-- Card for creating a new resource when no resources are available -->
-				<Card class="bg-primary-100 drop-shadow-md h-full opacity-80">
-					<Button class="text-white" color="dark" on:click={() => (formModal = true)}>
-						Create a new resource
-					</Button>
-				</Card>
-
-				<!-- UploadNew component for handling resource upload -->
-				<UploadNew {supabase} bind:url bind:formModal />
-			{/if}
-		</main>
-	</TabItem>
-
-	<!-- Placeholder tab for Mindmaps (currently empty) -->
-	<TabItem title="Narratives">
-		<main
-			class="mx-auto items-center grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3 content-stretch"
-		>
-			{#each narratives as narrative}
-				<Card
-					href="/libraries/narratives/?map_id={narrative.id}"
-					class="bg-primary-100 drop-shadow-md opacity-80"
-				>
-					<h5 class="text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
-						{narrative.title}
-					</h5>
-					<p class="font-normal text-gray-700 dark:text-gray-400">
-						{narrative.description}
-					</p>
-				</Card>
-			{/each}
-
-			<!-- Card for creating a new research map when no resources are available -->
-			<Card class="bg-primary-100 drop-shadow-md h-full opacity-80">
-				<Button class="text-white" color="dark" on:click={() => (newNarrativeModal = true)}>
-					Create a new Research Map
-				</Button>
-			</Card>
-
-			<CreateNewResearchMap bind:newNarrativeModal />
-		</main>
-	</TabItem>
-</Tabs>
+				<CreateNewResearchMap bind:newNarrativeModal />
+			</main>
+		</TabItem>
+	</Tabs>
+</main>

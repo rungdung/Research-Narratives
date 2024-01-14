@@ -1,8 +1,6 @@
 <script lang="ts">
 	import { Card, Badge } from 'flowbite-svelte';
 	export let resources;
-	export let title;
-	export let description;
 
 	// When box is dragged
 	const onDragStart = (event: DragEvent, nodeData: any) => {

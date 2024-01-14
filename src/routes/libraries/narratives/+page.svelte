@@ -66,25 +66,28 @@
 </script>
 
 <section class="grid grid-flow-row grid-cols-5 h-screen overflow-hidden">
-	<section class="col-span-4 relative">
+	<section class="col-span-4 relative h-screen">
 		<!-- Button on the side -->
-		<section class="absolute top-0 left-0 z-50 m-5 w-30">
+		<section class="absolute h-screen top-0 left-0 z-50 m-5 w-1/6">
 			<Nav />
-			<Accordion defaultClass="bg-primary-100 w-full max-h-80 overflow-y-auto">
-				<AccordionItem defaultClass="bg-primary-300 h-20 w-full">
-					<span slot="header">Add resources</span>
-					<Sidebar {resources} {title} {description} />
-				</AccordionItem>
-			</Accordion>
+			<section class="w-full grid grid-cols-2 gap-x-1">
+				<Button
+					class="bg-primary-300 w-full my-1"
+					type="submit"
+					on:click={() => dbformElement.requestSubmit()}><DownloadSolid /></Button
+				>
+				<Button class="bg-primary-300 w-full my-1  " type="submit" on:click={() => history.back()}
+					><HomeSolid /></Button
+				>
 
-			<Button
-				class="bg-primary-300 w-full my-1"
-				type="submit"
-				on:click={() => dbformElement.requestSubmit()}><DownloadSolid /></Button
-			>
-			<Button class="bg-primary-300 w-full my-1" type="submit" on:click={() => history.back()}
-				><HomeSolid /></Button
-			>
+				<Accordion defaultClass="bg-primary-100 w-full max-h-screen overflow-y-auto col-span-2">
+					<AccordionItem defaultClass="bg-primary-300 h-20 w-full" paddingDefault="p-0">
+						<span slot="header">Add resources</span>
+						<Sidebar {resources} />
+					</AccordionItem>
+				</Accordion>
+			</section>
+			<section />
 		</section>
 		<!-- Modal to drag and drop into narrative section-->
 		{#if $activeDraggableNodeModal}

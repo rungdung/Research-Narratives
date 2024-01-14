@@ -2,7 +2,7 @@
 	import { Card, Textarea, Input } from 'flowbite-svelte';
 	import { Button } from 'flowbite-svelte';
 	import { enhance } from '$app/forms';
-	import WritingNodes from './WritingNodes.svelte';
+	import WritingNode from './WritingNode.svelte';
 
 	// Local instance of narrative sections
 	export let narrativeSections;
@@ -46,7 +46,7 @@
 	<div class="grid grid-flow-row-dense gap-2 my-5 grid-cols-1 h-5/6 overflow-y-scroll">
 		{#if narrativeSections}
 			{#each narrativeSections as section}
-				<WritingNodes bind:section />
+				<WritingNode bind:section />
 			{/each}
 		{/if}
 		<Card class="node text-black bg-slate-700">

@@ -80,6 +80,7 @@ export const actions = {
 		const formData = await request.formData();
 		let nodes = JSON.parse(formData.get('nodes'));
 		let edges = JSON.parse(formData.get('edges'));
+		let narrative_sections = JSON.parse(formData.get('narrativeSections'));
 
 		// get mapid from cookie
 		const mapId = cookies.get('mapId');
@@ -92,7 +93,8 @@ export const actions = {
 			.from('narratives')
 			.update({
 				nodes: nodes,
-				edges: edges
+				edges: edges,
+				narrative_sections: narrative_sections
 			})
 			.eq('id', mapId);
 

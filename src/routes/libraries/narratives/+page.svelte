@@ -1,5 +1,6 @@
 <script>
 	import { writable } from 'svelte/store';
+	import { enhance } from '$app/forms';
 
 	import { SvelteFlowProvider } from '@xyflow/svelte';
 
@@ -63,6 +64,11 @@
 	$: if ($activeDraggableNodeModal == true) {
 		narrativeSection.style = 'opacity: 0.5; pointer-events: none';
 	}
+
+	// nodes json for saving
+	$: activeNodesJSON = JSON.stringify($nodes);
+	$: activeEdgesJSON = JSON.stringify($edges);
+	$: narrativeSectionsJSON = JSON.stringify(narrativeSections);
 </script>
 
 <section class="grid grid-flow-row grid-cols-5 h-screen overflow-hidden">
@@ -110,9 +116,19 @@
 		<!-- Research Map -->
 		<div bind:this={narrativeSection} class="h-full w-full px-2 mb-2 rounded-lg">
 			<SvelteFlowProvider>
-				<Flow bind:nodes bind:edges bind:dbformElement />
+				<Flow bind:nodes bind:edges />
 			</SvelteFlowProvider>
 			<!-- Form Request Submit to update nodes and edges in database -->
+			<form bind:this={dbformElement} use:enhance action="?/updateResearchMap" method="post">
+				<input type="hidden" id="nodes" name="nodes" bind:value={activeNodesJSON} />
+				<input type="hidden" id="edges" name="edges" bind:value={activeEdgesJSON} />
+				<input
+					type="hidden"
+					id="narrativeSections"
+					name="narrativeSections"
+					bind:value={narrativeSectionsJSON}
+				/>
+			</form>
 		</div>
 	</section>
 	<section class="col-span-1 bg-primary-100 py-1 px-3 overflow-y-hidden rounded-lg">

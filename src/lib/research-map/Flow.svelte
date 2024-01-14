@@ -19,7 +19,6 @@
 
 	// Initial state of node to load
 	export let nodes, edges;
-	export let dbformElement;
 
 	let menu, width, height;
 
@@ -181,10 +180,6 @@
 			/>
 		{/if}
 		<MiniMap />
-		<form bind:this={dbformElement} use:enhance action="?/updateResearchMap" method="post">
-			<input type="hidden" id="nodes" name="nodes" bind:value={activeNodesJSON} />
-			<input type="hidden" id="edges" name="edges" bind:value={activeEdgesJSON} />
-		</form>
 	</SvelteFlow>
 </section>
 

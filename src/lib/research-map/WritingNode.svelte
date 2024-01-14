@@ -5,13 +5,12 @@
 
 	export let section;
 
-	// Load the preview url into a var
-	// to avoid rerendering when other properties of the object
-	let previewUrl = section.displayObj.url;
-	$: previewUrl = section.displayObj.url;
-	let maximise = false,
-		preview;
-
+	// placeholder if there is no display obj attached
+	if (!section.displayObj) {
+		section.displayObj = {
+			title: ''
+		};
+	}
 	// Drag and drop nodes
 	const onDragOver = (event) => {
 		event.preventDefault();
@@ -19,13 +18,6 @@
 			event.dataTransfer.dropEffect = 'move';
 		}
 	};
-
-	// placeholder if there is no display obj attached
-	if (!section.displayObj) {
-		section.displayObj = {
-			title: ''
-		};
-	}
 
 	// When display obj is dropped into card
 	const onDrop = (event) => {
@@ -52,6 +44,13 @@
 			}
 		}
 	};
+
+	// Load the preview url into a var
+	// to avoid rerendering when other properties of the object
+	let previewUrl = section.displayObj.url;
+	$: previewUrl = section.displayObj.url;
+	let maximise = false,
+		preview;
 
 	$: preview = downloadResource(previewUrl);
 </script>

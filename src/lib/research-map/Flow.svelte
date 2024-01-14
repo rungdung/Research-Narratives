@@ -15,7 +15,6 @@
 	import SourceNodes from './node-types/SourceNodes.svelte';
 	import TextAnnotateNode from './node-types/TextAnnotateNode.svelte';
 	import SpatialAnnotateNode from './node-types/SpatialAnnotateNode.svelte';
-	import DocumentAnnotateNode from './node-types/DocumentAnnotateNode.svelte';
 	import ContextMenu from './ContextMenu.svelte';
 
 	// Initial state of node to load
@@ -40,8 +39,7 @@
 	const nodeTypes = {
 		sourceNode: SourceNodes,
 		textAnnotateNode: TextAnnotateNode,
-		spatialAnnotateNode: SpatialAnnotateNode,
-		documentAnnotateNode: DocumentAnnotateNode
+		spatialAnnotateNode: SpatialAnnotateNode
 	};
 
 	// Drag and drop nodes
@@ -116,9 +114,6 @@
 			case 'gpkg':
 			case 'geojson':
 				nodeType = 'spatialAnnotateNode';
-				break;
-			case 'pdf':
-				nodeType = 'documentAnnotateNode';
 				break;
 		}
 

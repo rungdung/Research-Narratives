@@ -1,7 +1,7 @@
 // src/app.d.ts
 
 import { SupabaseClient, Session } from '@supabase/supabase-js';
-
+import 'unplugin-icons/types/svelte';
 declare global {
 	namespace App {
 		interface Locals {

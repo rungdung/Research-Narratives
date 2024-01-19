@@ -37,6 +37,12 @@
 			Loading...
 		{:then preview}
 			<img src={preview} alt="preview" class="w-full object-contain" />
+
+			{#if section.annotation}
+				<p class="text-grey-200">
+					{section.annotation}
+				</p>
+			{/if}
 		{/await}
 	</section>
 	<section class="col-span-2 p-3 my-auto">

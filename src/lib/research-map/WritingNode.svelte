@@ -7,12 +7,14 @@
 	import WritingNodeMaximised from '$lib/research-map/WritingNodeMaximised.svelte';
 
 	export let section;
+
 	// placeholder if there is no display obj attached
 	if (!section.displayObj) {
 		section.displayObj = {
 			title: ''
 		};
 	}
+
 	// Drag and drop nodes
 	const onDragOver = (event) => {
 		event.preventDefault();
@@ -28,6 +30,9 @@
 			return null;
 		}
 		section.displayObj = JSON.parse(event.dataTransfer.getData('application/svelteflow')).resource;
+		section.annotation = JSON.parse(
+			event.dataTransfer.getData('application/svelteflow')
+		).annotation;
 	};
 
 	// Get preview

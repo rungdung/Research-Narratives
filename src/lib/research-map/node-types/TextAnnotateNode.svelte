@@ -49,7 +49,7 @@
 					($activeDraggableNodeModal = true),
 					($activeDraggableNode = {
 						title: data.title,
-						description: data.description,
+						annotation: data.description,
 						resource: data.resource
 					})
 				)}>Add to writing section</Button

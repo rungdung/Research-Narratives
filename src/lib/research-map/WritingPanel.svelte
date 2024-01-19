@@ -46,7 +46,7 @@
 	}
 </script>
 
-<div class="text-black h-full py-3">
+<div class="text-black h-full overflow-y-auto py-3">
 	{#if maximise}
 		<div
 			class="z-50 bg-primary-50 bg-opacity-90 fixed top-0 left-0 w-screen h-screen grid grid-cols-1 mx-auto max-w-none transition duration-500"
@@ -70,9 +70,7 @@
 					{/each}
 				{/if}
 
-				<Button on:click={() => (narrativeSections = [...narrativeSections, newSection])}
-					>Add section</Button
-				>
+				<Button on:click={createNewSection}>Add section</Button>
 			</div>
 		</div>
 	{:else}
@@ -83,15 +81,14 @@
 			>
 		</h3>
 		<p>You can write here</p>
-		<div class="bg-secondary-100 w-full object-right" />
 
-		<div class="grid grid-flow-row-dense gap-2 my-5 grid-cols-1 h-5/6 overflow-y-scroll">
+		<div class="grid grid-flow-row-dense gap-2 my-5 grid-cols-1">
 			{#if narrativeSections}
 				{#each narrativeSections as section}
 					<WritingNode bind:section />
 				{/each}
 			{/if}
-			<Button on:click={createNewSection}>Add section</Button>
+			<Button color="dark" size="sm" on:click={createNewSection}>Add section</Button>
 		</div>
 	{/if}
 </div>

@@ -55,8 +55,8 @@
 				on:click={() => (maximise = false)}
 				class="absolute right-0 top-0 m-10 bg-slate-600"
 			/>
-			<div class="overflow-y-auto">
-				<div class="h-screen">
+			<div class="overflow-y-auto snap-y">
+				<div class="h-screen snap-center">
 					<div class="transform w-1/2 translate-x-1/2 translate-y-96 text-left">
 						<h3 class="text-4xl">
 							{title}

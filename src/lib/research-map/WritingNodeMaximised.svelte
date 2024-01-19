@@ -31,7 +31,7 @@
 	$: preview = downloadResource(previewUrl);
 </script>
 
-<div class="w-4/6 mx-auto my-auto h-screen grid grid-cols-4 py-10">
+<div class="w-4/6 snap-center mx-auto my-auto h-screen grid grid-cols-4 py-10">
 	<section class="col-span-2 my-auto">
 		{#await preview}
 			Loading...

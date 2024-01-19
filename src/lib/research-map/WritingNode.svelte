@@ -54,29 +54,29 @@
 	$: preview = downloadResource(previewUrl);
 </script>
 
-<Card class="node relative bg-secondary-50 gap-y-2 p-2 " padding="none">
+<Card class="node relative bg-secondary-50 gap-y-2 p-2 min-h-[20vh]" padding="none">
 	<div on:dragover={onDragOver} on:drop={onDrop} class="px-3 pb-2 h-full grid grid-cols-2">
-		{#if ['jpg', 'png', 'jpeg'].includes(section.displayObj.type) && section.displayObj.url}
-			{#if section.displayObj.url}
+		{#if section.displayObj.url}
+			{#if ['jpg', 'png', 'jpeg'].includes(section.displayObj.type)}
 				{#await preview}
 					Loading...
 				{:then preview}
 					<img src={preview} alt="preview" class="h-full object-contain p-1" />
 				{/await}
 			{:else}
-				<Textarea
-					class="bg-primary-200 p-1 text-wrap"
-					defaultClass="inline"
-					type="text"
-					placeholder="Drag and drop an annotated obj here"
-					name="displayObj"
-					bind:value={section.displayObj.title}
-				/>
+				<div class=" m-auto p-1 text-sm text-wrap">
+					{section.displayObj.type} file type is currently not supported for rendering
+				</div>
 			{/if}
 		{:else}
-			<div class=" m-auto p-1 text-sm text-wrap">
-				{section.displayObj.type} file type is currently not supported for rendering
-			</div>
+			<Textarea
+				class="bg-primary-200 p-1 text-wrap"
+				defaultClass="inline"
+				type="text"
+				placeholder="Drag and drop an annotated obj here"
+				name="displayObj"
+				bind:value={section.displayObj.title}
+			/>
 		{/if}
 		<Textarea
 			id="title"

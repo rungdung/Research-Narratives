@@ -22,9 +22,6 @@
 	// Let preview
 	let preview;
 
-	// formBinding
-	let createNewForm;
-
 	// new section
 	let newSection = {
 		title: '',
@@ -32,11 +29,10 @@
 	};
 
 	// append new section
-	async function handleSubmit() {
+	async function createNewSection() {
 		if (narrativeSections == null) {
 			narrativeSections = [];
 		}
-		narrativeSections = [...narrativeSections, newSection];
 
 		newSection = {
 			title: '',
@@ -46,9 +42,7 @@
 			}
 		};
 
-		setTimeout(() => {
-			createNewForm.requestSubmit();
-		}, 100);
+		narrativeSections = [...narrativeSections, newSection];
 	}
 </script>
 
@@ -97,9 +91,7 @@
 					<WritingNode bind:section />
 				{/each}
 			{/if}
-			<Button on:click={() => (narrativeSections = [...narrativeSections, newSection])}
-				>Add section</Button
-			>
+			<Button on:click={createNewSection}>Add section</Button>
 		</div>
 	{/if}
 </div>

@@ -7,10 +7,6 @@
 
 	export let data;
 
-	// Destructure data object and set up reactivity
-	let { title, description, resource } = data;
-	$: ({ title, description, resource } = data);
-
 	let preview;
 
 	// Get preview
@@ -34,16 +30,16 @@
 <div>
 	<Card class="w-60 p-0 text-black bg-primary-300">
 		<Handle type="target" position={Position.Left} style="background: #555;" />
-		<h5 class="max-w-prose leading-tight z-30">{title}</h5>
-		<p class="text-xs pt-2">{description}</p>
-		{#if resource.type == 'jpg' || resource.type == 'png' || resource.type == 'jpeg'}
-			{#await (preview = downloadResource(resource.url))}
+		<h5 class="max-w-prose leading-tight z-30">{data.title}</h5>
+		<p class="text-xs pt-2">{data.description}</p>
+		{#if ['jpg', 'png', 'jpeg'].includes(data.resource.type)}
+			{#await (preview = downloadResource(data.resource.url))}
 				Loading...
 			{:then preview}
 				<img src={preview} alt="preview" class="w-60 object-contain" />
 			{/await}
 		{/if}
-		<Badge size="xs" class="m-2">{resource.type}</Badge>
+		<Badge size="xs" class="m-2">{data.resource.type}</Badge>
 		<Handle
 			type="source"
 			position={Position.Right}

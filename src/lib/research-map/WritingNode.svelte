@@ -8,13 +8,6 @@
 
 	export let section;
 
-	// placeholder if there is no display obj attached
-	if (!section.displayObj) {
-		section.displayObj = {
-			title: ''
-		};
-	}
-
 	// Drag and drop nodes
 	const onDragOver = (event) => {
 		event.preventDefault();
@@ -63,21 +56,27 @@
 
 <Card class="node relative bg-secondary-50 gap-y-2 p-2 " padding="none">
 	<div on:dragover={onDragOver} on:drop={onDrop} class="px-3 pb-2 h-full grid grid-cols-2">
-		{#if section.displayObj.url}
-			{#await preview}
-				Loading...
-			{:then preview}
-				<img src={preview} alt="preview" class="h-full object-contain p-1" />
-			{/await}
+		{#if ['jpg', 'png', 'jpeg'].includes(section.displayObj.type) && section.displayObj.url}
+			{#if section.displayObj.url}
+				{#await preview}
+					Loading...
+				{:then preview}
+					<img src={preview} alt="preview" class="h-full object-contain p-1" />
+				{/await}
+			{:else}
+				<Textarea
+					class="bg-primary-200 p-1 text-wrap"
+					defaultClass="inline"
+					type="text"
+					placeholder="Drag and drop an annotated obj here"
+					name="displayObj"
+					bind:value={section.displayObj.title}
+				/>
+			{/if}
 		{:else}
-			<Textarea
-				class="bg-primary-200 p-1 text-wrap"
-				defaultClass="inline"
-				type="text"
-				placeholder="Drag and drop an annotated obj here"
-				name="displayObj"
-				bind:value={section.displayObj.title}
-			/>
+			<div class=" m-auto p-1 text-sm text-wrap">
+				{section.displayObj.type} file type is currently not supported for rendering
+			</div>
 		{/if}
 		<Textarea
 			id="title"

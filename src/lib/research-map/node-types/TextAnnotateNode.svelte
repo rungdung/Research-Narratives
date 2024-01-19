@@ -47,7 +47,11 @@
 				class="transform translate-x-1/2 p-1 px-0 "
 				on:click={() => (
 					($activeDraggableNodeModal = true),
-					($activeDraggableNode = { title: title, quote: quote, description: description })
+					($activeDraggableNode = {
+						title: data.title,
+						description: data.description,
+						resource: data.resource
+					})
 				)}>Add to writing section</Button
 			>
 		</div>

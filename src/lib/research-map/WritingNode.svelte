@@ -27,7 +27,7 @@
 		if (!event.dataTransfer) {
 			return null;
 		}
-		section.displayObj = JSON.parse(event.dataTransfer.getData('application/svelteflow'));
+		section.displayObj = JSON.parse(event.dataTransfer.getData('application/svelteflow')).resource;
 	};
 
 	// Get preview

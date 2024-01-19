@@ -62,8 +62,14 @@
 				size="xs"
 				color="dark"
 				class="transform translate-x-1/2 p-1 px-0 "
-				on:click={() => (($activeDraggableNodeModal = true), ($activeDraggableNode = resource))}
-				>Add to writing section</Button
+				on:click={() => (
+					($activeDraggableNodeModal = true),
+					($activeDraggableNode = {
+						title: data.title,
+						annotation: data.description,
+						resource: data.resource
+					})
+				)}>Add to writing section</Button
 			>
 		</div>
 	</Card>

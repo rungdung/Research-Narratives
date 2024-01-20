@@ -6,8 +6,8 @@ export const load = async ({ cookies, url, locals: { supabase, getSession } }) =
 	const session = await getSession();
 
 	// Extract the 'id' parameter from the query parameters
-	const mapId = url.searchParams.get('map_id');
-	cookies.set('mapId', mapId, { path: '/' });
+	const mapId = url.searchParams.get('narrative_id');
+	cookies.set('narrativeId', mapId, { path: '/' });
 
 	// Redirect to the home page if the user is not authenticated
 	if (!session) {
@@ -50,34 +50,4 @@ export const load = async ({ cookies, url, locals: { supabase, getSession } }) =
 	return { title: profile.full_name, description: '', narrative, resources };
 };
 
-export const actions = {
-	updateResearchMap: async ({ cookies, request, locals: { supabase, getSession } }) => {
-		// Parse form data from the request
-		const formData = await request.formData();
-		let nodes = JSON.parse(formData.get('nodes'));
-		let edges = JSON.parse(formData.get('edges'));
-		let narrative_sections = JSON.parse(formData.get('narrativeSections'));
-
-		// get mapid from cookie
-		const mapId = cookies.get('mapId');
-
-		// Get the user session
-		const session = await getSession();
-
-		// Update mindmap
-		const { error } = await supabase
-			.from('narratives')
-			.update({
-				nodes: nodes,
-				edges: edges,
-				narrative_sections: narrative_sections
-			})
-			.eq('id', mapId);
-
-		if (error) {
-			return fail(500, { error });
-		}
-
-		// Parse form data from the request
-	}
-};
+export const actions = {};

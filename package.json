@@ -38,6 +38,7 @@
 		"@supabase/auth-ui-shared": "^0.1.8",
 		"@supabase/auth-ui-svelte": "^0.2.8",
 		"@supabase/supabase-js": "^2.39.0",
+		"@sveltejs/svelte-scroller": "^2.0.7",
 		"@tiptap/core": "^2.1.16",
 		"@tiptap/pm": "^2.1.16",
 		"@tiptap/starter-kit": "^2.1.16",

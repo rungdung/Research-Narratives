@@ -1,13 +1,15 @@
 <script lang="ts">
-	import { Card, Textarea, Input } from 'flowbite-svelte';
-	import { Button, Label, CloseButton } from 'flowbite-svelte';
-	import { enhance } from '$app/forms';
+	import { Card, Textarea, Input, Button, Label, CloseButton } from 'flowbite-svelte';
 	import { ArrowUpRightFromSquareOutline } from 'flowbite-svelte-icons';
+
+	import { enhance } from '$app/forms';
+	import { page } from '$app/stores';
 
 	import WritingNode from './WritingNode.svelte';
 	import WritingNodeMaximised from './WritingNodeMaximised.svelte';
 
 	// Local instance of narrative sections
+	export let data;
 	export let narrativeSections;
 	export let title;
 	export let description;
@@ -69,8 +71,14 @@
 						<WritingNodeMaximised {section} />
 					{/each}
 				{/if}
-
-				<Button on:click={createNewSection}>Add section</Button>
+				<div class="my-5 snap-center mx-auto gap-2 h-20 grid grid-cols-2 w-[30vw]">
+					<Button color="dark" class="" on:click={createNewSection}>Add section</Button>
+					<Button
+						color="dark"
+						href="/libraries/narratives/view?narrative_id={$page.url.searchParams.get('map_id')}"
+						>Share the narrative</Button
+					>
+				</div>
 			</div>
 		</div>
 	{:else}
@@ -92,14 +100,3 @@
 		</div>
 	{/if}
 </div>
-
-<style>
-	.node {
-		color: black;
-		font-weight: 700;
-		border-radius: 3px;
-		cursor: grab;
-		width: auto;
-		height: fit-content;
-	}
-</style>

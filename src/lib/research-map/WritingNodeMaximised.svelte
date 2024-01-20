@@ -33,17 +33,25 @@
 
 <div class="w-4/6 snap-center mx-auto my-auto h-screen grid grid-cols-4 py-10">
 	<section class="col-span-2 my-auto">
-		{#await preview}
-			Loading...
-		{:then preview}
-			<img src={preview} alt="preview" class="w-full object-contain" />
+		{#if section.displayObj.url}
+			{#if ['jpg', 'png', 'jpeg'].includes(section.displayObj.type)}
+				{#await preview}
+					Loading...
+				{:then preview}
+					<img src={preview} alt="preview" class="w-full object-contain" />
 
-			{#if section.annotation}
-				<p class="text-grey-200">
-					{section.annotation}
-				</p>
+					{#if section.annotation}
+						<p class="text-grey-200">
+							{section.annotation}
+						</p>
+					{/if}
+				{/await}
+			{:else}
+				Previewing this file type is not yet supported
 			{/if}
-		{/await}
+		{:else}
+			You have not selected a resource to display here yet
+		{/if}
 	</section>
 	<section class="col-span-2 p-3 my-auto">
 		<Label for="title" class="text-grey-200 mb-1">Title</Label>

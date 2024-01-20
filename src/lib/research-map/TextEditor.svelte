@@ -138,7 +138,7 @@
 			</div>
 		</div>
 	{/if}
-	<div class=" p-3 rounded-lg overflow-y-scroll h-full" bind:this={element} />
+	<div class=" p-3 rounded-lg overflow-y-scroll h-[40vh]" bind:this={element} />
 </div>
 
 <style global>

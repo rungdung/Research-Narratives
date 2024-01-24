@@ -10,8 +10,8 @@
 	export let data;
 
 	// Destructure data object
-	let { session, supabase, profile, library, narratives, resources, user, description } = data;
-	$: ({ session, supabase, profile, library, narratives, resources, user, description } = data);
+	let { session, supabase, profile, library, narratives, resources, user, description, title } = data;
+	$: ({ session, supabase, profile, library, narratives, resources, user, description, title } = data);
 
 	// Local state for resource URL and modal visibility
 	let url = '';
@@ -23,9 +23,8 @@
 	<section class="">
 		<Nav user={user.full_name} />
 		<div class="text-black my-10">
-			<h2 class="text-4xl">Welcome {user.full_name}!</h2>
-			A library hosts many resources and mindmaps. Many people can access a library and edit and upload
-			resources.
+			<h2 class="text-4xl">{title}</h2>
+			{description}
 		</div>
 	</section>
 	<!-- Tabs component for organizing content -->

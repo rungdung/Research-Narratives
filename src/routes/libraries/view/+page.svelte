@@ -1,17 +1,19 @@
 <!-- src/routes/libraries/view/+page.svelte -->
 <script>
 	import { Card, Badge, Button, Tabs, TabItem } from 'flowbite-svelte';
-	import { PenSolid } from 'flowbite-svelte-icons';
 	import UploadNew from '$lib/UploadNewResource.svelte';
 	import EditResource from '$lib/EditResource.svelte';
 	import CreateNewResearchMap from '$lib/CreateNewResearchMap.svelte';
 	import Nav from '$lib/Nav.svelte';
+	import AddContributor from '$lib/AddContributor.svelte';
 
 	export let data;
 
 	// Destructure data object
-	let { session, supabase, profile, library, narratives, resources, user, description, title } = data;
-	$: ({ session, supabase, profile, library, narratives, resources, user, description, title } = data);
+	let { session, supabase, profile, library, narratives, resources, user, description, title } =
+		data;
+	$: ({ session, supabase, profile, library, narratives, resources, user, description, title } =
+		data);
 
 	// Local state for resource URL and modal visibility
 	let url = '';
@@ -28,7 +30,7 @@
 		</div>
 	</section>
 	<!-- Tabs component for organizing content -->
-	<Tabs class="" contentClass="bg-transparent p-5">
+	<Tabs class="relative" contentClass="bg-transparent p-5">
 		<!-- Divider between tabs -->
 		<hr slot="divider" class="my-2 mx-auto bg-yellow-500 h-1" />
 
@@ -111,5 +113,11 @@
 				<CreateNewResearchMap bind:newNarrativeModal />
 			</main>
 		</TabItem>
+		<div class="absolute right-0">
+			<div class="flex gap-2 text-black">
+				<AddContributor contributors={data.userProfiles}/>
+			</div>
+			
+		</div>
 	</Tabs>
 </main>

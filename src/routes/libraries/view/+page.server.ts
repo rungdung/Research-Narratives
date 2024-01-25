@@ -27,6 +27,18 @@ export const load = async ({ cookies, url, locals: { supabase, getSession } }) =
 		throw redirect(303, '/');
 	}
 
+	// Get users who have access to the library
+	const { data: users } = await supabase
+		.from('permissions')
+		.select('user_id')
+		.eq('library_id', libraryId);
+
+	// Get the user's profile
+	const {data: userProfiles } = await supabase
+		.from('profiles')
+		.select(`username, full_name, email`)
+		.in('id', users.map(user => user.user_id));
+
 	// Fetch user profile data
 	const { data: profile } = await supabase
 		.from('profiles')
@@ -54,7 +66,7 @@ export const load = async ({ cookies, url, locals: { supabase, getSession } }) =
 		.select('*')
 		.eq('library_id', libraryId);
 
-	return { session, profile, library, narratives, resources };
+	return { session, profile, userProfiles, library, narratives, resources };
 };
 
 // Actions for the library view page
@@ -214,6 +226,59 @@ export const actions = {
 				title: title,
 				description: description
 			});
+		}
+	},
+
+	addContributor: async ({ cookies, request, locals: { supabase, getSession } }) => {
+		// Get user session
+		const session = await getSession();
+
+		// Get library id from cookie
+		const libraryId = cookies.get('libraryId');
+
+		// Get data from form
+		// Parse form data from the request
+		const formData = await request.formData();
+		const contributorEmail = formData.get('email') as string;
+
+		// Check if user exists and get Id
+		const { data: contributorId } = await supabase
+			.from('profiles')
+			.select('id')
+			.eq('email', contributorEmail)
+			.single();
+
+		if (contributorId) {
+
+			// Check user's write permission for the library
+			const { data: permission } = await supabase
+				.from('permissions')
+				.select('write')
+				.eq('user_id', session.user.id)
+				.eq('library_id', libraryId)
+				.single();
+
+			// Proceed if the user has write permission
+			if (permission?.write === true) {
+				const { data, error } = await supabase.from('permissions').insert({
+					library_id: libraryId,
+					user_id: contributorId.id,
+					write: true,
+					update: true,
+					delete: false,
+					read: true,
+					created_by: session?.user.id,
+				});
+			}
+		} else {
+			// // Send an invitation email
+			// // after creating user
+			// const { error } = await supabase.auth.admin.createUser({
+			// 	email: contributorEmail,
+			// }
+			// );
+			// console.log(error)
+			const { error: error1 } = await supabase.auth.admin.inviteUserByEmail(contributorEmail);
 		}
 	}
 };

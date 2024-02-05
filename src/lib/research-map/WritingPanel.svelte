@@ -1,15 +1,12 @@
 <script lang="ts">
-	import { Card, Textarea, Input, Button, Label, CloseButton } from 'flowbite-svelte';
-	import { ArrowUpRightFromSquareOutline } from 'flowbite-svelte-icons';
+	import { Button, CloseButton } from 'flowbite-svelte';
+	import { ShareNodesSolid } from 'flowbite-svelte-icons';
 
-	import { enhance } from '$app/forms';
 	import { page } from '$app/stores';
 
 	import WritingNode from './WritingNode.svelte';
 	import WritingNodeMaximised from './WritingNodeMaximised.svelte';
 
-	// Local instance of narrative sections
-	export let data;
 	export let narrativeSections;
 	export let title;
 	export let description;
@@ -82,14 +79,22 @@
 			</div>
 		</div>
 	{:else}
-		<h3 class="text-2xl">
+		<h3 class="text-xl mt-2">
 			{title}
-			<Button class="p-1 " on:click={() => (maximise = true)}
-				><ArrowUpRightFromSquareOutline class="w-5 h-5" /></Button
-			>
 		</h3>
-		<p>You can write here</p>
+		<div class="grid grid-rows-2 mt-3">
 
+				<Button class="px-3 py-1 bg-primary-300  my-1 " on:click={() => (maximise = true)}
+					>Writing Mode</Button
+				>
+
+				<Button
+					class="px-3 py-1 bg-primary-300  my-1 "
+					href="/libraries/narratives/view?narrative_id={$page.url.searchParams.get('map_id')}"
+					><ShareNodesSolid/></Button
+				>
+	
+		</div>
 		<div class="grid grid-flow-row-dense gap-2 my-5 grid-cols-1">
 			{#if narrativeSections}
 				{#each narrativeSections as section}

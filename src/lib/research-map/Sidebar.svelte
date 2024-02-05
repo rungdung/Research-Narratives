@@ -17,8 +17,8 @@
 		{#each resources as resource}
 			<Card class="node col-span-1 p-0 m-1  bg-primary-300	">
 				<div class="node" on:dragstart={(event) => onDragStart(event, resource)} draggable={true}>
-					<h5>{resource.title}</h5>
-					<p>{resource.description}</p>
+					<h5 class="mb-2">{resource.title}</h5>
+					<p class="text-sm text-normal">{resource.description}</p>
 					<Badge size="xs" class="m-2">{resource.type}</Badge>
 				</div>
 			</Card>
@@ -29,7 +29,6 @@
 <style>
 	.node {
 		color: black;
-		font-weight: 700;
 		border-radius: 3px;
 		cursor: grab;
 		height: fit-content;

@@ -32,13 +32,15 @@
 		<Handle type="target" position={Position.Left} style="background: #555;" />
 		<h5 class="max-w-prose leading-tight z-30">{data.title}</h5>
 		<p class="text-xs pt-2">{data.description}</p>
-		{#if ['jpg', 'png', 'jpeg'].includes(data.resource.type)}
-			{#await (preview = downloadResource(data.resource.url))}
-				Loading...
-			{:then preview}
-				<img src={preview} alt="preview" class="w-60 object-contain" />
-			{/await}
-		{/if}
+		<div class="pt-2 ">
+			{#if ['jpg', 'png', 'jpeg'].includes(data.resource.type)}
+				{#await (preview = downloadResource(data.resource.url))}
+					Loading...
+				{:then preview}
+					<img src={preview} alt="preview" class="w-60 object-contain rounded-lg mt-2" />
+				{/await}
+			{/if}
+		</div>
 		<Badge size="xs" class="m-2">{data.resource.type}</Badge>
 		<Handle
 			type="source"

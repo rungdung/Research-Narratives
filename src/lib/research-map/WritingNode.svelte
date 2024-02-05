@@ -54,13 +54,14 @@
 </script>
 
 <Card class="node relative bg-secondary-50 gap-y-2 p-2 min-h-[20vh]" padding="none">
-	<div on:dragover={onDragOver} on:drop={onDrop} class="px-3 pb-2 h-full grid grid-cols-2">
+	<div on:dragover={onDragOver} on:drop={onDrop} class="px-3 pb-2 h-full grid grid-cols-1">
+		<h3 class="text-sm pt-3 pb-1 font-bold">{section.title}</h3>
 		{#if section?.displayObj?.url}
 			{#if ['jpg', 'png', 'jpeg'].includes(section.displayObj.type)}
 				{#await preview}
 					Loading...
 				{:then preview}
-					<img src={preview} alt="preview" class="h-full object-contain p-1" />
+					<img src={preview} alt="preview" class="h-full object-contain rounded-lg" />
 				{/await}
 			{:else}
 				<div class=" m-auto p-1 text-sm text-wrap">
@@ -77,12 +78,5 @@
 				bind:value={section.displayObj.title}
 			/>
 		{/if}
-		<Textarea
-			id="title"
-			type="text"
-			class="text-black"
-			placeholder="What is the title of this section"
-			bind:value={section.title}
-		/>
 	</div>
 </Card>

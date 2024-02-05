@@ -82,7 +82,11 @@
 	<section class="col-span-4 relative h-screen">
 		<!-- Button on the side -->
 		<section class="absolute h-screen top-0 left-0 z-50 m-5 w-1/6">
-			<Nav />
+			<a href="/libraries" class=" ">
+				<h2 class="text-2xl sm:w-1/3 mt-5 mb-3 text-center md:mx-0 font-semibold text-yellow-500">
+					Research Narratives
+				</h2>
+			</a>
 			<section class="w-full grid grid-cols-2 gap-x-1">
 				<Button class="bg-primary-300 w-full my-1" type="submit" on:click={() => saveToDB()}
 					><DownloadSolid /></Button
@@ -119,7 +123,7 @@
 			</div>
 		{/if}
 		<!-- Research Map -->
-		<div bind:this={narrativeSection} class="h-full w-full px-2 mb-2 rounded-lg">
+		<div bind:this={narrativeSection} class="h-full w-full px-0 mb-2 rounded-lg">
 			<SvelteFlowProvider>
 				<Flow bind:nodes bind:edges />
 			</SvelteFlowProvider>

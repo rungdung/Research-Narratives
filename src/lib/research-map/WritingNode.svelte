@@ -3,6 +3,7 @@
 	import { supabase } from '$lib/supabaseClient';
 
 	export let section;
+	let preview;
 
 	// Drag and drop nodes
 	const onDragOver = (event) => {
@@ -47,11 +48,9 @@
 	};
 
 	// Load the preview url into a var
-	// to avoid rerendering when other properties of the object
-
-	let preview;
-	$: preview = downloadResource(section.displayObj.url);
-
+	$: if (section?.displayObj?.url) {
+		preview = downloadResource(section.displayObj.url);
+	}
 </script>
 
 <Card class="node relative bg-secondary-50 gap-y-2 p-2 min-h-[20vh]" padding="none">

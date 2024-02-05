@@ -7,6 +7,7 @@
 	import StandAloneSpatialAnnotate from './spatial-annotate/StandAloneSpatialAnnotate.svelte';
 
 	export let section;
+	let preview
 
 	// Get preview
 	const downloadResource = async (path) => {
@@ -26,13 +27,9 @@
 	};
 
 	// Load the preview url into a var
-	// to avoid rerendering when other properties of the object
-	let previewUrl = section.displayObj.url;
-	$: previewUrl = section.displayObj.url;
-	let preview;
-
-	$: preview = downloadResource(previewUrl);
-	
+	$: if (section?.displayObj?.url) {
+		preview = downloadResource(section.displayObj.url);
+	}
 </script>
 
 <div class="w-full relative  snap-center mx-auto my-auto h-screen grid grid-cols-4 py-10">

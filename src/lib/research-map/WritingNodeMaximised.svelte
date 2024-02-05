@@ -27,7 +27,7 @@
 	};
 
 	// Load the preview url into a var
-	$: if (section?.displayObj?.url) {
+	$: if (section?.displayObj?.url && !preview) {
 		preview = downloadResource(section.displayObj.url);
 	}
 </script>

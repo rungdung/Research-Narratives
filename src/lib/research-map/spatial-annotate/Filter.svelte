@@ -1,21 +1,24 @@
 <script>
 	import { Select, Label, Button, Dropdown, Search } from 'flowbite-svelte';
 	import RangeSlider from 'svelte-range-slider-pips';
-	import { enhance } from '$app/forms';
+	import { getAttributes } from './utils/attributes';
 
-	export let attributes;
+	export let resourceJSON;
 	export let map;
 	export let filterExpression;
 
-	// Convert the attributes string to JSON
-	$: attributes = JSON.parse(attributes);
+	let attributes;
+	
+	$: if (resourceJSON ) {
+		attributes = getAttributes(resourceJSON)
+	}		
 
 	// Variables for filter operations
 	let selectedAttribute,
 		selectedAttributeValue,
 		selectedAttributeRange = [0, 1],
 		step;
-	let formElement;
+
 	let layerName = 'resource-layer';
 
 	// Number formatter for the slider
@@ -114,22 +117,6 @@
 <!-- Button to clear all filters -->
 <Button on:click={clearAllFilters} class="rounded-sm px-1 py-0 mt-2 bg-slate-800">
 	Clear all filters
-</Button>
-<!-- Form for saving annotations -->
-<form
-	class="form-widget grid gap-y-5"
-	method="post"
-	action="?/saveAnnotation"
-	use:enhance
-	bind:this={formElement}
->
-	<input type="hidden" id="filter" name="filter" value={filterExpression} />
-	<input type="hidden" id="appearance" name="appearance" value="appearance" />
-</form>
-
-<!-- Button to trigger form submission -->
-<Button on:click={() => formElement.requestSubmit()} class="rounded-sm px-1 py-0 mt-2 bg-slate-800">
-	Save
 </Button>
 
 <style>

@@ -2,18 +2,16 @@
 	import maplibre from 'maplibre-gl';
 	import 'maplibre-gl/dist/maplibre-gl.css';
 	import { onMount } from 'svelte';
+	import { supabase } from '$lib/supabaseClient';
+
 	import { PUBLIC_MAPTILER_KEY } from '$env/static/public';
+	import { Button } from 'flowbite-svelte';
 
 	import Filter from '$lib/research-map/spatial-annotate/Filter.svelte';
 
-	export let data;
-	let resource, map, attributes, filterExpression, appearanceExpression, mapContainer;
+	export let resource;
 
-	// Destructuring data to get the resource
-	$: ({ resource, attributes, supabase } = data);
-
-	// $: filterExpression = resource.filter;
-	// $: appearanceExpression = resource.appearance;
+	let map, filterExpression, appearanceExpression, mapContainer, resourceJSON;
 
 	// Color settings
 	const colorsOG = ['#6E07EB', '#00CAF5', '#5FDE43', '#F5C83D', '#EB533B'];
@@ -40,21 +38,23 @@
 		map = new maplibre.Map({
 			container: mapContainer,
 			style: `https://api.maptiler.com/maps/47780736-e784-40ca-9f2e-6da4248ada51/style.json?key=${PUBLIC_MAPTILER_KEY}`,
-			center: [78.398438, 21.616579],
-			pitch: 0,
-			bearing: 0,
-			zoom: 1,
+			center: resource.center || [0, 0],
+			pitch: resource.pitch || 0,
+			bearing: resource.bearing || 0,
+			zoom: resource.zoom || 3,
 			maxZoom: 14,
 			minZoom: 3
 		});
+
+		filterExpression = resource.filterExpression;
 
 		// Handling map load event
 		try {
 			map.on('load', async () => {
 				// Download and parse the resource data
 				let blob = await downloadResource(resource.url);
-				let data = JSON.parse(await blob.text());
-				let geometryType = data.features[0].geometry.type;
+				resourceJSON = JSON.parse(await blob.text());
+				let geometryType = resourceJSON.features[0].geometry.type;
 				let filter, appearance;
 
 				// Set filter and appearance based on geometry type
@@ -82,7 +82,7 @@
 				// Add source and layer to the map
 				map.addSource('resource', {
 					type: 'geojson',
-					data: data
+					data: resourceJSON
 				});
 				map.addLayer({
 					id: 'resource-layer',
@@ -91,6 +91,8 @@
 					filter: filter,
 					paint: appearance
 				});
+
+				map.setFilter('resource-layer', resource.filterExpression);
 			});
 		} catch (e) {
 			console.log(e);
@@ -111,12 +113,26 @@
 			}
 		}
 	};
+
+    // Function to get attributes from Nodes
+
+	const onSave = async () => {
+		resource.filterExpression = filterExpression;
+		resource.center = map.getCenter();
+		resource.bearing = map.getBearing();
+		resource.pitch= map.getPitch();
+		resource.zoom= map.getZoom();
+		console.log(resource);
+	};
+
 </script>
 
 <!-- Map and sidebar section -->
-<section id="map" class="h-screen w-screen">
+<section id="map" class="relative h-full w-full">
 	<section id="sidebar" class="absolute top-0 left-0 m-3 z-50 bg-primary-50 p-4 rounded-lg">
-		<Filter bind:map bind:attributes bind:filterExpression />
+		<Filter bind:map bind:resourceJSON bind:filterExpression />
+		<Button on:click={onSave}>Save</Button>
+		<!-- <MapExportPanel bind:map={map} showPrintableArea={true} showCrosshair={false} />  -->
 	</section>
 	<div bind:this={mapContainer} class="h-full w-full" />
 </section>

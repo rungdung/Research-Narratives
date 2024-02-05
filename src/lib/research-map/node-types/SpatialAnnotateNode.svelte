@@ -38,13 +38,6 @@
 				size="xs"
 				color="dark"
 				class="transform translate-x-1/2 p-1 px-0 "
-				href="/libraries/narratives/spatial-annotate/?resource_id={data.resource.id}"
-				>Spatial filter and annotate</Button
-			>
-			<Button
-				size="xs"
-				color="dark"
-				class="transform translate-x-1/2 p-1 px-0 "
 				on:click={() => (
 					($activeDraggableNodeModal = true),
 					($activeDraggableNode = {

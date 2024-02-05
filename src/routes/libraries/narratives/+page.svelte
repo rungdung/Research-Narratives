@@ -68,7 +68,14 @@
 	// nodes json for saving
 	$: activeNodesJSON = JSON.stringify($nodes);
 	$: activeEdgesJSON = JSON.stringify($edges);
-	$: narrativeSectionsJSON = JSON.stringify(narrativeSections);
+	let narrativeSectionsJSON = JSON.stringify(narrativeSections);
+	$: narrativeSectionsJSON = narrativeSectionsJSON;
+
+	// save to DB
+	async function saveToDB() {
+		narrativeSectionsJSON = await JSON.stringify(narrativeSections);
+		dbformElement.requestSubmit();
+	}
 </script>
 
 <section class="grid grid-flow-row grid-cols-5 h-screen overflow-hidden">
@@ -77,10 +84,8 @@
 		<section class="absolute h-screen top-0 left-0 z-50 m-5 w-1/6">
 			<Nav />
 			<section class="w-full grid grid-cols-2 gap-x-1">
-				<Button
-					class="bg-primary-300 w-full my-1"
-					type="submit"
-					on:click={() => dbformElement.requestSubmit()}><DownloadSolid /></Button
+				<Button class="bg-primary-300 w-full my-1" type="submit" on:click={() => saveToDB()}
+					><DownloadSolid /></Button
 				>
 				<Button class="bg-primary-300 w-full my-1  " type="submit" on:click={() => history.back()}
 					><HomeSolid /></Button

@@ -21,13 +21,13 @@
 	// Maximise the entire writing panel
 	let maximise = false;
 
-	// Let preview
-	let preview;
-
 	// new section
 	let newSection = {
 		title: '',
-		bodytext: ''
+		bodytext: '',
+		displayObj: {
+			title: ''
+		}
 	};
 
 	// append new section
@@ -51,11 +51,11 @@
 <div class="text-black h-full overflow-y-auto py-3">
 	{#if maximise}
 		<div
-			class="z-50 bg-primary-50 bg-opacity-90 fixed top-0 left-0 w-screen h-screen grid grid-cols-1 mx-auto max-w-none transition duration-500"
+			class="z-50 bg-primary-50 bg-opacity-90 fixed top-0 left-0 w-screen h-screen grid grid-cols-1 mx-auto max-w-none transition duration-500 overflow-scroll snap-proximity snap-y"
 		>
 			<CloseButton
 				on:click={() => (maximise = false)}
-				class="absolute right-0 top-0 m-10 bg-slate-600"
+				class="absolute z-50 right-0 top-0 m-10 bg-slate-600"
 			/>
 			<div class="overflow-y-auto snap-y">
 				<div class="h-screen snap-center">

@@ -4,7 +4,7 @@
 
 	import { supabase } from '$lib/supabaseClient';
 
-	import StandAloneSpatialAnnotate from './spatial-annotate/StandAloneSpatialAnnotate.svelte';
+	import SpatialAnnotate from './spatial-annotate/SpatialAnnotate.svelte';
 
 	export let section;
 	let preview
@@ -49,7 +49,7 @@
 				{/await}
 			{:else if ['geojson'].includes(section?.displayObj?.type)}
 				<section class="h-[100vh] w-[50vw]">
-					<StandAloneSpatialAnnotate bind:resource={section.displayObj} />
+					<SpatialAnnotate bind:resource={section.displayObj} />
 				</section>
 			{:else}
 				Previewing this file type is not yet supported

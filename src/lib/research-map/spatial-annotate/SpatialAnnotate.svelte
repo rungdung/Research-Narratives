@@ -12,7 +12,8 @@
 	export let resource;
 
 	let map, filterExpression, appearanceExpression, mapContainer, resourceJSON;
-
+	filterExpression = resource.filterExpression;
+	
 	// Color settings
 	const colorsOG = ['#6E07EB', '#00CAF5', '#5FDE43', '#F5C83D', '#EB533B'];
 	let colors = colorsOG.map((color) => color);
@@ -45,8 +46,6 @@
 			maxZoom: 14,
 			minZoom: 3
 		});
-
-		filterExpression = resource.filterExpression;
 
 		// Handling map load event
 		try {

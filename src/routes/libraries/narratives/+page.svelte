@@ -92,7 +92,7 @@
 				<Button class="bg-primary-300 w-full my-1" type="submit" on:click={() => saveToDB()}
 					><DownloadSolid /></Button
 				>
-				<Button class="bg-primary-300 w-full my-1  " type="submit" on:click={() => history.back()}
+				<Button class="bg-primary-300 w-full my-1  " type="submit" href="/libraries/view/?id={narrative.library_id}"
 					><HomeSolid /></Button
 				>
 

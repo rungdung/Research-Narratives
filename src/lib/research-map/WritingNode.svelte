@@ -3,6 +3,7 @@
 	import { supabase } from '$lib/supabaseClient';
 
 	export let section;
+	export let maximise;
 	let preview;
 
 	// Drag and drop nodes
@@ -53,7 +54,12 @@
 	}
 </script>
 
-<Card class="node relative bg-secondary-50 gap-y-2 p-2 min-h-[20vh]" padding="none">
+<Card
+	class="node relative bg-secondary-50 gap-y-2 p-2 min-h-[20vh]"
+	padding="none"
+	on:click={() => (maximise = true)}
+	href="#section-{section.id}"
+>
 	<div on:dragover={onDragOver} on:drop={onDrop} class="px-3 pb-2 h-full grid grid-cols-1">
 		<h3 class="text-sm pt-3 pb-1 font-bold">{section.title}</h3>
 		{#if section?.displayObj?.url}

@@ -33,7 +33,8 @@
 			narrativeSections = [];
 		}
 
-		newSection = {
+		let newSection = {
+			id: narrativeSections.length + 1 || 1,
 			title: '',
 			bodytext: '',
 			displayObj: {
@@ -43,6 +44,11 @@
 
 		narrativeSections = [...narrativeSections, newSection];
 	}
+
+	const onClose = () => {
+		maximise = false;
+		return true;
+	}
 </script>
 
 <div class="text-black h-full overflow-y-auto py-3">
@@ -50,6 +56,13 @@
 		<div
 			class="z-50 bg-primary-50 bg-opacity-90 fixed top-0 left-0 w-screen h-screen grid grid-cols-1 mx-auto max-w-none transition duration-500 overflow-scroll snap-proximity snap-y"
 		>
+			<a
+				on:click={onClose}
+				href="#"
+				class="absolute z-50 p-3 rounded-lg right-0 top-0 m-10 bg-slate-600"
+			>
+				<CloseSolid />
+			</a>
 			<CloseButton
 				on:click={() => (maximise = false)}
 				class="absolute z-50 right-0 top-0 m-10 bg-slate-600"
@@ -98,7 +111,7 @@
 		<div class="grid grid-flow-row-dense gap-2 my-5 grid-cols-1">
 			{#if narrativeSections}
 				{#each narrativeSections as section}
-					<WritingNode bind:section />
+					<WritingNode bind:section bind:maximise />
 				{/each}
 			{/if}
 			<Button color="dark" size="sm" on:click={createNewSection}>Add section</Button>

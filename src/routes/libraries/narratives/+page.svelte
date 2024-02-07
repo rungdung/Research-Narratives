@@ -96,7 +96,7 @@
 					><HomeSolid /></Button
 				>
 
-				<Accordion defaultClass="bg-primary-100 w-full max-h-screen overflow-y-auto col-span-2">
+				<Accordion defaultClass="bg-primary-100 w-full max-h-[80vh] overflow-y-auto col-span-2">
 					<AccordionItem defaultClass="bg-primary-300 h-20 w-full" paddingDefault="p-0">
 						<span slot="header">Add resources</span>
 						<Sidebar {resources} />

@@ -42,7 +42,7 @@
 	};
 </script>
 
-<div class="text-black h-full overflow-y-auto py-3">
+<div class="text-black rounded-lg h-full flex flex-col py-3">
 	<!-- Conditional rendering based on the value of 'maximise' -->
 	{#if maximise}
 		<!-- Overlay div to cover the entire screen when maximised -->
@@ -88,30 +88,38 @@
 			</div>
 		</div>
 	{:else}
-		<!-- Render title and buttons when not in maximised mode -->
-		<h3 class="text-xl mt-2">
-			{title}
-		</h3>
-		<div class="grid grid-rows-2 mt-3">
-			<!-- Button to enter maximised mode -->
-			<Button class="px-3 py-1 bg-primary-300  my-1 " on:click={() => (maximise = true)}
-				>Writing Mode</Button
-			>
-			<!-- Button to share the nodes -->
-			<Button
-				class="px-3 py-1 bg-primary-300  my-1 "
-				href="/libraries/narratives/view?narrative_id={$page.url.searchParams.get('map_id')}"
-				><ShareNodesSolid /></Button
-			>
+
+		<div class="bg-primary-200 p-4 rounded-lg my-2">
+			<!-- Render title and buttons when not in maximised mode -->
+			<h3 class="text-xl text-gray-700 mt-2">
+				{title}
+			</h3>
+			<div class="grid grid-rows-2 mt-3">
+				<!-- Button to enter maximised mode -->
+				<Button class="px-3 py-1 bg-primary-300  my-1 " on:click={() => (maximise = true)}
+					>Writing Mode</Button
+				>
+				<!-- Button to share the nodes -->
+				<Button
+					class="px-3 py-1 bg-primary-300  my-1 "
+					href="/libraries/narratives/view?narrative_id={$page.url.searchParams.get('map_id')}"
+					><ShareNodesSolid /></Button
+				>
+			</div>
+			</div>
+
+		<div class="bg-primary-200 p-4 rounded-lg overflow-y-auto">
+			<!-- Render each section and add a new section button when not in maximised mode -->
+			<div class="grid grid-flow-row-dense gap-2 my-5 grid-cols-1">
+				{#if narrativeSections}
+					{#each narrativeSections as section}
+						<WritingNode bind:section bind:maximise />
+					{/each}
+				{/if}
+			</div>
 		</div>
-		<!-- Render each section and add a new section button when not in maximised mode -->
-		<div class="grid grid-flow-row-dense gap-2 my-5 grid-cols-1">
-			{#if narrativeSections}
-				{#each narrativeSections as section}
-					<WritingNode bind:section bind:maximise />
-				{/each}
-			{/if}
-			<Button color="dark" size="sm" on:click={createNewSection}>Add section</Button>
-		</div>
+		<Button color="dark" size="sm" class="w-full my-2" on:click={createNewSection}
+			>Add section</Button
+		>
 	{/if}
 </div>

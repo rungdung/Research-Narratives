@@ -78,3 +78,32 @@
 		{/each}
 	</div>
 </Scroller>
+
+<footer
+	class="bg-transparent text-yellow-900 text-left py-40 px-2 sm:px-10 md:w-3/4 md:mx-auto grid grid-cols-1 sm:grid-cols-2"
+>
+	<div>
+		This data-narrative has been developed using <a
+			class="text-left md:mx-0 font-semibold pt-4 text-yellow-500 hover:text-yellow-400"
+			href=""
+		>
+			<h2 class="text-3xl">Kaagada</h2>
+		</a>
+		<p class="pt-2 text-yellow-500 w-3/4">
+			Write, annotate, draw and share, all in one place. Kaagadha emerged from a vision to promote
+			responsible data use in research and communication. It's a collaborative tool for
+			multidisciplinary writing or research projects that convey data patterns.
+			<br />
+		</p>
+	</div>
+	<div id="links" class="py-2 sm:py-0 sm:text-right">
+		Email at adhavan[dot]sivaraj16[at]gmail[dot]com
+		<div id="roadmap" class="py-5">
+			<button
+				href="https://github.com/rungdung/research-narratives"
+				class="bg-gray-900 text-white py-2 px-2 rounded-lg hover:bg-gray-300 hover:text-black transition duration-300"
+				>Github
+			</button>
+		</div>
+	</div>
+</footer>

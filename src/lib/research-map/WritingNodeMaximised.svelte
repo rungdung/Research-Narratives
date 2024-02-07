@@ -32,7 +32,7 @@
 	}
 </script>
 
-<div class="w-full relative  snap-center mx-auto my-auto h-screen grid grid-cols-4 py-10">
+<div class="w-full relative snap-center mx-auto my-auto h-screen grid grid-cols-4 py-10" id="section-{section.id}">
 	<section class="col-span-2 relative my-auto">
 		{#if section?.displayObj?.url}
 			{#if ['jpg', 'png', 'jpeg'].includes(section.displayObj.type)}
@@ -40,7 +40,6 @@
 					Loading...
 				{:then preview}
 					<img src={preview} alt="preview" class="w-full object-contain" />
-
 					{#if section.annotation}
 						<p class="text-grey-200">
 							{section.annotation}
@@ -55,7 +54,9 @@
 				Previewing this file type is not yet supported
 			{/if}
 		{:else}
-			You have not selected a resource to display here yet
+			<div class="w-50 text-center text-wrap">
+				You have not selected a resource to display here yet
+			</div>
 		{/if}
 	</section>
 	<section class="col-span-2 p-3 w-[70%] mx-auto my-auto">

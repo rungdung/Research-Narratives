@@ -74,12 +74,7 @@
 
 				<!-- Submit button -->
 				<div>
-					<Input
-						type="submit"
-						class="button block primary"
-						value={loading ? 'Loading...' : 'Update'}
-						disabled={loading}
-					/>
+					<button class="button bg-black block mt-2" disabled={loading} type="submit" on:click={() => profileForm.requestSubmit()}>Update</button>
 				</div>
 			</form>
 

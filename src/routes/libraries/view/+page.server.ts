@@ -1,5 +1,18 @@
 // src/routes/libraries/view/+page.server.ts
 import { fail, redirect } from '@sveltejs/kit';
+import { PRIVATE_SUPABASE_SERVICE_KEY } from '$env/static/private';
+import { createClient } from '@supabase/supabase-js'
+import { PUBLIC_SUPABASE_URL } from '$env/static/public';
+
+const supabase = createClient(PUBLIC_SUPABASE_URL, PRIVATE_SUPABASE_SERVICE_KEY, {
+	auth: {
+		autoRefreshToken: false,
+		persistSession: false
+	}
+})
+
+// Access auth admin api
+const adminAuthClient = supabase.auth.admin
 
 export const load = async ({ cookies, url, locals: { supabase, getSession } }) => {
 	// Get user session and library ID from the URL
@@ -34,7 +47,7 @@ export const load = async ({ cookies, url, locals: { supabase, getSession } }) =
 		.eq('library_id', libraryId);
 
 	// Get the user's profile
-	const {data: userProfiles } = await supabase
+	const { data: userProfiles } = await supabase
 		.from('profiles')
 		.select(`username, full_name, email`)
 		.in('id', users.map(user => user.user_id));
@@ -242,43 +255,48 @@ export const actions = {
 		const contributorEmail = formData.get('email') as string;
 
 		// Check if user exists and get Id
-		const { data: contributorId } = await supabase
+		let { data: contributorId } = await supabase
 			.from('profiles')
 			.select('id')
 			.eq('email', contributorEmail)
 			.single();
 
-		if (contributorId) {
 
-			// Check user's write permission for the library
-			const { data: permission } = await supabase
-				.from('permissions')
-				.select('write')
-				.eq('user_id', session.user.id)
-				.eq('library_id', libraryId)
-				.single();
+		if (!contributorId) {
+			// Send an invitation email
+			// after creating user
+			// using the service key
+			const { data, error } = await adminAuthClient.createUser({
+				email: contributorEmail,
+				user_metadata: {
+					full_name: contributorEmail,
+				}
+			});
+			await adminAuthClient.inviteUserByEmail(contributorEmail);
+			contributorId = { id: data.user.id };
+		}
 
-			// Proceed if the user has write permission
-			if (permission?.write === true) {
-				const { data, error } = await supabase.from('permissions').insert({
-					library_id: libraryId,
-					user_id: contributorId.id,
-					write: true,
-					update: true,
-					delete: false,
-					read: true,
-					created_by: session?.user.id,
-				});
-			}
-		} else {
-			// // Send an invitation email
-			// // after creating user
-			// const { error } = await supabase.auth.admin.createUser({
-			// 	email: contributorEmail,
-			// }
-			// );
-			// console.log(error)
-			const { error: error1 } = await supabase.auth.admin.inviteUserByEmail(contributorEmail);
+
+
+		// Check user's write permission for the library
+		const { data: permission } = await supabase
+			.from('permissions')
+			.select('write')
+			.eq('user_id', session.user.id)
+			.eq('library_id', libraryId)
+			.single();
+
+		// Proceed if the user has write permission
+		if (permission?.write === true) {
+			const { data, error } = await supabase.from('permissions').insert({
+				library_id: libraryId,
+				user_id: contributorId.id,
+				write: true,
+				update: true,
+				delete: false,
+				read: true,
+				created_by: session?.user.id,
+			});
 		}
 	}
 };

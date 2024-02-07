@@ -5,6 +5,9 @@ const config = {
 	kit: {
 		adapter: adapter()
 	},
-	preprocess: vitePreprocess()
+	preprocess: vitePreprocess(),
+	env:{
+		privatePrefix: "PRIVATE_"
+	}
 };
 export default config;

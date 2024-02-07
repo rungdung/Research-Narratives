@@ -27,6 +27,7 @@
 			{#each libraries as library}
 				<!-- Display a card for each library with a link to view details -->
 				<Card
+					data-sveltekit-preload-data="hover"
 					href="/libraries/view/?id={library.id}"
 					class="bg-primary-100 h-full drop-shadow-md opacity-80"
 				>

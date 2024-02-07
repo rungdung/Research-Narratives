@@ -40,6 +40,7 @@
 			>
 				{#each narratives as narrative}
 					<Card
+					data-sveltekit-preload-data="hover"
 						href="/libraries/narratives/?map_id={narrative.id}"
 						class="bg-primary-100 drop-shadow-md h-full  opacity-80"
 					>

@@ -3,6 +3,7 @@
 	import Scroller from '@sveltejs/svelte-scroller';
 
 	import { fly, blur } from 'svelte/transition';
+	import SpatialView from '$lib/research-map/spatial-annotate/SpatialView.svelte';
 
 	export let data;
 	let preview;
@@ -52,11 +53,15 @@
 
 						{#if data.narrative.narrative_sections[index].annotation}
 							<p class="text-grey-200">
-								{section.annotation}
+								{data.narrative.narrative_sections[index].annotation}
 							</p>
 						{/if}
 					</div>
 				{/await}
+			{:else if ['geojson'].includes(data.narrative.narrative_sections[index].displayObj.type)}
+				<section class="h-[100vh] w-[100vw]">
+					<SpatialView bind:resource={data.narrative.narrative_sections[index].displayObj} />
+				</section>
 			{/if}
 		{/if}
 	</div>

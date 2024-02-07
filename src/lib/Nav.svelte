@@ -6,15 +6,12 @@
 <!-- 
   The Navbar component with custom styling for a transparent background, padding, and responsiveness.
 -->
-<Navbar class="bg-transparent py-6 px-0 sm:px-0" classNavDiv="mx-0 px-0 max-w-full">
-	<!-- 
-    The NavBrand component containing the website logo or title. 
-    For now, a title is used instead of an image.
-  -->
+<Navbar class="bg-transparent pt-6 px-0 sm:px-0 h-fit" classNavDiv="mx-0 px-0 max-w-full">
 	<NavBrand href="/">
-		<h2 class="text-2xl sm:w-1/3 text-center md:mx-0 font-semibold text-yellow-500">
-			Research Narratives
-		</h2>
+		<div class=" ]	text-left md:mx-0 font-semibold text-yellow-500">
+			<h2 class="text-3xl">Kaagada</h2>
+		</div>
+		
 	</NavBrand>
 
 	<!-- 

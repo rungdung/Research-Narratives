@@ -7,7 +7,7 @@
 <section id="hero" class="bg-primary-50 flex h-screen text-black px-2 sm:px-10 md:w-3/4 md:mx-auto">
 	<Navbar let:hidden let:toggle class="bg-transparent py-20 w-full my-auto" navDivClass="p-0">
 		<NavBrand href="/" class="w-full">
-			<h1 class="text-5xl sm:w-1/3 md:mx-0 font-semibold text-yellow-500">Kaagadha</h1>
+			<h1 class="text-5xl sm:w-1/3 md:mx-0 font-semibold text-yellow-500">Kaagada</h1>
 			<br />
 		</NavBrand>
 		<p class="pt-1 text-yellow-500">[Kaa-ga-da]<i class="italic">(noun)</i></p>

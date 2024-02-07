@@ -83,8 +83,8 @@
 		<!-- Button on the side -->
 		<section class="absolute h-screen top-0 left-0 z-50 m-5 w-1/6">
 			<a href="/libraries" class=" ">
-				<h2 class="text-2xl sm:w-1/3 mt-5 mb-3 text-center md:mx-0 font-semibold text-yellow-500">
-					Research Narratives
+				<h2 class="text-2xl mt-5 mb-3 text-left md:mx-0 font-semibold text-yellow-500">
+					Kaagada
 				</h2>
 			</a>
 			<section class="w-full grid grid-cols-2 gap-x-1">

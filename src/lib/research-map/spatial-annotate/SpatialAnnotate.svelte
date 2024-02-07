@@ -13,7 +13,7 @@
 
 	let map, filterExpression, appearanceExpression, mapContainer, resourceJSON;
 	filterExpression = resource.filterExpression;
-	
+
 	// Color settings
 	const colorsOG = ['#6E07EB', '#00CAF5', '#5FDE43', '#F5C83D', '#EB533B'];
 	let colors = colorsOG.map((color) => color);
@@ -53,8 +53,14 @@
 				// Download and parse the resource data
 				let blob = await downloadResource(resource.url);
 				resourceJSON = JSON.parse(await blob.text());
-				let geometryType = resourceJSON.features[0].geometry.type;
+				let geometryType = resourceJSON.features[0].geometry.type, type;
 				let filter, appearance;
+
+				// Add source and layer to the map
+				map.addSource('resource', {
+					type: 'geojson',
+					data: resourceJSON
+				});
 
 				// Set filter and appearance based on geometry type
 				if (['Polygon', 'MultiPolygon'].includes(geometryType)) {
@@ -64,11 +70,14 @@
 						'fill-opacity': 0.6,
 						'fill-outline-color': 'green'
 					};
+					type = 'fill';
+					
 				} else if (['LineString', 'MultiLineString'].includes(geometryType)) {
 					filter = ['==', '$type', 'LineString'];
 					appearance = {
 						'line-color': getRandColor()
 					};
+					type = 'line';
 				} else if (['Point', 'MultiPoint'].includes(geometryType)) {
 					filter = ['==', '$type', 'Point'];
 					appearance = {
@@ -76,22 +85,23 @@
 						'fill-opacity': 0.6,
 						'fill-outline-color': 'green'
 					};
+					type = 'fill';
 				}
 
-				// Add source and layer to the map
-				map.addSource('resource', {
-					type: 'geojson',
-					data: resourceJSON
-				});
+
 				map.addLayer({
 					id: 'resource-layer',
-					type: 'fill',
+					type: type,
 					source: 'resource',
 					filter: filter,
 					paint: appearance
 				});
 
+				// If filter exists already, apply it
 				map.setFilter('resource-layer', resource.filterExpression);
+
+				// if map.center does not exist
+				
 			});
 		} catch (e) {
 			console.log(e);
@@ -113,24 +123,24 @@
 		}
 	};
 
-    // Function to get attributes from Nodes
+	// Function to get attributes from Nodes
 
 	const onSave = async () => {
 		resource.filterExpression = filterExpression;
 		resource.center = map.getCenter();
 		resource.bearing = map.getBearing();
-		resource.pitch= map.getPitch();
-		resource.zoom= map.getZoom();
-		console.log(resource);
+		resource.pitch = map.getPitch();
+		resource.zoom = map.getZoom();
 	};
-
 </script>
 
 <!-- Map and sidebar section -->
 <section id="map" class="relative h-full w-full">
 	<section id="sidebar" class="absolute top-0 left-0 m-3 z-50 bg-primary-50 p-4 rounded-lg">
 		<Filter bind:map bind:resourceJSON bind:filterExpression />
-		<Button on:click={onSave}>Save</Button>
+		<Button on:click={onSave} color="dark" class="rounded-sm px-1 py-0 mt-2 bg-slate-800"
+			>Save</Button
+		>
 		<!-- <MapExportPanel bind:map={map} showPrintableArea={true} showCrosshair={false} />  -->
 	</section>
 	<div bind:this={mapContainer} class="h-full w-full" />

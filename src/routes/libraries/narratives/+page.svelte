@@ -68,13 +68,14 @@
 	// nodes json for saving
 	$: activeNodesJSON = JSON.stringify($nodes);
 	$: activeEdgesJSON = JSON.stringify($edges);
-	let narrativeSectionsJSON = JSON.stringify(narrativeSections);
-	$: narrativeSectionsJSON = narrativeSectionsJSON;
-
+	
+	let narrativeSectionsJSON;
 	// save to DB
 	async function saveToDB() {
-		narrativeSectionsJSON = await JSON.stringify(narrativeSections);
-		dbformElement.requestSubmit();
+		narrativeSectionsJSON = await JSON.stringify(narrativeSections)
+		if (await narrativeSectionsJSON){
+			dbformElement.requestSubmit();
+		}
 	}
 </script>
 

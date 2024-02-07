@@ -33,9 +33,38 @@
 	<Tabs class="relative" contentClass="bg-transparent p-5">
 		<!-- Divider between tabs -->
 		<hr slot="divider" class="my-2 mx-auto bg-yellow-500 h-1" />
+		<!-- Placeholder tab for Mindmaps  -->
+		<TabItem open title="Narratives">
+			<main
+				class="mx-auto items-center grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3 content-stretch"
+			>
+				{#each narratives as narrative}
+					<Card
+						href="/libraries/narratives/?map_id={narrative.id}"
+						class="bg-primary-100 drop-shadow-md h-full  opacity-80"
+					>
+						<h5 class="text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
+							{narrative.title}
+						</h5>
+						<p class="font-normal text-gray-700 dark:text-gray-400">
+							{narrative.description}
+						</p>
+					</Card>
+				{/each}
+
+				<!-- Card for creating a new research map when no resources are available -->
+				<Card class="bg-primary-100 drop-shadow-md h-full opacity-80">
+					<Button class="text-white" color="dark" on:click={() => (newNarrativeModal = true)}>
+						Create a new Research Map
+					</Button>
+				</Card>
+
+				<CreateNewResearchMap bind:newNarrativeModal />
+			</main>
+		</TabItem>
 
 		<!-- Resources tab -->
-		<TabItem open title="Resources">
+		<TabItem title="Resources">
 			<!-- Main content grid for displaying resources -->
 			<main
 				class="mx-auto items-center grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3 content-stretch"
@@ -83,41 +112,10 @@
 				{/if}
 			</main>
 		</TabItem>
-
-		<!-- Placeholder tab for Mindmaps  -->
-		<TabItem title="Narratives">
-			<main
-				class="mx-auto items-center grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3 content-stretch"
-			>
-				{#each narratives as narrative}
-					<Card
-						href="/libraries/narratives/?map_id={narrative.id}"
-						class="bg-primary-100 drop-shadow-md h-full  opacity-80"
-					>
-						<h5 class="text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
-							{narrative.title}
-						</h5>
-						<p class="font-normal text-gray-700 dark:text-gray-400">
-							{narrative.description}
-						</p>
-					</Card>
-				{/each}
-
-				<!-- Card for creating a new research map when no resources are available -->
-				<Card class="bg-primary-100 drop-shadow-md h-full opacity-80">
-					<Button class="text-white" color="dark" on:click={() => (newNarrativeModal = true)}>
-						Create a new Research Map
-					</Button>
-				</Card>
-
-				<CreateNewResearchMap bind:newNarrativeModal />
-			</main>
-		</TabItem>
 		<div class="absolute right-0">
 			<div class="flex gap-2 text-black">
-				<AddContributor contributors={data.userProfiles}/>
+				<AddContributor contributors={data.userProfiles} />
 			</div>
-			
 		</div>
 	</Tabs>
 </main>

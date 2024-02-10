@@ -92,7 +92,6 @@ export const actions = {
 		const source = formData.get('source') as string;
 		const title = formData.get('title') as string;
 		const description = formData.get('description') as string;
-		const attributes = formData.get('attributes') as string;
 
 		// Get library id from cookie
 		const libraryId = cookies.get('libraryId');
@@ -127,7 +126,6 @@ export const actions = {
 				title: title,
 				source: source,
 				description: description,
-				attributes: attributes,
 				type: resourceUrl.split('.').pop(),
 				library_id: libraryId,
 				created_at: new Date()

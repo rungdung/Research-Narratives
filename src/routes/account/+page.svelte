@@ -100,3 +100,7 @@
 		min-width: 40vw;
 	}
 </style>
+
+<svelte:head>
+	<title>Kaagada: Account</title>
+</svelte:head> 

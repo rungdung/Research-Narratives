@@ -24,6 +24,3 @@
 	<slot />
 </body>
 
-<svelte:head>
-	<title>Research Narratives</title>
-</svelte:head>

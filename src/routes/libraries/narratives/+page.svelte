@@ -141,7 +141,7 @@
 			</form>
 		</div>
 	</section>
-	<section class="col-span-1 bg-primary-100 py-1 px-3 overflow-y-hidden rounded-lg">
+	<section class="col-span-1 bg-primary-100 pt-4 py-1 px-5 overflow-y-hidden rounded-lg">
 		<WritingPanel bind:narrativeSections bind:title bind:description />
 	</section>
 </section>
@@ -151,3 +151,7 @@
 		cursor: grab;
 	}
 </style>
+
+<svelte:head>
+	<title>{narrative.title}</title>
+</svelte:head> 

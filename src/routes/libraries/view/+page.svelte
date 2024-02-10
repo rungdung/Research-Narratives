@@ -120,3 +120,7 @@
 		</div>
 	</Tabs>
 </main>
+
+<svelte:head>
+	<title>Kaagada: {title}</title>
+</svelte:head> 

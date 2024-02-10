@@ -107,3 +107,7 @@
 		</div>
 	</div>
 </footer>
+
+<svelte:head>
+	<title>Story: {data.narrative.title}</title>
+</svelte:head> 

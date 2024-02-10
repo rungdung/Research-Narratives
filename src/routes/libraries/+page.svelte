@@ -49,3 +49,7 @@
 		{/if}
 	</section>
 </main>
+
+<svelte:head>
+	<title>Kaagada: Libraries</title>
+</svelte:head>

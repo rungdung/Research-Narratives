@@ -58,3 +58,7 @@
 		scroll-behavior: smooth;
 	}
 </style>
+
+<svelte:head>
+	<title>Kaagada: Collaborative Research and Sharing</title>
+</svelte:head>

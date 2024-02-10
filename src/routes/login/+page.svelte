@@ -9,7 +9,7 @@
 
 <!-- Set the title of the page -->
 <svelte:head>
-	<title>User Management</title>
+	<title>Kaagada: Login</title>
 </svelte:head>
 
 <!-- Main section of the login/register page -->

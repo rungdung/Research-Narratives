@@ -1,12 +1,26 @@
 <script>
-	import { Card, Input, Textarea, CloseButton, Label, Modal, Button } from 'flowbite-svelte';
+	import { Card, Textarea, Button } from 'flowbite-svelte';
 	import { supabase } from '$lib/supabaseClient';
+	import { PenSolid } from 'flowbite-svelte-icons';
 
+	/**
+	 * Component to display a section of the writing
+	 * @param {any} section - The section to display
+	 * @param {boolean} maximise - Whether to maximise the section
+	 * @param {number} scrollPosition - The scroll position
+	 */
 	export let section;
 	export let maximise;
+
+	/**
+	 * The preview of the section
+	 */
 	let preview;
 
-	// Drag and drop nodes
+	/**
+	 * Handles the drag over event for drag and drop functionality
+	 * @param {Event} event - The drag over event
+	 */
 	const onDragOver = (event) => {
 		event.preventDefault();
 		if (event.dataTransfer) {
@@ -14,12 +28,16 @@
 		}
 	};
 
-	// When display obj is dropped into card
+	/**
+	 * Handles the drop event when display obj is dropped into card
+	 * @param {Event} event - The drop event
+	 */
 	const onDrop = (event) => {
 		event.preventDefault();
 		if (!event.dataTransfer) {
-			return null;
+			return null; // No data transfer, do nothing
 		}
+		// Parse the display object and annotation from the dropped data
 		section.displayObj = JSON.parse(event.dataTransfer.getData('application/svelteflow')).resource;
 		section.annotation = JSON.parse(
 			event.dataTransfer.getData('application/svelteflow')
@@ -27,11 +45,15 @@
 
 		// if display obj is spatial, delete attributes
 		if (section?.displayObj?.type == 'geojson') {
-			delete section.displayObj.attributes;
+			delete section.displayObj.attributes; // Delete attributes if the display obj is spatial
 		}
 	};
 
-	// Get preview
+	/**
+	 * Downloads a resource from the specified path
+	 * @param {string} path - The path of the resource to download
+	 * @returns {Promise<string>} - The URL of the downloaded resource
+	 */
 	const downloadResource = async (path) => {
 		try {
 			const { data, error } = await supabase.storage.from('resources').download(path);

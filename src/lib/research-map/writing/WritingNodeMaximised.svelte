@@ -1,15 +1,23 @@
 <script>
 	import { Label, Textarea, Input } from 'flowbite-svelte';
 	import TextEditor from './TextEditor.svelte';
-
 	import { supabase } from '$lib/supabaseClient';
+	import SpatialAnnotate from '$lib/research-map/spatial-annotate/SpatialAnnotate.svelte';
 
-	import SpatialAnnotate from './spatial-annotate/SpatialAnnotate.svelte';
-
+	/**
+	 * Component to display a section of the writing
+	 * @param {any} section - The section to display
+	 */
 	export let section;
-	let preview
 
-	// Get preview
+	// This variable is used to store the preview
+	let preview;
+
+	/**
+	 * Download a resource from Supabase storage and return a URL for the resource
+	 * @param {string} path - The path of the resource to download
+	 * @returns {Promise<string>} - A Promise that resolves with the URL of the downloaded resource
+	 */
 	const downloadResource = async (path) => {
 		try {
 			const { data, error } = await supabase.storage.from('resources').download(path);

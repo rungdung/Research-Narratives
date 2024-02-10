@@ -5,7 +5,7 @@
 	import { SvelteFlowProvider } from '@xyflow/svelte';
 
 	import Flow from '$lib/research-map/Flow.svelte';
-	import WritingPanel from '$lib/research-map/WritingPanel.svelte';
+	import WritingPanel from '$lib/research-map/writing/WritingPanel.svelte';
 	import Sidebar from '$lib/research-map/Sidebar.svelte';
 
 	import { Button, AccordionItem, Accordion } from 'flowbite-svelte';

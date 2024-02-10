@@ -40,7 +40,7 @@
 	}
 </script>
 
-<div class="w-full relative snap-center mx-auto my-auto h-screen grid grid-cols-4 py-10" id="section-{section.id}">
+<div class="w-full relative snap-center mx-auto my-auto h-screen grid grid-cols-4" id="section-{section.id}">
 	<section class="col-span-2 relative my-auto">
 		{#if section?.displayObj?.url}
 			{#if ['jpg', 'png', 'jpeg'].includes(section.displayObj.type)}

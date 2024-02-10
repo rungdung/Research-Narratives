@@ -10,7 +10,7 @@
 
 	let map, filterExpression, appearanceExpression, mapContainer, resourceJSON;
 	filterExpression = resource.filterExpression;
-	
+
 	// Color settings
 	const colorsOG = ['#6E07EB', '#00CAF5', '#5FDE43', '#F5C83D', '#EB533B'];
 	let colors = colorsOG.map((color) => color);
@@ -32,14 +32,22 @@
 
 	// Initialization on mount
 	onMount(() => {
+		// Calculate the initial center, zoom, and pitch by subtracting from the final values
+		const initialCenter = {lat:resource.center.lat - 0.005, lng: resource.center.lng - 0.005};
+		const initialZoom = resource.zoom - 6;
+		const initialPitch = resource.pitch - 5;
+
+		console.log(resource, initialZoom, initialPitch);
+		// Map initialization
+
 		// Map initialization
 		map = new maplibre.Map({
 			container: mapContainer,
 			style: `https://api.maptiler.com/maps/47780736-e784-40ca-9f2e-6da4248ada51/style.json?key=${PUBLIC_MAPTILER_KEY}`,
-			center: resource.center || [0, 0],
-			pitch: resource.pitch || 0,
+			center: initialCenter || [0, 0],
+			pitch: initialPitch || 0,
 			bearing: resource.bearing || 0,
-			zoom: resource.zoom || 3,
+			zoom: initialZoom || 3,
 			maxZoom: 14,
 			minZoom: 3
 		});
@@ -50,7 +58,8 @@
 				// Download and parse the resource data
 				let blob = await downloadResource(resource.url);
 				resourceJSON = JSON.parse(await blob.text());
-				let geometryType = resourceJSON.features[0].geometry.type, type;
+				let geometryType = resourceJSON.features[0].geometry.type,
+					type;
 				let filter, appearance;
 
 				// Add source and layer to the map
@@ -68,7 +77,6 @@
 						'fill-outline-color': 'green'
 					};
 					type = 'fill';
-					
 				} else if (['LineString', 'MultiLineString'].includes(geometryType)) {
 					filter = ['==', '$type', 'LineString'];
 					appearance = {
@@ -85,7 +93,6 @@
 					type = 'fill';
 				}
 
-
 				map.addLayer({
 					id: 'resource-layer',
 					type: type,
@@ -97,6 +104,12 @@
 				// If filter exists already, apply it
 				map.setFilter('resource-layer', resource.filterExpression);
 
+				map.flyTo({
+					center: resource.center,
+					zoom: resource.zoom,
+					pitch: resource.pitch,
+					bearing: resource.bearing
+				});
 			});
 		} catch (e) {
 			console.log(e);
@@ -117,7 +130,6 @@
 			}
 		}
 	};
-
 </script>
 
 <!-- Map and sidebar section -->

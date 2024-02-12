@@ -12,7 +12,6 @@
 	import { DownloadSolid, HomeSolid } from 'flowbite-svelte-icons';
 
 	import { activeDraggableNode, activeDraggableNodeModal } from '$lib/research-map/store';
-	import Nav from '$lib/Nav.svelte';
 
 	export let data;
 
@@ -22,29 +21,28 @@
 
 	// Destructure from narrative
 	let narrativeSections = narrative.narrative_sections;
-	let title = narrative.title;
-	let description = narrative.description;
 	let nodes, edges;
+	let narrativeSectionsJSON, activeNodesJSON, activeEdgesJSON;
 
 	// Container to control style of research map
-	let narrativeSection;
+	let researchMapElement;
 
 	// Form element to control saving to DB
 	let dbformElement;
 
-	// Load nodes and edges from DB
-	if (narrative.nodes == null) {
-		nodes = writable([]);
-	} else {
-		nodes = writable(narrative.nodes);
-	}
-	if (narrative.edges == null) {
-		edges = writable([]);
-	} else {
-		edges = writable(narrative.edges);
+	/**
+	 * Load nodes and edges from the database
+	 */
+	function loadNodesAndEdgesFromDB() {
+		nodes = writable(narrative.nodes || []);
+		edges = writable(narrative.edges || []);
 	}
 
-	// When box is dragged
+	/**
+	 * Event handler for when a box is dragged
+	 * @param {Event} event - The drag event
+	 * @param {any} nodeData - The data associated with the dragged node
+	 */
 	const onDragStart = (event, nodeData) => {
 		if (!event.dataTransfer) {
 			return null;
@@ -53,30 +51,38 @@
 		event.dataTransfer.effectAllowed = 'move';
 	};
 
-	// When box is dropped
+	/**
+	 * Event handler for when a box is is dropped
+	 * @param {Event} event - The drop event
+	 */
 	const onDragEnd = (event) => {
 		$activeDraggableNodeModal = false;
 		narrativeSection.style = 'opacity: 1; pointer-events: all';
 	};
 
-	// When drag Modal is triggered by button click from a node
-	// Deactivate narrative section and activate drag modal
-	$: if ($activeDraggableNodeModal == true) {
-		narrativeSection.style = 'opacity: 0.5; pointer-events: none';
+	/**
+	 * Set the style of the drag modal based on the active state
+	 */
+	function setDragModalStyle() {
+		if ($activeDraggableNodeModal == true) {
+			narrativeSection.style = 'opacity: 0.5; pointer-events: none';
+		}
 	}
 
-	// nodes json for saving
-	$: activeNodesJSON = JSON.stringify($nodes);
-	$: activeEdgesJSON = JSON.stringify($edges);
-	
-	let narrativeSectionsJSON;
-	// save to DB
+	/**
+	 * Save data to the database
+	 */
 	async function saveToDB() {
-		narrativeSectionsJSON = await JSON.stringify(narrativeSections)
-		if (await narrativeSectionsJSON){
+		activeNodesJSON = await JSON.stringify($nodes);
+		activeEdgesJSON = await JSON.stringify($edges);
+		narrativeSectionsJSON = await JSON.stringify(narrativeSections);
+		if (await narrativeSectionsJSON) {
 			dbformElement.requestSubmit();
 		}
 	}
+
+	loadNodesAndEdgesFromDB();
+	$: setDragModalStyle();
 </script>
 
 <section class="grid grid-flow-row grid-cols-5 h-screen overflow-hidden">
@@ -84,16 +90,16 @@
 		<!-- Button on the side -->
 		<section class="absolute h-screen top-0 left-0 z-50 m-5 w-1/6">
 			<a href="/libraries" class=" ">
-				<h2 class="text-2xl mt-5 mb-3 text-left md:mx-0 font-semibold text-yellow-500">
-					Kaagada
-				</h2>
+				<h2 class="text-2xl mt-5 mb-3 text-left md:mx-0 font-semibold text-yellow-500">Kaagada</h2>
 			</a>
 			<section class="w-full grid grid-cols-2 gap-x-1">
 				<Button class="bg-primary-300 w-full my-1" type="submit" on:click={() => saveToDB()}
 					><DownloadSolid /></Button
 				>
-				<Button class="bg-primary-300 w-full my-1  " type="submit" href="/libraries/view/?id={narrative.library_id}"
-					><HomeSolid /></Button
+				<Button
+					class="bg-primary-300 w-full my-1  "
+					type="submit"
+					href="/libraries/view/?id={narrative.library_id}"><HomeSolid /></Button
 				>
 
 				<Accordion defaultClass="bg-primary-100 w-full max-h-[80vh] overflow-y-auto col-span-2">
@@ -124,7 +130,7 @@
 			</div>
 		{/if}
 		<!-- Research Map -->
-		<div bind:this={narrativeSection} class="h-full w-full px-0 mb-2 rounded-lg">
+		<div bind:this={researchMapElement} class="h-full w-full px-0 mb-2 rounded-lg">
 			<SvelteFlowProvider>
 				<Flow bind:nodes bind:edges />
 			</SvelteFlowProvider>
@@ -142,16 +148,20 @@
 		</div>
 	</section>
 	<section class="col-span-1 bg-primary-100 pt-4 py-1 px-5 overflow-y-hidden rounded-lg">
-		<WritingPanel bind:narrativeSections bind:title bind:description />
+		<WritingPanel
+			bind:narrativeSections
+			bind:title={narrative.title}
+			bind:description={narrative.description}
+		/>
 	</section>
 </section>
+
+<svelte:head>
+	<title>{narrative.title}</title>
+</svelte:head>
 
 <style>
 	#dragModal {
 		cursor: grab;
 	}
 </style>
-
-<svelte:head>
-	<title>{narrative.title}</title>
-</svelte:head> 

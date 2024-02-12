@@ -11,8 +11,7 @@
 
 	export let resource;
 
-	let map, filterExpression, appearanceExpression, mapContainer, resourceJSON;
-	filterExpression = resource.filterExpression;
+	let map, appearanceExpression, mapContainer, resourceJSON;
 
 	// Color settings
 	const colorsOG = ['#6E07EB', '#00CAF5', '#5FDE43', '#F5C83D', '#EB533B'];
@@ -53,7 +52,8 @@
 				// Download and parse the resource data
 				let blob = await downloadResource(resource.url);
 				resourceJSON = JSON.parse(await blob.text());
-				let geometryType = resourceJSON.features[0].geometry.type, type;
+				let geometryType = resourceJSON.features[0].geometry.type,
+					type;
 				let filter, appearance;
 
 				// Add source and layer to the map
@@ -71,7 +71,6 @@
 						'fill-outline-color': 'green'
 					};
 					type = 'fill';
-					
 				} else if (['LineString', 'MultiLineString'].includes(geometryType)) {
 					filter = ['==', '$type', 'LineString'];
 					appearance = {
@@ -88,7 +87,6 @@
 					type = 'fill';
 				}
 
-
 				map.addLayer({
 					id: 'resource-layer',
 					type: type,
@@ -101,7 +99,6 @@
 				map.setFilter('resource-layer', resource.filterExpression);
 
 				// if map.center does not exist
-				
 			});
 		} catch (e) {
 			console.log(e);
@@ -126,7 +123,6 @@
 	// Function to get attributes from Nodes
 
 	const onSave = async () => {
-		resource.filterExpression = filterExpression;
 		resource.center = map.getCenter();
 		resource.bearing = map.getBearing();
 		resource.pitch = map.getPitch();
@@ -136,11 +132,19 @@
 
 <!-- Map and sidebar section -->
 <section id="map" class="relative h-full w-full">
-	<section id="sidebar" class="absolute top-0 left-0 m-3 z-50 bg-primary-50 p-4 rounded-lg">
-		<Filter bind:map bind:resourceJSON bind:filterExpression />
-		<Button on:click={onSave} color="dark" class="rounded-sm px-1 py-0 mt-2 bg-slate-800"
-			>Save</Button
-		>
+	<section id="sidebar" class="absolute top-0 left-0 m-3 grid gap-y-2 z-50 w-1/3">
+		<div class="bg-primary-50 rounded-lg p-4">
+			<Filter bind:map bind:resourceJSON bind:filterExpression={resource.filterExpression} />
+		</div>
+		<div class="bg-primary-50 rounded-lg p-4">
+			<!-- todo implement component to have view options -->
+			<h3 class="pb-2">Viewing Options</h3>
+			<p class="text-xs">This zoom level, angle and view-height will be used to render this map when you share the story</p>
+			<Button on:click={onSave} color="dark" class="rounded-sm px-1 py-0 mt-2 bg-slate-800"
+				>Save view state</Button
+			>
+		</div>
+
 		<!-- <MapExportPanel bind:map={map} showPrintableArea={true} showCrosshair={false} />  -->
 	</section>
 	<div bind:this={mapContainer} class="h-full w-full" />

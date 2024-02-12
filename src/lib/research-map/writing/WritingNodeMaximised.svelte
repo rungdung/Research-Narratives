@@ -3,15 +3,13 @@
 	import TextEditor from './TextEditor.svelte';
 	import { supabase } from '$lib/supabaseClient';
 	import SpatialAnnotate from '$lib/research-map/spatial-annotate/SpatialAnnotate.svelte';
+	import { selectionToInsertionEnd } from '@tiptap/core';
 
 	/**
 	 * Component to display a section of the writing
 	 * @param {any} section - The section to display
 	 */
 	export let section;
-
-	// This variable is used to store the preview
-	let preview;
 
 	/**
 	 * Download a resource from Supabase storage and return a URL for the resource
@@ -21,11 +19,9 @@
 	const downloadResource = async (path) => {
 		try {
 			const { data, error } = await supabase.storage.from('resources').download(path);
-
 			if (error) {
 				throw error;
 			}
-
 			return URL.createObjectURL(data);
 		} catch (error) {
 			if (error instanceof Error) {
@@ -34,26 +30,33 @@
 		}
 	};
 
-	// Load the preview url into a var
-	$: if (section?.displayObj?.url && !preview) {
-		preview = downloadResource(section.displayObj.url);
+	/**
+	 * Load the preview of the resource
+	 * and save to parent object
+	 *
+	 */
+	async function loadResources() {
+		section.preview = await downloadResource(section.displayObj.url);
+	}
+
+	if (section && !section.preview && section?.displayObj?.url) {
+		loadResources();
 	}
 </script>
 
-<div class="w-full relative snap-center mx-auto my-auto h-screen grid grid-cols-4" id="section-{section.id}">
+<div
+	class="w-full relative snap-center mx-auto my-auto h-screen grid grid-cols-4"
+	id="section-{section.id}"
+>
 	<section class="col-span-2 relative my-auto">
 		{#if section?.displayObj?.url}
-			{#if ['jpg', 'png', 'jpeg'].includes(section.displayObj.type)}
-				{#await preview}
-					Loading...
-				{:then preview}
-					<img src={preview} alt="preview" class="w-full object-contain" />
-					{#if section.annotation}
-						<p class="text-grey-200">
-							{section.annotation}
-						</p>
-					{/if}
-				{/await}
+			{#if ['jpg', 'png', 'jpeg'].includes(section.displayObj.type) && section.preview}
+				<img src={section.preview} alt="preview" class="w-full object-contain" />
+				{#if section.annotation}
+					<p class="text-grey-200">
+						{section.annotation}
+					</p>
+				{/if}
 			{:else if ['geojson'].includes(section?.displayObj?.type)}
 				<section class="h-[100vh] w-[50vw]">
 					<SpatialAnnotate bind:resource={section.displayObj} />

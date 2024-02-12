@@ -57,7 +57,7 @@
 	 */
 	const onDragEnd = (event) => {
 		$activeDraggableNodeModal = false;
-		narrativeSection.style = 'opacity: 1; pointer-events: all';
+		researchMapElement.style = 'opacity: 1; pointer-events: all';
 	};
 
 	/**
@@ -65,7 +65,7 @@
 	 */
 	function setDragModalStyle() {
 		if ($activeDraggableNodeModal == true) {
-			narrativeSection.style = 'opacity: 0.5; pointer-events: none';
+			researchMapElement.style = 'opacity: 0.5; pointer-events: none';
 		}
 	}
 
@@ -80,6 +80,7 @@
 			dbformElement.requestSubmit();
 		}
 	}
+
 
 	loadNodesAndEdgesFromDB();
 	$: setDragModalStyle();

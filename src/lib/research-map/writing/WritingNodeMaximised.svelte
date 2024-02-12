@@ -1,9 +1,7 @@
 <script>
 	import { Label, Textarea, Input } from 'flowbite-svelte';
 	import TextEditor from './TextEditor.svelte';
-	import { supabase } from '$lib/supabaseClient';
 	import SpatialAnnotate from '$lib/research-map/spatial-annotate/SpatialAnnotate.svelte';
-	import { selectionToInsertionEnd } from '@tiptap/core';
 
 	/**
 	 * Component to display a section of the writing
@@ -11,37 +9,6 @@
 	 */
 	export let section;
 
-	/**
-	 * Download a resource from Supabase storage and return a URL for the resource
-	 * @param {string} path - The path of the resource to download
-	 * @returns {Promise<string>} - A Promise that resolves with the URL of the downloaded resource
-	 */
-	const downloadResource = async (path) => {
-		try {
-			const { data, error } = await supabase.storage.from('resources').download(path);
-			if (error) {
-				throw error;
-			}
-			return URL.createObjectURL(data);
-		} catch (error) {
-			if (error instanceof Error) {
-				console.log('Error downloading image: ', error.message);
-			}
-		}
-	};
-
-	/**
-	 * Load the preview of the resource
-	 * and save to parent object
-	 *
-	 */
-	async function loadResources() {
-		section.preview = await downloadResource(section.displayObj.url);
-	}
-
-	if (section && !section.preview && section?.displayObj?.url) {
-		loadResources();
-	}
 </script>
 
 <div

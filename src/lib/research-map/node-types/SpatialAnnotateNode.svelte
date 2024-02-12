@@ -13,7 +13,7 @@
 <div>
 	<Card class="w-40 p-0 text-black gap-2 bg-secondary-50">
 		<Handle type="target" position={Position.Left} style="background: #555;" />
-		<h5 class="max-w-prose leading-tight z-30">Annotates {data.title}</h5>
+		<h5 class="max-w-prose text-xs leading-tight z-30">Annotates {data.title}</h5>
 
 		<Textarea
 			class="max-w-prose leading-tight z-30"
@@ -27,12 +27,7 @@
 			style="top: 10px; background: #555; size:10px;"
 		/>
 
-		<Handle
-			type="source"
-			position={Position.Right}
-			id="b"
-			style="bottom: 10px; top: auto; background: #555;"
-		/>
+
 		<div class="">
 			<Button
 				size="xs"

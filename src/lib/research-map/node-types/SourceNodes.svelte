@@ -49,12 +49,6 @@
 			style="top: 10px; background: #555; size:10px;"
 		/>
 
-		<Handle
-			type="source"
-			position={Position.Right}
-			id="b"
-			style="bottom: 10px; top: auto; background: #555;"
-		/>
 		<div class="">
 			<Button
 				size="xs"

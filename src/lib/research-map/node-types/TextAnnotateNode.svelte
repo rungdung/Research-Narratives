@@ -6,23 +6,19 @@
 
 	export let data;
 	export let id;
-	export let isConnectable;
+	export let isConnectable=true;
 	const { updateNodeData } = useSvelteFlow();
 </script>
 
 <div>
 	<Card class="w-40 p-0 text-black gap-2 bg-secondary-50">
 		<Handle type="target" position={Position.Left} style="background: #555;" {isConnectable} />
-		<h5 class="max-w-prose leading-tight z-30" />
-		<Textarea
-			class="max-w- leading-tight z-30"
-			bind:value={data.title}
-			on:input={(evt) => updateNodeData(id, { text: evt.currentTarget.value })}
-			placeholder={'Quote a section to annotate'}
-		/>
+
+		<h5 class="max-w-prose text-xs leading-tight z-30">Annotates {data.title}</h5>
 		<Textarea
 			class="max-w-prose leading-tight z-30"
 			bind:value={data.description}
+			placeholder="This annotation can also be displayed on the final story"
 			on:input={(evt) => updateNodeData(id, { text: evt.currentTarget.value })}
 		/>
 		<Handle
@@ -33,13 +29,6 @@
 			{isConnectable}
 		/>
 
-		<Handle
-			type="source"
-			position={Position.Right}
-			id="b"
-			style="bottom: 10px; top: auto; background: #555;"
-			{isConnectable}
-		/>
 		<div class="">
 			<Button
 				size="xs"

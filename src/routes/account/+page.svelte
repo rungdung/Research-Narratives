@@ -63,18 +63,18 @@
 				<!-- Full Name input -->
 				<div>
 					<Label for="fullName">Full Name</Label>
-					<Input id="fullName" name="fullName" type="text" value={form?.fullName ?? fullName} />
+					<Input id="fullName" name="fullName" required type="text" value={form?.fullName ?? fullName} />
 				</div>
 
 				<!-- Username input -->
 				<div>
 					<Label for="username">Username</Label>
-					<Input id="username" name="username" type="text" value={form?.username ?? username} />
+					<Input id="username" minlength=3 required name="username" type="text" value={form?.username ?? username} />
 				</div>
 
 				<!-- Submit button -->
 				<div>
-					<button class="button bg-black block mt-2" disabled={loading} type="submit" on:click={() => profileForm.requestSubmit()}>Update</button>
+					<button class="button bg-black block mt-2" disabled={loading} type="submit" on:click={() => profileForm.requestSubmit()}>{loading ? 'Loading...' : 'Update'}</button>
 				</div>
 			</form>
 
@@ -82,7 +82,7 @@
 			<form method="post" action="?/signout" use:enhance={handleSignOut}>
 				<div>
 					<!-- Sign-out button -->
-					<button class="button block mt-2" disabled={loading}>Sign Out</button>
+					<button class="button block mt-2" disabled={loading}>{loading ? 'Signing out...' : 'Sign Out'}</button>
 				</div>
 			</form>
 		</div>

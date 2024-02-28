@@ -27,7 +27,6 @@
 			style="top: 10px; background: #555; size:10px;"
 		/>
 
-
 		<div class="">
 			<Button
 				size="xs"
@@ -37,8 +36,8 @@
 					($activeDraggableNodeModal = true),
 					($activeDraggableNode = {
 						title: data.title,
-						quote: data.quote,
-						description: data.description
+						resource: data.resource,
+						annotation: data.description
 					})
 				)}>Add to writing section</Button
 			>

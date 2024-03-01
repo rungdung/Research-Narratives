@@ -88,7 +88,7 @@
 <div class="text-black h-screen overflow-y-auto grid place-items-center mb-10">
 	<div class="w-3/4">
 		<h1>{data.narrative.title}</h1>
-		{@html data.narrative.description}
+		<div class="m t-5">{@html data.narrative.description}</div>
 	</div>
 </div>
 
@@ -98,7 +98,7 @@
 			<div transition:blur={{ duration: 200 }}>
 				<img src={preview} alt="preview" class="h-screen object-contain ml-auto" />
 				{#if data.narrative.narrative_sections[index].annotation}
-					<p class="text-grey-200">
+					<p class="absolute bottom-10 right-10 p-10 text-black z-50 bg-primary-100 bg-opacity-100">
 						{data.narrative.narrative_sections[index].annotation}
 					</p>
 				{/if}
@@ -108,6 +108,11 @@
 			transition:blur={{ duration: 200 }}
 			class="h-[100vh] w-[100vw] {spatialEnabled ? '' : 'hidden'}"
 		>
+			{#if data.narrative.narrative_sections[index].annotation}
+				<p class="absolute bottom-10 right-10 p-10 text-black z-50 bg-primary-100 bg-opacity-100">
+					{data.narrative.narrative_sections[index].annotation}
+				</p>
+			{/if}
 			<SpatialView
 				bind:resource={data.narrative.narrative_sections[index].displayObj}
 				bind:resourceBlob={data.narrative.narrative_sections[index].preview}
@@ -118,11 +123,11 @@
 	<div class="snap-y snap-mandatory" slot="foreground">
 		{#each data.narrative.narrative_sections as section}
 			<div
-				class="snap-center bg-opacity-70 ml-10 py-10 min-h-screen w-1/3 text-black bg-primary-50 rounded-lg"
+				class="snap-center bg-opacity-70 ml-auto sm:ml-10 py-10 min-h-screen w-full sm:w-1/3 text-black bg-primary-50 rounded-lg"
 			>
 				<section class="p-3 my-auto">
 					<h2 class="text-3xl">{section.title}</h2>
-					{@html section.bodytext}
+					<div class="mt-10">{@html section.bodytext}</div>
 				</section>
 			</div>
 		{/each}
